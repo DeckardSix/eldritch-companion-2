@@ -1,0 +1,3 @@
+rootProject.name = 'Eldritch Companion'
+
+include 'app'

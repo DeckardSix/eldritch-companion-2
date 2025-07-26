@@ -1,0 +1,79 @@
+Signature-Version: 1.0
+Created-By: 1.0 (Android)
+SHA1-Digest-Manifest: ytlxiJFaPpJV+AOOPY+BIPYsXT0=
+
+Name: AndroidManifest.xml
+SHA1-Digest: TjW+fESeDgAw4Dvx0j3M9KOoR28=
+
+Name: assets/cards.xml
+SHA1-Digest: R/c7ANpLp1tf58sBA0ME2jISWHw=
+
+Name: assets/fonts/se-caslon-ant.ttf
+SHA1-Digest: VqsHM9ofk5wrZFf+sHEphmEwzOw=
+
+Name: classes.dex
+SHA1-Digest: O6WjbBBnZ4vCnUmjgP/UUKVn1s0=
+
+Name: res/drawable-hdpi-v4/ic_launcher.png
+SHA1-Digest: 772WqRl2hqCwGYyGPp4rzwXF+n4=
+
+Name: res/drawable-mdpi-v4/ic_launcher.png
+SHA1-Digest: TniXu24eLXSXxM4bS/UScS21eBA=
+
+Name: res/drawable-xhdpi-v4/ic_launcher.png
+SHA1-Digest: nfyYAKPDyYm4rc9wzzcAKZCGjLc=
+
+Name: res/drawable-xxhdpi-v4/ic_launcher.png
+SHA1-Digest: lzl16HjcxQytHJidXxb4ARf7CLo=
+
+Name: res/drawable/round_button.xml
+SHA1-Digest: si5rtdq+Jit/6jWMajwLiMJqLCE=
+
+Name: res/layout-large-v4/activity_card.xml
+SHA1-Digest: zfRPTbssP+KJ/kVasssRqbNrpN8=
+
+Name: res/layout-large-v4/activity_eldritch_companion.xml
+SHA1-Digest: mSnXQ6ycsDgofVOyBNdufJBxF/c=
+
+Name: res/layout-large-v4/activity_gallery.xml
+SHA1-Digest: Seheo3aWPXMiaPkTXZ7KBrG9t5E=
+
+Name: res/layout-large-v4/activity_remove_expedition.xml
+SHA1-Digest: iq5ywkFPD6EOQq8Vk+SrYjmeHYQ=
+
+Name: res/layout-large-v4/activity_setup.xml
+SHA1-Digest: fG1LvZ/vjYlyynWBaSDpP/NbAk8=
+
+Name: res/layout-large-v4/spinner_item.xml
+SHA1-Digest: Jt3CbXGpiIwI/9klJHQNGND3x2A=
+
+Name: res/layout/activity_card.xml
+SHA1-Digest: +gY/jU9+lV4zIUmv+aoJPLeVGqs=
+
+Name: res/layout/activity_eldritch_companion.xml
+SHA1-Digest: D+GCPLz0I9FBdmR1vnZb4WNDVmk=
+
+Name: res/layout/activity_gallery.xml
+SHA1-Digest: sbu64Mgd09J0nnPtm0IBlrl9MaY=
+
+Name: res/layout/activity_remove_expedition.xml
+SHA1-Digest: 6irAkDmQcwzgVMDb+yld7lcjglU=
+
+Name: res/layout/activity_setup.xml
+SHA1-Digest: HV8cBTfFlRAEfjxWM8/u+BtrdKU=
+
+Name: res/layout/spinner_item.xml
+SHA1-Digest: TKft8hWxvOyKFNsEGQGmr3GIZHk=
+
+Name: res/menu/menu_card_actions.xml
+SHA1-Digest: Dz0JRsb+aUkmizkyIMb82CSpoi4=
+
+Name: res/menu/menu_discard_pile.xml
+SHA1-Digest: CiatP64ZsNrWXS3kP5fCRuTVrU8=
+
+Name: res/menu/menu_eldritch_companion.xml
+SHA1-Digest: TeMX7CDltUQ6dux/2EQzDHx3P1Y=
+
+Name: resources.arsc
+SHA1-Digest: EWoJsb91wxoJKyXVYw4BXxZgTcA=
+

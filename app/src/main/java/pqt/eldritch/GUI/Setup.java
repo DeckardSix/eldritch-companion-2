@@ -1,0 +1,335 @@
+package pqt.eldritch.GUI;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import pqt.eldritch.Config;
+import pqt.eldritch.Decks;
+import pqt.eldritch.R;
+
+/* loaded from: classes.dex */
+public class Setup extends Activity {
+    public List<String> base;
+    public List<String> citiesInRuin;
+    public List<String> forsakenLore;
+    public List<String> masksOfNyarlathotep;
+    public List<String> mountainsOfMadness;
+    public List<String> signsOfCarcosa;
+    public List<String> strangeRemnants;
+    public List<String> theDreamlands;
+    public List<String> underThePyramids;
+
+    @Override // android.app.Activity
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_setup);
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/se-caslon-ant.ttf");
+        TextView header = (TextView) findViewById(R.id.expanHeader);
+        header.setTypeface(face);
+        TextView header2 = (TextView) findViewById(R.id.ancientHeader);
+        header2.setTypeface(face);
+        Button start = (Button) findViewById(R.id.startButton);
+        start.setTypeface(face);
+        Button contButton = (Button) findViewById(R.id.continueButton);
+        contButton.setTypeface(face);
+        populateAncientOnes();
+        populateSpinner();
+    }
+
+    private void populateAncientOnes() {
+        this.base = new ArrayList();
+        this.base.add("Azathoth");
+        this.base.add("Yog-Sothoth");
+        this.base.add("Shub-Niggurath");
+        this.base.add("Cthulhu");
+        this.forsakenLore = new ArrayList();
+        this.forsakenLore.add("Yig");
+        this.mountainsOfMadness = new ArrayList();
+        this.mountainsOfMadness.add("Rise of the Elder Things");
+        this.mountainsOfMadness.add("Ithaqua");
+        this.strangeRemnants = new ArrayList();
+        this.strangeRemnants.add("Syzygy");
+        this.underThePyramids = new ArrayList();
+        this.underThePyramids.add("Abhoth");
+        this.underThePyramids.add("Nephren-Ka");
+        this.signsOfCarcosa = new ArrayList();
+        this.signsOfCarcosa.add("Hastur");
+        this.theDreamlands = new ArrayList();
+        this.theDreamlands.add("Hypnos");
+        this.theDreamlands.add("Atlach-Nacha");
+        this.citiesInRuin = new ArrayList();
+        this.citiesInRuin.add("Shudde M'ell");
+        this.masksOfNyarlathotep = new ArrayList();
+        this.masksOfNyarlathotep.add("Nyarlathotep");
+        this.masksOfNyarlathotep.add("Antediluvium");
+    }
+
+    private List<String> getAncientOnes() {
+        List<String> ancientOnes = new ArrayList<>();
+        CheckBox box = (CheckBox) findViewById(R.id.baseBox);
+        if (box.isChecked()) {
+            ancientOnes.addAll(this.base);
+        }
+        CheckBox box2 = (CheckBox) findViewById(R.id.forsakenLoreBox);
+        if (box2.isChecked()) {
+            ancientOnes.addAll(this.forsakenLore);
+        }
+        CheckBox box3 = (CheckBox) findViewById(R.id.mountainsOfMadnessBox);
+        if (box3.isChecked()) {
+            ancientOnes.addAll(this.mountainsOfMadness);
+        }
+        CheckBox box4 = (CheckBox) findViewById(R.id.strangeRemnantsBox);
+        if (box4.isChecked()) {
+            ancientOnes.addAll(this.strangeRemnants);
+        }
+        CheckBox box5 = (CheckBox) findViewById(R.id.underThePyramidsBox);
+        if (box5.isChecked()) {
+            ancientOnes.addAll(this.underThePyramids);
+        }
+        CheckBox box6 = (CheckBox) findViewById(R.id.signsOfCarcosaBox);
+        if (box6.isChecked()) {
+            ancientOnes.addAll(this.signsOfCarcosa);
+        }
+        CheckBox box7 = (CheckBox) findViewById(R.id.theDreamlandsBox);
+        if (box7.isChecked()) {
+            ancientOnes.addAll(this.theDreamlands);
+        }
+        CheckBox box8 = (CheckBox) findViewById(R.id.citiesInRuinBox);
+        if (box8.isChecked()) {
+            ancientOnes.addAll(this.citiesInRuin);
+        }
+        CheckBox box9 = (CheckBox) findViewById(R.id.masksOfNyarlathotepBox);
+        if (box9.isChecked()) {
+            ancientOnes.addAll(this.masksOfNyarlathotep);
+        }
+        return ancientOnes;
+    }
+
+    private void populateSpinner() {
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        String selected = (String) spinner.getSelectedItem();
+        List<String> ancientOnes = getAncientOnes();
+        ancientOnes.add(0, "Random");
+        // ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this, R.layout.spinner_item, ancientOnes);
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, ancientOnes);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter((SpinnerAdapter) spinnerArrayAdapter);
+        if (ancientOnes.contains(selected)) {
+            spinner.setSelection(ancientOnes.indexOf(selected));
+        }
+    }
+
+    public void populateSpinner(View view) {
+        populateSpinner();
+    }
+
+    public void toggleAntarctica(View view) {
+        CheckBox antarctica = (CheckBox) findViewById(R.id.antarcticaBox);
+        if (((CheckBox) findViewById(R.id.mountainsOfMadnessBox)).isChecked()) {
+            antarctica.setEnabled(true);
+        } else {
+            antarctica.setChecked(false);
+            antarctica.setEnabled(false);
+        }
+        populateSpinner();
+    }
+
+    public void toggleEgyptAndLitany(View view) {
+        CheckBox egypt = (CheckBox) findViewById(R.id.egyptBox);
+        CheckBox litanyOfSecrets = (CheckBox) findViewById(R.id.litanyOfSecretsBox);
+        if (((CheckBox) findViewById(R.id.underThePyramidsBox)).isChecked()) {
+            egypt.setEnabled(true);
+            litanyOfSecrets.setEnabled(true);
+        } else {
+            egypt.setChecked(false);
+            egypt.setEnabled(false);
+            litanyOfSecrets.setChecked(false);
+            litanyOfSecrets.setEnabled(false);
+        }
+        populateSpinner();
+    }
+
+    public void toggleDreamlandsBoard(View view) {
+        CheckBox dreamlandsBoard = (CheckBox) findViewById(R.id.dreamlandsBoardBox);
+        if (((CheckBox) findViewById(R.id.theDreamlandsBox)).isChecked()) {
+            dreamlandsBoard.setEnabled(true);
+        } else {
+            dreamlandsBoard.setChecked(false);
+            dreamlandsBoard.setEnabled(false);
+        }
+        populateSpinner();
+    }
+
+    public void toggleCosmicAlignment(View view) {
+        CheckBox cosmicAlignment = (CheckBox) findViewById(R.id.cosmicAlignmentBox);
+        if (((CheckBox) findViewById(R.id.strangeRemnantsBox)).isChecked()) {
+            cosmicAlignment.setEnabled(true);
+        } else {
+            cosmicAlignment.setChecked(false);
+            cosmicAlignment.setEnabled(false);
+        }
+        populateSpinner();
+    }
+
+    public void togglePreludeCards(View view) {
+        CheckBox cosmicAlignment = (CheckBox) findViewById(R.id.cosmicAlignmentBox);
+        CheckBox litanyOfSecrets = (CheckBox) findViewById(R.id.litanyOfSecretsBox);
+        switch (view.getId()) {
+            case R.id.cosmicAlignmentBox /* 2130968594 */:
+                if (((CheckBox) findViewById(R.id.underThePyramidsBox)).isChecked()) {
+                    litanyOfSecrets.setChecked(false);
+                    break;
+                }
+                break;
+            case R.id.litanyOfSecretsBox /* 2130968614 */:
+                if (((CheckBox) findViewById(R.id.strangeRemnantsBox)).isChecked()) {
+                    cosmicAlignment.setChecked(false);
+                    break;
+                }
+                break;
+        }
+    }
+
+    public void continueGame(View view) throws ParserConfigurationException, SAXException, IOException {
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(new File(getFilesDir(), "discard.xml"));
+            doc.getDocumentElement().normalize();
+            Config.ANCIENT_ONE = getNodeText(getSubNode(doc.getDocumentElement(), "ANCIENT_ONE"));
+            Config.BASE = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "BASE")));
+            Config.FORSAKEN_LORE = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "FORSAKEN_LORE")));
+            Config.MOUNTAINS_OF_MADNESS = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "MOUNTAINS_OF_MADNESS")));
+            Config.STRANGE_REMNANTS = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "STRANGE_REMNANTS")));
+            Config.ANTARCTICA = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "ANTARCTICA")));
+            Config.COSMIC_ALIGNMENT = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "COSMIC_ALIGNMENT")));
+            Config.UNDER_THE_PYRAMIDS = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "UNDER_THE_PYRAMIDS")));
+            Config.EGYPT = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "EGYPT")));
+            Config.LITANY_OF_SECRETS = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "LITANY_OF_SECRETS")));
+            Config.SIGNS_OF_CARCOSA = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "SIGNS_OF_CARCOSA")));
+            Config.THE_DREAMLANDS = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "THE_DREAMLANDS")));
+            Config.DREAMLANDS_BOARD = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "DREAMLANDS_BOARD")));
+            Config.CITIES_IN_RUIN = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "CITIES_IN_RUIN")));
+            Config.MASKS_OF_NYARLATHOTEP = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "MASKS_OF_NYARLATHOTEP")));
+            new Decks();
+            for (Node node = doc.getElementsByTagName("DISCARD_PILE").item(0).getLastChild(); node != null; node = node.getPreviousSibling()) {
+                if (!node.getNodeName().equals("#text")) {
+                    String deck = getNodeText(node.getAttributes().getNamedItem("region"));
+                    String id = getNodeText(node.getAttributes().getNamedItem("id"));
+                    String encountered = getNodeText(node.getAttributes().getNamedItem("encountered"));
+                    Decks.CARDS.discardCard(deck, id, encountered);
+                }
+            }
+            Intent intent = new Intent(this, (Class<?>) EldritchCompanion.class);
+            startActivity(intent);
+        } catch (Exception ex) {
+            System.out.println("Failed at Loading File!");
+            System.out.println(ex.getMessage());
+            System.out.println(ex.toString());
+            for (StackTraceElement x : ex.getStackTrace()) {
+                System.out.println(x.toString());
+            }
+        }
+    }
+
+    private String getNodeText(Node node) {
+        return node == null ? "" : node.getTextContent().trim();
+    }
+
+    private Node getSubNode(Node parent, String name) {
+        if (parent == null) {
+            return null;
+        }
+        NodeList subNodes = parent.getChildNodes();
+        for (int i = 0; i < subNodes.getLength(); i++) {
+            Node subNode = subNodes.item(i);
+            if (subNode.getNodeName().equals(name)) {
+                return subNode;
+            }
+        }
+        return null;
+    }
+
+    public void startGame(View view) throws IOException {
+        boolean base = ((CheckBox) findViewById(R.id.baseBox)).isChecked();
+        boolean forsakenLore = ((CheckBox) findViewById(R.id.forsakenLoreBox)).isChecked();
+        boolean mountainsOfMadness = ((CheckBox) findViewById(R.id.mountainsOfMadnessBox)).isChecked();
+        boolean antarctica = ((CheckBox) findViewById(R.id.antarcticaBox)).isChecked();
+        boolean strangeRemnants = ((CheckBox) findViewById(R.id.strangeRemnantsBox)).isChecked();
+        boolean cosmicAlignment = ((CheckBox) findViewById(R.id.cosmicAlignmentBox)).isChecked();
+        boolean underThePyramids = ((CheckBox) findViewById(R.id.underThePyramidsBox)).isChecked();
+        boolean egypt = ((CheckBox) findViewById(R.id.egyptBox)).isChecked();
+        boolean litanyOfSecrets = ((CheckBox) findViewById(R.id.litanyOfSecretsBox)).isChecked();
+        boolean signsOfCarcosa = ((CheckBox) findViewById(R.id.signsOfCarcosaBox)).isChecked();
+        boolean theDreamlands = ((CheckBox) findViewById(R.id.theDreamlandsBox)).isChecked();
+        boolean dreamlandsBoard = ((CheckBox) findViewById(R.id.dreamlandsBoardBox)).isChecked();
+        boolean citiesInRuin = ((CheckBox) findViewById(R.id.citiesInRuinBox)).isChecked();
+        boolean masksOfNyarlathotep = ((CheckBox) findViewById(R.id.masksOfNyarlathotepBox)).isChecked();
+        if (!base && !forsakenLore && !mountainsOfMadness && !strangeRemnants && !underThePyramids && !signsOfCarcosa && !theDreamlands && !citiesInRuin && !masksOfNyarlathotep) {
+            Toast.makeText(getApplicationContext(), "Choose At Least One Expansion", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String ANCIENT_ONE = (String) ((Spinner) findViewById(R.id.spinner)).getSelectedItem();
+        if (ANCIENT_ONE.equals("Random")) {
+            List<String> ancientOnes = getAncientOnes();
+            Collections.shuffle(ancientOnes);
+            ANCIENT_ONE = ancientOnes.get(0);
+        }
+        Config.ANCIENT_ONE = ANCIENT_ONE.replace(" ", "_").replace("'", ".");
+        Config.BASE = base;
+        Config.FORSAKEN_LORE = forsakenLore;
+        Config.MOUNTAINS_OF_MADNESS = mountainsOfMadness;
+        Config.ANTARCTICA = antarctica;
+        Config.STRANGE_REMNANTS = strangeRemnants;
+        Config.COSMIC_ALIGNMENT = cosmicAlignment;
+        Config.UNDER_THE_PYRAMIDS = underThePyramids;
+        Config.EGYPT = egypt;
+        Config.LITANY_OF_SECRETS = litanyOfSecrets;
+        Config.SIGNS_OF_CARCOSA = signsOfCarcosa;
+        Config.THE_DREAMLANDS = theDreamlands;
+        Config.DREAMLANDS_BOARD = dreamlandsBoard;
+        Config.CITIES_IN_RUIN = citiesInRuin;
+        Config.MASKS_OF_NYARLATHOTEP = masksOfNyarlathotep;
+        new Decks();
+        try {
+            File file = new File(getFilesDir(), "discard.xml");
+            file.createNewFile();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage() + " - Unable to create save file");
+        }
+        Intent intent = new Intent(this, (Class<?>) EldritchCompanion.class);
+        startActivity(intent);
+    }
+
+    @Override // android.app.Activity
+    public void onResume() {
+        super.onResume();
+        File file = new File(getFilesDir(), "discard.xml");
+        if (!file.exists()) {
+            findViewById(R.id.continueButton).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.continueButton).setVisibility(View.VISIBLE);
+        }
+    }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Eldritch Companion</string>
+    <string name="deck_menu_discard_card">Discard Card</string>
+    <string name="deck_menu_shuffle_deck">Shuffle Deck</string>
+    <string name="discard_menu_remove_card">Remove Card</string>
+    <string name="main_menu_end_game">End Game</string>
+    <string name="title_activity_eldritch_companion">Eldritch Companion</string>
+    <string name="title_activity_gallery">gallery</string>
+    <string name="title_activity_pager">pager</string>
+    <string name="title_activity_remove_expedition">Remove Expedition</string>
+    <string name="title_activity_three_part_card">Region</string>
+    <string name="base">Base</string>
+    <string name="forsaken_lore">Forsaken Lore</string>
+    <string name="select_expansions">Select Expansions</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu>
+    <item
+        xmlns:android="http://schemas.android.com/apk/res/android" 
+        android:id="@+id/action_shuffle_deck"
+        android:orderInCategory="100"
+        android:title="@string/deck_menu_shuffle_deck"
+        android:showAsAction="ifRoom"/>
+    <item xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/action_discard_card"
+        android:orderInCategory="100"
+        android:title="@string/deck_menu_discard_card"
+        android:showAsAction="ifRoom"/>
+</menu>

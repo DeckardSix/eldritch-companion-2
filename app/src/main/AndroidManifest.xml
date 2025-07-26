@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="12"
+    android:versionName="8.0"
+    package="pqt.eldritch">
+    <uses-sdk
+        android:minSdkVersion="36"
+        android:targetSdkVersion="35"/>
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <application
+        android:theme="@style/AppTheme"
+        android:label="@string/app_name"
+        android:icon="@drawable/ic_launcher"
+        android:allowBackup="true">
+        <activity
+            android:label="@string/app_name"
+            android:name="pqt.eldritch.GUI.EldritchCompanion"/>
+        <activity
+            android:exported="true"
+            android:label="@string/title_activity_eldritch_companion"
+            android:name="pqt.eldritch.GUI.Setup">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/title_activity_remove_expedition"
+            android:name="pqt.eldritch.GUI.RemoveExpedition"
+            android:parentActivityName="pqt.eldritch.GUI.EldritchCompanion">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pqt.eldritch.GUI.EldritchCompanion"/>
+        </activity>
+        <activity
+            android:label="@string/title_activity_pager"
+            android:name="pqt.eldritch.GUI.DeckGallery"
+            android:parentActivityName="pqt.eldritch.GUI.EldritchCompanion">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pqt.eldritch.GUI.EldritchCompanion"/>
+        </activity>
+        <activity
+            android:label="@string/title_activity_pager"
+            android:name="pqt.eldritch.GUI.DiscardGallery"
+            android:parentActivityName="pqt.eldritch.GUI.EldritchCompanion">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pqt.eldritch.GUI.EldritchCompanion"/>
+        </activity>
+    </application>
+</manifest>

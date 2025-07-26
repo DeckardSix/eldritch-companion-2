@@ -1,0 +1,79 @@
+Manifest-Version: 1.0
+Built-By: Generated-by-ADT
+Created-By: Android Gradle 3.0.1
+
+Name: AndroidManifest.xml
+SHA1-Digest: xy9lBeE1fZLW30P0TjvEHxltZCE=
+
+Name: assets/cards.xml
+SHA1-Digest: aHU3hCfcx8/J0/VT46d+QFG0pQc=
+
+Name: assets/fonts/se-caslon-ant.ttf
+SHA1-Digest: Y7AjcoJsNvqAqRZGmL4+LtRKSPg=
+
+Name: classes.dex
+SHA1-Digest: zJfOfWJs+eb5zSsZuQXxuglkey0=
+
+Name: res/drawable-hdpi-v4/ic_launcher.png
+SHA1-Digest: XTBwrV4PXXZZErm6xYcdcbfCeh4=
+
+Name: res/drawable-mdpi-v4/ic_launcher.png
+SHA1-Digest: AdvE60eMRzOSzji6KDs+YwMljVs=
+
+Name: res/drawable-xhdpi-v4/ic_launcher.png
+SHA1-Digest: +BTCS+U+mB4ORx7XKi3QPP4Uvw4=
+
+Name: res/drawable-xxhdpi-v4/ic_launcher.png
+SHA1-Digest: 76Z9Kg8XRvfxGEF1NZ0v/R+jFLY=
+
+Name: res/drawable/round_button.xml
+SHA1-Digest: H2sWxLhbduonHOpIJqPD3UkUP3Y=
+
+Name: res/layout-large-v4/activity_card.xml
+SHA1-Digest: SZYoM9k4pubLCFghV9MSwjFhuLI=
+
+Name: res/layout-large-v4/activity_eldritch_companion.xml
+SHA1-Digest: GQcpuV4YctuJvCHjrQKng7LmCFI=
+
+Name: res/layout-large-v4/activity_gallery.xml
+SHA1-Digest: Ljr82xaHZAcNvp/z+lf+Trg03q8=
+
+Name: res/layout-large-v4/activity_remove_expedition.xml
+SHA1-Digest: H/XTxdmsPUumfI4awsDW1bAjZ/E=
+
+Name: res/layout-large-v4/activity_setup.xml
+SHA1-Digest: la2zv/sZMBLUHPzhXtcnPzOsGLE=
+
+Name: res/layout-large-v4/spinner_item.xml
+SHA1-Digest: aINyfdlmKHeuLpDwQIfM8sVaS9E=
+
+Name: res/layout/activity_card.xml
+SHA1-Digest: NyCtPskqAKvGDGu8OLSjk0gc+zA=
+
+Name: res/layout/activity_eldritch_companion.xml
+SHA1-Digest: FUn3sSPhNutEQjvMc3NwFHK5zGE=
+
+Name: res/layout/activity_gallery.xml
+SHA1-Digest: Ljr82xaHZAcNvp/z+lf+Trg03q8=
+
+Name: res/layout/activity_remove_expedition.xml
+SHA1-Digest: T45YQDz9MOae6uYXrj7GTQ6Ualc=
+
+Name: res/layout/activity_setup.xml
+SHA1-Digest: RqxrqqQf/A3MFxF7qCaOSjKIkjA=
+
+Name: res/layout/spinner_item.xml
+SHA1-Digest: 9suJlJSjvCRxnIhddZpsAsUZbRE=
+
+Name: res/menu/menu_card_actions.xml
+SHA1-Digest: MOkIqyEIikygaWlQ8/l1Naoa7tM=
+
+Name: res/menu/menu_discard_pile.xml
+SHA1-Digest: 8v4VE4C5JQhb7GR6zqY/C2rcE9A=
+
+Name: res/menu/menu_eldritch_companion.xml
+SHA1-Digest: pGmVBXvLL/YuEnqFSFyUJvR0fYU=
+
+Name: resources.arsc
+SHA1-Digest: whXSIq9DpY/9ioue+fpcrI4w3OQ=
+

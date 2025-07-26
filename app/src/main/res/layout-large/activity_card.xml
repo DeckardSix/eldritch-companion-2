@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cardScroll"
+        android:scrollbars="none"
+        android:layout_width="wrap_content"
+        android:layout_height="700dp"
+        android:layout_above="@+id/idBox"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="30dp"
+                android:textColor="#ff000000"
+                android:gravity="center_horizontal"
+                android:id="@+id/topName"
+                android:paddingBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TOP NAME"/>
+            <TextView
+                android:textSize="20dp"
+                android:id="@+id/topEncounter"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This is where the top encounter goes"/>
+            <TextView
+                android:textSize="30dp"
+                android:textColor="#ff000000"
+                android:gravity="center_horizontal"
+                android:id="@+id/middleName"
+                android:paddingBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="MIDDLE NAME"/>
+            <TextView
+                android:textSize="20dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/middleEncounter"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="MIDDLE ENCOUNTER"/>
+            <TextView
+                android:textSize="30dp"
+                android:textColor="#ff000000"
+                android:gravity="center_horizontal"
+                android:id="@+id/bottomName"
+                android:paddingBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="BOTTOM NAME"/>
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/bottomEncounter"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BOTTOM ENCOUNTER"/>
+        </LinearLayout>
+    </ScrollView>
+    <TextView
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:id="@+id/idBox"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:text="ID"
+        android:layout_alignRight="@+id/cardScroll"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

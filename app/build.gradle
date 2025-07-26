@@ -1,0 +1,58 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android' // This plugin helps manage Kotlin stdlib
+}
+
+android {
+	namespace 'pqt.eldritch'
+    compileSdkVersion 36
+
+    defaultConfig {
+        applicationId 'pqt.eldritch'
+        minSdk = 35
+        targetSdk = 36
+        versionCode 12
+        versionName "8.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    buildFeatures {
+        buildConfig = false
+    }
+}
+
+
+dependencies {
+    // TODO: dependencies
+    implementation "androidx.core:core-ktx:1.16.0"
+    implementation "androidx.appcompat:appcompat:1.7.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.2.1"
+    implementation "androidx.recyclerview:recyclerview:1.4.0"
+
+    /*
+    dependencies {
+        implementation("some-library:that-depends-on-old-kotlin:1.0") {
+            exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
+        }
+    }
+    //exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+    */
+
+}

@@ -5,12 +5,12 @@ plugins {
 
 android {
 	namespace 'pqt.eldritch'
-    compileSdkVersion 36
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId 'pqt.eldritch'
-        minSdk = 35
-        targetSdk = 36
+        minSdk = 34
+        targetSdk = 34
         versionCode 12
         versionName "8.0"
 
@@ -34,17 +34,23 @@ android {
     }
 
     buildFeatures {
-        buildConfig = false
+        buildConfig = true
+    }
+    
+    // Disable the problematic bundle task
+    tasks.withType(com.android.build.gradle.internal.feature.BundleAllClasses) {
+        enabled = false
     }
 }
 
 
 dependencies {
     // TODO: dependencies
-    implementation "androidx.core:core-ktx:1.16.0"
-    implementation "androidx.appcompat:appcompat:1.7.1"
-    implementation "androidx.constraintlayout:constraintlayout:2.2.1"
-    implementation "androidx.recyclerview:recyclerview:1.4.0"
+    implementation "androidx.core:core-ktx:1.12.0"
+    implementation "androidx.fragment:fragment:1.6.2"
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation "androidx.recyclerview:recyclerview:1.3.2"
 
     /*
     dependencies {

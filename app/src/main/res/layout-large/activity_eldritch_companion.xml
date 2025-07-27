@@ -14,45 +14,85 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
-            android:textSize="20dp"
-            android:textColor="#ffffffff"
-            android:id="@+id/americasButton"
-            android:background="#ff00741e"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:text="Arkham - San Francisco - Buenos Aires"
-            android:onClick="drawCard"/>
-        <Button
-            android:textSize="20dp"
-            android:textColor="#ffffffff"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/europeButton"
-            android:background="#ffc96900"
+            android:layout_height="75dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/neighbourhood"
+                android:scaleType="fitXY"
+                android:alpha="0.5"/>
+            <Button
+                android:textSize="20dp"
+                android:textColor="#ffffffff"
+                android:id="@+id/americasButton"
+                android:background="#8000741e"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:text="Arkham - San Francisco - Buenos Aires"
+                android:onClick="drawCard"/>
+        </FrameLayout>
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:text="London - Rome - Istanbul"
-            android:onClick="drawCard"/>
-        <Button
-            android:textSize="20dp"
-            android:textColor="#ffffffff"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/asiaButton"
-            android:background="#ff5a0e8a"
+            android:layout_height="75dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/neighbourhood"
+                android:scaleType="fitXY"
+                android:alpha="0.5"/>
+            <Button
+                android:textSize="20dp"
+                android:textColor="#ffffffff"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/europeButton"
+                android:background="#80c96900"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:text="London - Rome - Istanbul"
+                android:onClick="drawCard"/>
+        </FrameLayout>
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:text="Shanghai - Tokyo - Sydney"
-            android:onClick="drawCard"/>
-        <Button
-            android:textSize="20dp"
-            android:textColor="#ffffffff"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/antWestButton"
-            android:background="#ffb897bb"
+            android:layout_height="75dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/neighbourhood"
+                android:scaleType="fitXY"
+                android:alpha="0.5"/>
+            <Button
+                android:textSize="20dp"
+                android:textColor="#ffffffff"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/asiaButton"
+                android:background="#805a0e8a"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:text="Shanghai - Tokyo - Sydney"
+                android:onClick="drawCard"/>
+        </FrameLayout>
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:text="City of the Elder Things - Plateau of Leng - Snowy Mountains"
-            android:onClick="drawCard"/>
+            android:layout_height="75dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/neighbourhood"
+                android:scaleType="fitXY"
+                android:alpha="0.5"/>
+            <Button
+                android:textSize="20dp"
+                android:textColor="#ffffffff"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/antWestButton"
+                android:background="#80b897bb"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:text="City of the Elder Things - Plateau of Leng - Snowy Mountains"
+                android:onClick="drawCard"/>
+        </FrameLayout>
         <Button
             android:textSize="20dp"
             android:textColor="#ffffffff"

@@ -13,4 +13,12 @@
     <string name="base">Base</string>
     <string name="forsaken_lore">Forsaken Lore</string>
     <string name="select_expansions">Select Expansions</string>
+    <string name="america">America</string>
+    <string name="uk">UK</string>
+    <string name="city_of_the_elder_things">City of the Elder Things</string>
+    <string name="frozen_waste">Frozen Waste</string>
+    <string name="africa">Africa</string>
+    <string name="dreamland_s">Dreamland\'s</string>
+    <string name="city_wilderness">City/Wilderness</string>
+    <string name="gate">Gate</string>
 </resources>

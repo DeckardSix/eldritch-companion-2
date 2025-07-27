@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:id="@+id/mainScrollView"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -10,44 +11,39 @@
     android:scrollbars="none"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/americasButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/test_americas_bg"
+            android:onClick="drawCard"
+            android:text="Arkham - San Francisco - Buenos Aires"
+            android:textColor="#ffffffff"
+            android:textSize="16sp"
+            app:backgroundTint="@null" />
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:alpha="0.95"
+                android:textColor="#00000000"
+                android:contentDescription="@string/america"
                 android:scaleType="fitXY"
-                android:alpha="0.5"/>
+                android:src="@drawable/nbg" />
             <Button
-                android:textSize="15dp"
-                android:textColor="#ffffffff"
-                android:id="@+id/americasButton"
-                android:background="#80007420"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Arkham - San Francisco - Buenos Aires"
-                android:onClick="drawCard"/>
-        </FrameLayout>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
-                android:scaleType="fitXY"
-                android:alpha="0.5"/>
-            <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/europeButton"
-                android:background="#80c96900"
+                android:background="@drawable/europe_bg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="London - Rome - Istanbul"
@@ -56,18 +52,20 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:alpha="0.5"
+                android:contentDescription="@string/uk"
                 android:scaleType="fitXY"
-                android:alpha="0.5"/>
+                android:src="@drawable/nbg" />
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/asiaButton"
-                android:background="#805a0e8a"
+                android:background="@drawable/asia_bg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="Shanghai - Tokyo - Sydney"
@@ -79,15 +77,16 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
+                android:contentDescription="@string/city_of_the_elder_things"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
-                android:textColor="#ffffffff"
+                android:textSize="16sp"
+                android:textColor="#000000"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/antWestButton"
-                android:background="#80b897bb"
+                android:background="@drawable/city_bg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="City of the Elder Things - Plateau of Leng - Snowy Mountains"
@@ -99,15 +98,16 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
+                android:contentDescription="@string/frozen_waste"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/antEastButton"
-                android:background="#80746100"
+                android:background="@drawable/frozen_waste_bg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="Frozen Waste - Lake Camp - Miskatonic Outpost"
@@ -119,15 +119,16 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
+                android:contentDescription="@string/africa"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/africaButton"
-                android:background="#807b5000"
+                android:background="@drawable/sahara_bg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="The Sahara Desert - Tel el-Amarna - The Nile River"
@@ -139,15 +140,16 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
+                android:contentDescription="@string/africa"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/egyptButton"
-                android:background="#80b60101"
+                android:background="@drawable/alexandria_bg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="Alexandria - The Bent Pyramid - Cairo"
@@ -159,15 +161,16 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
+                android:contentDescription="@string/dreamland_s"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/dreamlandsButton"
-                android:background="#808caa2f"
+                android:background="@drawable/celephais_bg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="Celephaïs - Ulthar - Dylath-Leen"
@@ -179,15 +182,16 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
+                android:contentDescription="@string/city_wilderness"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/generalButton"
-                android:background="#5e000000"
+                android:background="@drawable/city_wilderness_bg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="City - Wilderness - Sea"
@@ -200,15 +204,16 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
+                android:contentDescription="@string/gate"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
-                android:textColor="#ffffffff"
+                android:textSize="16sp"
+                android:textColor="#000000"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/gateButton"
-                android:background="#8000cd5b"
+                android:background="@drawable/gate_bg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="Gate"
@@ -229,14 +234,14 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/neighbourhood_200x800"
+                    android:src="@drawable/nbg"
                     android:scaleType="fitXY"
                     android:alpha="0.5"/>
                 <Button
-                    android:textSize="15dp"
+                    android:textSize="16sp"
                     android:textColor="#ffffffff"
                     android:id="@+id/expeditionButton"
-                    android:background="#801a0077"
+                    android:background="@drawable/expdedition_bg"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:text="Expedition [LOCATION]"
@@ -250,11 +255,11 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/neighbourhood_200x800"
+                    android:src="@drawable/nbg"
                     android:scaleType="fitXY"
                     android:alpha="0.5"/>
                 <Button
-                    android:textSize="15dp"
+                    android:textSize="16sp"
                     android:layout_gravity="center"
                     android:id="@+id/removeButton"
                     android:background="#80cccccc"
@@ -272,15 +277,15 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/mysticRuinsButton"
-                android:background="#801d00f2"
+                android:background="@drawable/mystic_ruins_bg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="Mystic Ruins [LOCATION]"
@@ -293,15 +298,15 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/dreamQuestButton"
-                android:background="#805e30ad"
+                android:background="@drawable/dreams_quest_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Dream-Quest [LOCATION]"
@@ -315,11 +320,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:id="@+id/researchButton"
                 android:background="#80000000"
@@ -335,11 +340,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:id="@+id/antResearchButton"
                 android:background="#808b4512"
@@ -355,11 +360,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:id="@+id/special1Button"
                 android:background="#80578b84"
@@ -374,11 +379,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:id="@+id/special2Button"
                 android:background="#802c8b5e"
@@ -393,11 +398,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:id="@+id/special3Button"
                 android:background="#80075e35"
@@ -413,11 +418,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:id="@+id/disasterButton"
                 android:background="#8033b5e5"
@@ -432,11 +437,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:id="@+id/devastationButton"
                 android:background="#80ff4444"
@@ -452,11 +457,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/neighbourhood_200x800"
+                android:src="@drawable/nbg"
                 android:scaleType="fitXY"
                 android:alpha="0.5"/>
             <Button
-                android:textSize="15dp"
+                android:textSize="16sp"
                 android:textColor="#ffffffff"
                 android:id="@+id/discardButton"
                 android:background="#803d4876"

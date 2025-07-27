@@ -9,7 +9,7 @@
     <!-- Semi-transparent color overlay -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#95f0b9ff"/>
+            <solid android:color="#801a0077"/>
         </shape>
     </item>
 </layer-list> 

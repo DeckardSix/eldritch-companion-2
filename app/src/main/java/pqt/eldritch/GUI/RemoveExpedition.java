@@ -30,7 +30,9 @@ public class RemoveExpedition extends Activity {
         
         // Current location label
         TextView currentLabel = new TextView(this);
-        currentLabel.setText("Current: " + Decks.CARDS.getExpeditionLocation());
+        String currentLocation = (Decks.CARDS != null && Decks.CARDS.getExpeditionLocation() != null) ? 
+            Decks.CARDS.getExpeditionLocation() : "EMPTY";
+        currentLabel.setText("Current: " + currentLocation);
         currentLabel.setTextSize(20);
         currentLabel.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
@@ -39,6 +41,7 @@ public class RemoveExpedition extends Activity {
         
         // Radio group for locations
         RadioGroup group = new RadioGroup(this);
+        group.setId(R.id.expeditionGroup);
         group.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -54,7 +57,10 @@ public class RemoveExpedition extends Activity {
         double y = Math.pow(hi, 2.0d);
         double screenInches = Math.sqrt(x + y);
         
-        List<String> locations = new ArrayList<>(getLocations(Decks.CARDS.getDeck("EXPEDITION")));
+        List<String> locations = new ArrayList<>();
+        if (Decks.CARDS != null && Decks.CARDS.getDeck("EXPEDITION") != null) {
+            locations = new ArrayList<>(getLocations(Decks.CARDS.getDeck("EXPEDITION")));
+        }
         for (int i = 0; i < locations.size(); i++) {
             RadioButton button = new RadioButton(this);
             button.setText(locations.get(i));
@@ -64,7 +70,9 @@ public class RemoveExpedition extends Activity {
             button.setId(i);
             group.addView(button);
         }
-        group.check(locations.indexOf(Decks.CARDS.getExpeditionLocation()));
+        if (Decks.CARDS != null && Decks.CARDS.getExpeditionLocation() != null) {
+            group.check(locations.indexOf(Decks.CARDS.getExpeditionLocation()));
+        }
         mainLayout.addView(group);
         
         // Remove button
@@ -95,8 +103,12 @@ public class RemoveExpedition extends Activity {
 
     public void removeExpeditions(View view) {
         RadioGroup group = (RadioGroup) findViewById(R.id.expeditionGroup);
-        RadioButton button = (RadioButton) findViewById(group.getCheckedRadioButtonId());
-        Decks.CARDS.removeExpeditions((String) button.getText());
+        if (group != null && group.getCheckedRadioButtonId() != -1) {
+            RadioButton button = (RadioButton) findViewById(group.getCheckedRadioButtonId());
+            if (button != null && Decks.CARDS != null) {
+                Decks.CARDS.removeExpeditions((String) button.getText());
+            }
+        }
         finish();
     }
 }

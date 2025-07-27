@@ -8,6 +8,7 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,15 +63,41 @@ public class CardView extends Fragment implements View.OnClickListener {
 
     @Override // android.support.v4.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Create layout programmatically
-        LinearLayout mainLayout = new LinearLayout(getActivity());
-        mainLayout.setOrientation(LinearLayout.VERTICAL);
-        mainLayout.setPadding(20, 20, 20, 20);
+        // Create a FrameLayout to layer the background image over the color
+        FrameLayout frameLayout = new FrameLayout(getActivity());
+        frameLayout.setLayoutParams(new ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, 
+            ViewGroup.LayoutParams.MATCH_PARENT));
         
         // Set background color based on deck
         int backgroundColor = CardColorUtils.getDeckBackgroundColor(this.deckName);
         int textColor = CardColorUtils.getDeckTextColor(this.deckName);
-        mainLayout.setBackgroundColor(backgroundColor);
+        frameLayout.setBackgroundColor(backgroundColor);
+        
+        // Create background image view with 33% alpha
+        ImageView backgroundImage = new ImageView(getActivity());
+        try {
+            backgroundImage.setImageResource(R.drawable.encounter_front);
+            backgroundImage.setScaleType(ImageView.ScaleType.FIT_XY); // Scale to fill
+            backgroundImage.setAlpha(0.33f); // 33% alpha transparency
+            android.util.Log.d("CardView", "Background image loaded successfully");
+        } catch (Exception e) {
+            android.util.Log.e("CardView", "Failed to load background image: " + e.getMessage());
+            // Fallback to a simple colored background
+            backgroundImage.setBackgroundColor(android.graphics.Color.parseColor("#33000000")); // 33% alpha black
+        }
+        backgroundImage.setLayoutParams(new FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT, 
+            FrameLayout.LayoutParams.MATCH_PARENT));
+        frameLayout.addView(backgroundImage);
+        
+        // Create main content layout
+        LinearLayout mainLayout = new LinearLayout(getActivity());
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setPadding(20, 20, 20, 20);
+        mainLayout.setLayoutParams(new FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT, 
+            FrameLayout.LayoutParams.MATCH_PARENT));
         
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/se-caslon-ant.ttf");
         
@@ -128,7 +155,14 @@ public class CardView extends Fragment implements View.OnClickListener {
         
         // Shuffle image for top section
         ImageView topShuffleImage = new ImageView(getActivity());
-        topShuffleImage.setImageResource(R.drawable.end_right);
+        try {
+            topShuffleImage.setImageResource(R.drawable.end_right);
+            android.util.Log.d("CardView", "Top shuffle image loaded successfully");
+        } catch (Exception e) {
+            android.util.Log.e("CardView", "Failed to load top shuffle image: " + e.getMessage());
+            // Fallback to a simple text
+            topShuffleImage.setBackgroundColor(android.graphics.Color.GRAY);
+        }
         topShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -216,7 +250,14 @@ public class CardView extends Fragment implements View.OnClickListener {
         
         // Shuffle image for middle section
         ImageView middleShuffleImage = new ImageView(getActivity());
-        middleShuffleImage.setImageResource(R.drawable.end_right);
+        try {
+            middleShuffleImage.setImageResource(R.drawable.end_right);
+            android.util.Log.d("CardView", "Middle shuffle image loaded successfully");
+        } catch (Exception e) {
+            android.util.Log.e("CardView", "Failed to load middle shuffle image: " + e.getMessage());
+            // Fallback to a simple text
+            middleShuffleImage.setBackgroundColor(android.graphics.Color.GRAY);
+        }
         middleShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -304,7 +345,14 @@ public class CardView extends Fragment implements View.OnClickListener {
         
         // Shuffle image for bottom section
         ImageView bottomShuffleImage = new ImageView(getActivity());
-        bottomShuffleImage.setImageResource(R.drawable.end_right);
+        try {
+            bottomShuffleImage.setImageResource(R.drawable.end_right);
+            android.util.Log.d("CardView", "Bottom shuffle image loaded successfully");
+        } catch (Exception e) {
+            android.util.Log.e("CardView", "Failed to load bottom shuffle image: " + e.getMessage());
+            // Fallback to a simple text
+            bottomShuffleImage.setBackgroundColor(android.graphics.Color.GRAY);
+        }
         bottomShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -388,7 +436,11 @@ public class CardView extends Fragment implements View.OnClickListener {
                 bottomEncounterView.setBackgroundColor(0);
             }
         }
-        return mainLayout;
+        
+        // Add the main layout to the frame layout
+        frameLayout.addView(mainLayout);
+        
+        return frameLayout;
     }
 
     private Spanned formatText(String text) {

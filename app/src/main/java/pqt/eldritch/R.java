@@ -18,6 +18,8 @@ public final class R {
     public static final class drawable {
         public static final int ic_launcher = 0x7f030000;
         public static final int round_button = 0x7f030001;
+        public static final int encounter_front = 0x7f030002;
+        public static final int end_right = 0x7f030003;
     }
 
     public static final class id {

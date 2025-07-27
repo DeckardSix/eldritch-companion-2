@@ -25,8 +25,9 @@ public class CardView extends Fragment implements View.OnClickListener {
     public String region;
     public String topEncounter;
     public String topHeader;
+    public String deckName;
 
-    public Fragment newInstance(Card card) {
+    public Fragment newInstance(Card card, String deckName) {
         CardView cardFragment = new CardView();
         Bundle args = new Bundle();
         args.putString("REGION", card.region);
@@ -38,6 +39,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         args.putString("BOTTOM_HEADER", card.bottomHeader);
         args.putString("BOTTOM_ENCOUNTER", card.bottomEncounter);
         args.putString("ENCOUNTERED", card.encountered);
+        args.putString("DECK_NAME", deckName);
         cardFragment.setArguments(args);
         return cardFragment;
     }
@@ -54,6 +56,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         this.bottomHeader = getArguments().getString("BOTTOM_HEADER");
         this.bottomEncounter = getArguments().getString("BOTTOM_ENCOUNTER");
         this.encountered = getArguments().getString("ENCOUNTERED");
+        this.deckName = getArguments().getString("DECK_NAME");
     }
 
     @Override // android.support.v4.app.Fragment
@@ -63,12 +66,18 @@ public class CardView extends Fragment implements View.OnClickListener {
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         mainLayout.setPadding(20, 20, 20, 20);
         
+        // Set background color based on deck
+        int backgroundColor = CardColorUtils.getDeckBackgroundColor(this.deckName);
+        int textColor = CardColorUtils.getDeckTextColor(this.deckName);
+        mainLayout.setBackgroundColor(backgroundColor);
+        
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/se-caslon-ant.ttf");
         
         // ID box
         TextView idBoxView = new TextView(getActivity());
         idBoxView.setText(this.ID);
         idBoxView.setTextSize(16);
+        idBoxView.setTextColor(textColor);
         idBoxView.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -79,6 +88,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         topNameView.setText(this.topHeader);
         topNameView.setTypeface(font);
         topNameView.setTextSize(18);
+        topNameView.setTextColor(textColor);
         topNameView.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -87,6 +97,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         TextView topEncounterView = new TextView(getActivity());
         topEncounterView.setText(formatText(this.topEncounter));
         topEncounterView.setTextSize(14);
+        topEncounterView.setTextColor(textColor);
         topEncounterView.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -98,6 +109,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         middleNameView.setText(this.middleHeader);
         middleNameView.setTypeface(font);
         middleNameView.setTextSize(18);
+        middleNameView.setTextColor(textColor);
         middleNameView.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -106,6 +118,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         TextView middleEncounterView = new TextView(getActivity());
         middleEncounterView.setText(formatText(this.middleEncounter));
         middleEncounterView.setTextSize(14);
+        middleEncounterView.setTextColor(textColor);
         middleEncounterView.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -117,6 +130,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         bottomNameView.setText(this.bottomHeader);
         bottomNameView.setTypeface(font);
         bottomNameView.setTextSize(18);
+        bottomNameView.setTextColor(textColor);
         bottomNameView.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -125,6 +139,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         TextView bottomEncounterView = new TextView(getActivity());
         bottomEncounterView.setText(formatText(this.bottomEncounter));
         bottomEncounterView.setTextSize(14);
+        bottomEncounterView.setTextColor(textColor);
         bottomEncounterView.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -175,7 +190,9 @@ public class CardView extends Fragment implements View.OnClickListener {
     }
 
     private Spanned formatText(String text) {
-        return Html.fromHtml(text.replace("[", "<b><font color='black'>[").replace("]", "]</font></b>"));
+        // Use the same text color as the rest of the card for consistency
+        String textColorHex = String.format("#%06X", (0xFFFFFF & CardColorUtils.getDeckTextColor(this.deckName)));
+        return Html.fromHtml(text.replace("[", "<b><font color='" + textColorHex + "'>[").replace("]", "]</font></b>"));
     }
 
     @Override // android.view.View.OnClickListener

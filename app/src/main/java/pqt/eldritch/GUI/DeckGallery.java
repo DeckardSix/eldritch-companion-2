@@ -46,14 +46,15 @@ public class DeckGallery extends FragmentActivity implements ViewPager.OnPageCha
 
     private void initialisePaging() {
         List<Fragment> fragments = new ArrayList<>();
-        List<Card> deck = Decks.CARDS.getDeck(getIntent().getStringExtra("DECK"));
+        String deckName = getIntent().getStringExtra("DECK");
+        List<Card> deck = Decks.CARDS.getDeck(deckName);
         if (deck == null || deck.isEmpty()) {
-            Toast.makeText(getApplicationContext(), getIntent().getStringExtra("DECK") + " Deck is Empty.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), deckName + " Deck is Empty.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
         for (Card card : deck) {
-            fragments.add(new CardView().newInstance(card));
+            fragments.add(new CardView().newInstance(card, deckName));
         }
         this.gallery = (ViewPager) findViewById(R.id.viewpager);
         this.gallery.setAdapter(new CardPagerAdapter(super.getSupportFragmentManager(), fragments));
@@ -68,7 +69,8 @@ public class DeckGallery extends FragmentActivity implements ViewPager.OnPageCha
 
     @Override // android.support.v4.view.ViewPager.OnPageChangeListener
     public void onPageSelected(int i) {
-        setTitle(Decks.CARDS.getRegion(getIntent().getStringExtra("DECK"), i));
+        String deckName = getIntent().getStringExtra("DECK");
+        setTitle(Decks.CARDS.getRegion(deckName, i));
     }
 
     @Override // android.support.v4.view.ViewPager.OnPageChangeListener
@@ -134,6 +136,7 @@ public class DeckGallery extends FragmentActivity implements ViewPager.OnPageCha
 
     @Override // android.app.Activity
     public boolean onOptionsItemSelected(MenuItem item) {
+        String deckName = getIntent().getStringExtra("DECK");
         switch (item.getItemId()) {
             case R.id.action_discard_card /* 2130968576 */:
                 FragmentPagerAdapter myAdapter = (FragmentPagerAdapter) this.gallery.getAdapter();
@@ -146,7 +149,7 @@ public class DeckGallery extends FragmentActivity implements ViewPager.OnPageCha
             default:
                 return super.onOptionsItemSelected(item);
             case R.id.action_shuffle_deck /* 2130968579 */:
-                Decks.CARDS.shuffleFullDeck(getIntent().getStringExtra("DECK"));
+                Decks.CARDS.shuffleFullDeck(deckName);
                 super.finish();
                 return true;
         }

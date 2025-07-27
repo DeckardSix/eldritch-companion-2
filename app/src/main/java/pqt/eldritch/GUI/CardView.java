@@ -156,16 +156,19 @@ public class CardView extends Fragment implements View.OnClickListener {
         // Shuffle image for top section
         ImageView topShuffleImage = new ImageView(getActivity());
         try {
-            topShuffleImage.setImageResource(R.drawable.ic_launcher);
+            topShuffleImage.setImageResource(R.drawable.cardsshuffle);
             android.util.Log.d("CardView", "Top shuffle image loaded successfully");
         } catch (Exception e) {
             android.util.Log.e("CardView", "Failed to load top shuffle image: " + e.getMessage());
             // Fallback to a simple text
             topShuffleImage.setBackgroundColor(android.graphics.Color.GRAY);
         }
+        // Set image height to match text size (36sp converted to pixels)
+        int textSizeInPixels = (int) (36 * getResources().getDisplayMetrics().scaledDensity);
         topShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
+            textSizeInPixels, 
+            textSizeInPixels));
+        topShuffleImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         topShuffleImage.setClickable(true);
         topShuffleImage.setFocusable(true);
         topShuffleImage.setOnClickListener(new View.OnClickListener() {
@@ -251,16 +254,18 @@ public class CardView extends Fragment implements View.OnClickListener {
         // Shuffle image for middle section
         ImageView middleShuffleImage = new ImageView(getActivity());
         try {
-            middleShuffleImage.setImageResource(R.drawable.ic_launcher);
+            middleShuffleImage.setImageResource(R.drawable.cardsshuffle);
             android.util.Log.d("CardView", "Middle shuffle image loaded successfully");
         } catch (Exception e) {
             android.util.Log.e("CardView", "Failed to load middle shuffle image: " + e.getMessage());
             // Fallback to a simple text
             middleShuffleImage.setBackgroundColor(android.graphics.Color.GRAY);
         }
+        // Set image height to match text size (36sp converted to pixels)
         middleShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
+            textSizeInPixels, 
+            textSizeInPixels));
+        middleShuffleImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         middleShuffleImage.setClickable(true);
         middleShuffleImage.setFocusable(true);
         middleShuffleImage.setOnClickListener(new View.OnClickListener() {
@@ -346,16 +351,18 @@ public class CardView extends Fragment implements View.OnClickListener {
         // Shuffle image for bottom section
         ImageView bottomShuffleImage = new ImageView(getActivity());
         try {
-            bottomShuffleImage.setImageResource(R.drawable.ic_launcher);
+            bottomShuffleImage.setImageResource(R.drawable.cardsshuffle);
             android.util.Log.d("CardView", "Bottom shuffle image loaded successfully");
         } catch (Exception e) {
             android.util.Log.e("CardView", "Failed to load bottom shuffle image: " + e.getMessage());
             // Fallback to a simple text
             bottomShuffleImage.setBackgroundColor(android.graphics.Color.GRAY);
         }
+        // Set image height to match text size (36sp converted to pixels)
         bottomShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
+            textSizeInPixels, 
+            textSizeInPixels));
+        bottomShuffleImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         bottomShuffleImage.setClickable(true);
         bottomShuffleImage.setFocusable(true);
         bottomShuffleImage.setOnClickListener(new View.OnClickListener() {

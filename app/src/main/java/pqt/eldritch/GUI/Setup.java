@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.LinearLayout;
@@ -51,6 +52,19 @@ public class Setup extends Activity {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 50, 50, 50);
+        
+        // Add eldritch horror image at the top
+        ImageView eldritchHorrorImage = new ImageView(this);
+        eldritchHorrorImage.setImageResource(R.drawable.eldritch_horror);
+        eldritchHorrorImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        eldritchHorrorImage.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        
+        // Add 20sp spacing below the image
+        int spacingInPixels = (int) (20 * getResources().getDisplayMetrics().scaledDensity);
+        eldritchHorrorImage.setPadding(0, 0, 0, spacingInPixels);
+        layout.addView(eldritchHorrorImage);
         
         // Title
         TextView title = new TextView(this);

@@ -201,7 +201,7 @@
             android:layout_below="@+id/ancientHeader"
             android:layout_centerHorizontal="true"
             android:spinnerMode="dropdown"/>
-        <!-- Button row with all three buttons horizontal and evenly spaced -->
+        <!-- Button row with all three buttons visible -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -211,41 +211,39 @@
             android:padding="10dp">
             
             <Button
-                android:textSize="16dp"
-                android:textColor="#ffffffff"
                 android:id="@+id/startButton"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="8dp"
                 android:background="@drawable/round_button"
-                android:layout_width="0dp"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="5dp"
                 android:text="Start"
-                android:onClick="startGame"/>
+                android:textColor="#ffffff"
+                android:textSize="14dp"
+                android:onClick="startGame" />
             
             <Button
-                android:textSize="16dp"
-                android:textColor="#ffffffff"
                 android:id="@+id/continueButton"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:background="@drawable/round_button"
-                android:layout_width="0dp"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
                 android:text="Continue"
-                android:onClick="continueGame"/>
+                android:textColor="#ffffff"
+                android:textSize="14dp"
+                android:onClick="continueGame" />
             
             <Button
-                android:textSize="16dp"
-                android:textColor="#ffffffff"
                 android:id="@+id/dbSetupButton"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
                 android:background="@drawable/round_button"
-                android:layout_width="0dp"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
                 android:text="DB Setup"
-                android:onClick="setupDatabase"/>
+                android:textColor="#ffffff"
+                android:textSize="14dp"
+                android:onClick="setupDatabase" />
+                
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Test layout with vertical buttons to debug visibility issues -->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="vertical"
+    android:id="@+id/setupScrollView"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:scrollbars="none"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+        
+        <TextView
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="BUTTON TEST - All Three Should Be Visible"
+            android:textColor="#ffffff"/>
+        
+        <!-- Test buttons - all should be visible -->
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_button"
+            android:text="START BUTTON"
+            android:textColor="#ffffff"
+            android:textSize="16dp"
+            android:onClick="startGame" />
+        
+        <Button
+            android:id="@+id/continueButton"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_button"
+            android:text="CONTINUE BUTTON"
+            android:textColor="#ffffff"
+            android:textSize="16dp"
+            android:onClick="continueGame" />
+        
+        <Button
+            android:id="@+id/dbSetupButton"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_button"
+            android:text="DB SETUP BUTTON"
+            android:textColor="#ffffff"
+            android:textSize="16dp"
+            android:onClick="setupDatabase" />
+            
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:text="If you can see all three buttons above, the issue is with horizontal layout"
+            android:textColor="#ffffff"
+            android:gravity="center"/>
+            
+    </LinearLayout>
+</ScrollView> 

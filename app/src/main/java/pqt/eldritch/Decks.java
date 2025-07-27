@@ -1,5 +1,6 @@
 package pqt.eldritch;
 
+import android.content.Context;
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,9 +10,23 @@ import java.util.Map;
 /* loaded from: classes.dex */
 public class Decks {
     public static Decks CARDS;
-    private Map<String, List<Card>> decks = new CardLoader().load();
+    private Map<String, List<Card>> decks;
+    private Context context;
 
     public Decks() {
+        // Load cards using default XML method (for backward compatibility)
+        this.decks = new CardLoader().load();
+        this.decks.put("DISCARD", new ArrayList());
+        shuffleAllDecks();
+        CARDS = this;
+    }
+    
+    public Decks(Context context) {
+        this.context = context;
+        Log.d("Decks", "Initializing Decks with context");
+        // Load cards using context-aware loader (SQLite preferred)
+        this.decks = new CardLoader(context).load();
+        Log.d("Decks", "Loaded " + this.decks.size() + " decks");
         this.decks.put("DISCARD", new ArrayList());
         shuffleAllDecks();
         CARDS = this;
@@ -128,6 +143,12 @@ public class Decks {
             if (check.ID.equals(ID)) {
                 check.encountered = encountered;
                 this.decks.get("DISCARD").add(0, deckToDiscardFrom.remove(i));
+                
+                // Update database if context is available
+                if (context != null) {
+                    CardDatabaseHelper dbHelper = CardDatabaseHelper.getInstance(context);
+                    dbHelper.updateCardEncountered(ID, deck, encountered);
+                }
                 return;
             }
         }
@@ -138,6 +159,12 @@ public class Decks {
         card.encountered = "NONE";
         this.decks.get(card.region).add(card);
         shuffleDeck(card.region);
+        
+        // Update database if context is available
+        if (context != null) {
+            CardDatabaseHelper dbHelper = CardDatabaseHelper.getInstance(context);
+            dbHelper.updateCardEncountered(card.ID, card.region, "NONE");
+        }
     }
 
     public String getRegion(String deck, int position) {

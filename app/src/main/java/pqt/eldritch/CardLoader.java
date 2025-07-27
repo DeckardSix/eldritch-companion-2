@@ -1,5 +1,8 @@
 package pqt.eldritch;
 
+import android.content.Context;
+import android.util.Log;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +17,28 @@ import org.w3c.dom.NodeList;
 /* loaded from: classes.dex */
 public class CardLoader {
     private Document doc;
+    private Context context;
+    private CardDatabaseHelper dbHelper;
+    private boolean useSQLite = true; // Flag to enable SQLite usage
+    
+    public CardLoader() {
+        // Default constructor for XML loading (backward compatibility)
+    }
+    
+    public CardLoader(Context context) {
+        this.context = context;
+        this.dbHelper = CardDatabaseHelper.getInstance(context);
+    }
 
     public Map<String, List<Card>> load() {
+        // If context is available and SQLite is enabled, try loading from database first
+        if (context != null && useSQLite && dbHelper != null && dbHelper.hasCards()) {
+            Log.d("CardLoader", "Loading cards from SQLite database");
+            return loadFromDatabase();
+        }
+        
+        // Fallback to XML loading
+        Log.d("CardLoader", "Loading cards from XML file");
         try {
             if (!loadFile()) {
                 System.exit(0);
@@ -25,6 +48,42 @@ public class CardLoader {
             System.exit(0);
         }
         return loadCards();
+    }
+    
+    /**
+     * Loads cards from SQLite database
+     */
+    private Map<String, List<Card>> loadFromDatabase() {
+        return dbHelper.getAllCards();
+    }
+    
+    /**
+     * Forces loading from XML (for migration purposes)
+     */
+    public Map<String, List<Card>> loadFromXML() {
+        try {
+            // Ensure at least BASE is enabled for migration
+            boolean originalBase = Config.BASE;
+            if (!Config.BASE) {
+                Config.BASE = true;
+            }
+            
+            if (!loadFile()) {
+                Log.e("CardLoader", "Failed to load XML file during migration");
+                return new TreeMap<>();
+            }
+            
+            Map<String, List<Card>> result = loadCards();
+            
+            // Restore original Config value
+            Config.BASE = originalBase;
+            
+            return result;
+        } catch (Exception ex) {
+            Log.e("CardLoader", "Exception during XML loading for migration", ex);
+            printError(ex);
+            return new TreeMap<>();
+        }
     }
 
     public Map<String, List<Card>> loadCards() {
@@ -63,6 +122,11 @@ public class CardLoader {
     }
 
     private void mergeDecks(Map<String, List<Card>> decks, Map<String, List<Card>> toMerge) {
+        if (toMerge == null) {
+            Log.w("CardLoader", "Attempting to merge null deck map");
+            return;
+        }
+        
         for (String key : toMerge.keySet()) {
             if (decks.containsKey(key)) {
                 decks.get(key).addAll(toMerge.get(key));
@@ -98,11 +162,13 @@ public class CardLoader {
                     decks.put("DEVASTATION", loadSpecial(node, "DEVASTATION"));
                 }
             }
+            Log.d("CardLoader", "Successfully loaded expansion: " + expansion + " with " + decks.size() + " deck types");
             return decks;
         } catch (Exception ex) {
+            Log.e("CardLoader", "Failed at loadExpansion " + expansion, ex);
             System.out.println("Failed at loadExpansion " + expansion);
             printError(ex);
-            return null;
+            return new TreeMap<>(); // Return empty map instead of null
         }
     }
 
@@ -152,7 +218,15 @@ public class CardLoader {
 
     private List<Card> loadResearch(Node node) {
         List<Card> researchDeck = new ArrayList<>();
-        List<Node> CARDS = getMultipleSubs(getSubNode(node, Config.ANCIENT_ONE.toUpperCase()), "CARD");
+        
+        // Handle case where ANCIENT_ONE might be null during migration
+        String ancientOne = Config.ANCIENT_ONE;
+        if (ancientOne == null || ancientOne.trim().isEmpty()) {
+            Log.w("CardLoader", "Config.ANCIENT_ONE is null during loadResearch, skipping research cards");
+            return researchDeck; // Return empty list instead of crashing
+        }
+        
+        List<Node> CARDS = getMultipleSubs(getSubNode(node, ancientOne.toUpperCase()), "CARD");
         if (CARDS != null) {
             String topHeader = getNodeText(getSubNode(node, "TOP_HEADER"));
             String middleHeader = getNodeText(getSubNode(node, "MIDDLE_HEADER"));
@@ -273,11 +347,31 @@ public class CardLoader {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            this.doc = dBuilder.parse(getClass().getClassLoader().getResourceAsStream("assets/cards.xml"));
+            
+            // Try multiple possible paths for the XML file
+            InputStream inputStream = null;
+            try {
+                // First try the assets folder
+                inputStream = getClass().getClassLoader().getResourceAsStream("assets/cards.xml");
+                if (inputStream == null) {
+                    // Try without assets/ prefix
+                    inputStream = getClass().getClassLoader().getResourceAsStream("cards.xml");
+                }
+            } catch (Exception e) {
+                Log.e("CardLoader", "Error getting input stream: " + e.getMessage());
+            }
+            
+            if (inputStream == null) {
+                Log.e("CardLoader", "Could not find cards.xml in assets");
+                return false;
+            }
+            
+            this.doc = dBuilder.parse(inputStream);
             this.doc.getDocumentElement().normalize();
+            Log.d("CardLoader", "Successfully loaded cards.xml");
             return true;
         } catch (Exception ex) {
-            System.out.println("Failed at Loading File!");
+            Log.e("CardLoader", "Failed at Loading File!", ex);
             printError(ex);
             return false;
         }

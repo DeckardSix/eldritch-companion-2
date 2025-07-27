@@ -1,7 +1,10 @@
 package pqt.eldritch.GUI;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.util.Log;
 import android.content.Intent;
+import android.widget.Toast;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +19,6 @@ import android.widget.SpinnerAdapter;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,8 +31,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import pqt.eldritch.CardDatabaseHelper;
 import pqt.eldritch.Config;
+import pqt.eldritch.DatabaseInitializer;
 import pqt.eldritch.Decks;
+import pqt.eldritch.XMLToSQLiteMigration;
 import pqt.eldritch.R;
 
 /* loaded from: classes.dex */
@@ -49,263 +54,40 @@ public class Setup extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Create a functional setup layout programmatically
-        ScrollView scrollView = new ScrollView(this);
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50, 50, 50, 50);
+        // Use the XML layout instead of programmatic creation
+        setContentView(R.layout.activity_setup);
         
-        // Add eldritch horror image at the top
-        ImageView eldritchHorrorImage = new ImageView(this);
-        eldritchHorrorImage.setImageResource(R.drawable.eldritch_horror);
-        eldritchHorrorImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        eldritchHorrorImage.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
+        // Set the font and styles for UI elements
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/se-caslon-ant.ttf");
         
-        // Add 20sp spacing below the image
-        int spacingInPixels = (int) (20 * getResources().getDisplayMetrics().scaledDensity);
-        eldritchHorrorImage.setPadding(0, 0, 0, spacingInPixels);
-        layout.addView(eldritchHorrorImage);
+        // Apply styles to existing checkboxes from XML
+        setCheckboxWhite((CheckBox) findViewById(R.id.baseBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.forsakenLoreBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.mountainsOfMadnessBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.antarcticaBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.strangeRemnantsBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.cosmicAlignmentBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.underThePyramidsBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.egyptBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.litanyOfSecretsBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.signsOfCarcosaBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.theDreamlandsBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.dreamlandsBoardBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.citiesInRuinBox));
+        setCheckboxWhite((CheckBox) findViewById(R.id.masksOfNyarlathotepBox));
         
-        // Title
-        TextView title = new TextView(this);
-        title.setText("Select Expansions");
-        title.setTextSize(25);
-        title.setTextColor(android.graphics.Color.WHITE);
-        title.setGravity(android.view.Gravity.CENTER);
-        title.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
-        layout.addView(title);
+        // Set font for headers
+        TextView expanHeader = findViewById(R.id.expanHeader);
+        TextView ancientHeader = findViewById(R.id.ancientHeader);
+        expanHeader.setTypeface(font);
+        ancientHeader.setTypeface(font);
         
-        // Checkboxes for expansions
-        CheckBox baseBox = new CheckBox(this);
-        baseBox.setText("Base");
-        baseBox.setChecked(true);
-        baseBox.setTextSize(20);
-        baseBox.setTextColor(android.graphics.Color.WHITE);
-        CompoundButtonCompat.setButtonTintList(baseBox, android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
-        baseBox.setId(R.id.baseBox);
-        baseBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                populateSpinner();
-            }
-        });
-        layout.addView(baseBox);
-        
-        CheckBox forsakenLoreBox = new CheckBox(this);
-        forsakenLoreBox.setText("Forsaken Lore");
-        forsakenLoreBox.setTextSize(20);
-        forsakenLoreBox.setTextColor(android.graphics.Color.WHITE);
-        CompoundButtonCompat.setButtonTintList(forsakenLoreBox, android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
-        forsakenLoreBox.setId(R.id.forsakenLoreBox);
-        forsakenLoreBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                populateSpinner();
-            }
-        });
-        layout.addView(forsakenLoreBox);
-        
-        CheckBox mountainsOfMadnessBox = new CheckBox(this);
-        mountainsOfMadnessBox.setText("Mountains of Madness");
-        mountainsOfMadnessBox.setTextSize(20);
-        setCheckboxWhite(mountainsOfMadnessBox);
-        mountainsOfMadnessBox.setId(R.id.mountainsOfMadnessBox);
-        mountainsOfMadnessBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleAntarctica(null);
-            }
-        });
-        layout.addView(mountainsOfMadnessBox);
-        
-        CheckBox antarcticaBox = new CheckBox(this);
-        antarcticaBox.setText("Antarctica");
-        antarcticaBox.setTextSize(20);
-        antarcticaBox.setTextColor(android.graphics.Color.WHITE);
-        antarcticaBox.setId(R.id.antarcticaBox);
-        antarcticaBox.setEnabled(false);
-        layout.addView(antarcticaBox);
-        
-        CheckBox strangeRemnantsBox = new CheckBox(this);
-        strangeRemnantsBox.setText("Strange Remnants");
-        strangeRemnantsBox.setTextSize(20);
-        strangeRemnantsBox.setTextColor(android.graphics.Color.WHITE);
-        strangeRemnantsBox.setId(R.id.strangeRemnantsBox);
-        strangeRemnantsBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleCosmicAlignment(null);
-            }
-        });
-        layout.addView(strangeRemnantsBox);
-        
-        CheckBox cosmicAlignmentBox = new CheckBox(this);
-        cosmicAlignmentBox.setText("Cosmic Alignment - Prelude Card");
-        cosmicAlignmentBox.setTextSize(20);
-        cosmicAlignmentBox.setTextColor(android.graphics.Color.WHITE);
-        cosmicAlignmentBox.setId(R.id.cosmicAlignmentBox);
-        cosmicAlignmentBox.setEnabled(false);
-        layout.addView(cosmicAlignmentBox);
-        
-        CheckBox underThePyramidsBox = new CheckBox(this);
-        underThePyramidsBox.setText("Under the Pyramids");
-        underThePyramidsBox.setTextSize(20);
-        underThePyramidsBox.setTextColor(android.graphics.Color.WHITE);
-        underThePyramidsBox.setId(R.id.underThePyramidsBox);
-        underThePyramidsBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleEgyptAndLitany(null);
-            }
-        });
-        layout.addView(underThePyramidsBox);
-        
-        CheckBox egyptBox = new CheckBox(this);
-        egyptBox.setText("Egypt");
-        egyptBox.setTextSize(20);
-        egyptBox.setTextColor(android.graphics.Color.WHITE);
-        egyptBox.setId(R.id.egyptBox);
-        egyptBox.setEnabled(false);
-        layout.addView(egyptBox);
-        
-        CheckBox litanyOfSecretsBox = new CheckBox(this);
-        litanyOfSecretsBox.setText("Litany of Secrets - Prelude Card");
-        litanyOfSecretsBox.setTextSize(20);
-        litanyOfSecretsBox.setTextColor(android.graphics.Color.WHITE);
-        litanyOfSecretsBox.setId(R.id.litanyOfSecretsBox);
-        litanyOfSecretsBox.setEnabled(false);
-        layout.addView(litanyOfSecretsBox);
-        
-        CheckBox signsOfCarcosaBox = new CheckBox(this);
-        signsOfCarcosaBox.setText("Signs of Carcosa");
-        signsOfCarcosaBox.setTextSize(20);
-        signsOfCarcosaBox.setTextColor(android.graphics.Color.WHITE);
-        signsOfCarcosaBox.setId(R.id.signsOfCarcosaBox);
-        signsOfCarcosaBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleDreamlandsBoard(null);
-            }
-        });
-        layout.addView(signsOfCarcosaBox);
-        
-        CheckBox theDreamlandsBox = new CheckBox(this);
-        theDreamlandsBox.setText("The Dreamlands");
-        theDreamlandsBox.setTextSize(20);
-        theDreamlandsBox.setTextColor(android.graphics.Color.WHITE);
-        theDreamlandsBox.setId(R.id.theDreamlandsBox);
-        theDreamlandsBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleDreamlandsBoard(null);
-            }
-        });
-        layout.addView(theDreamlandsBox);
-        
-        CheckBox dreamlandsBoardBox = new CheckBox(this);
-        dreamlandsBoardBox.setText("Dreamlands Board");
-        dreamlandsBoardBox.setTextSize(20);
-        dreamlandsBoardBox.setTextColor(android.graphics.Color.WHITE);
-        dreamlandsBoardBox.setId(R.id.dreamlandsBoardBox);
-        dreamlandsBoardBox.setEnabled(false);
-        layout.addView(dreamlandsBoardBox);
-        
-        CheckBox citiesInRuinBox = new CheckBox(this);
-        citiesInRuinBox.setText("Cities in Ruin");
-        citiesInRuinBox.setTextSize(20);
-        citiesInRuinBox.setTextColor(android.graphics.Color.WHITE);
-        citiesInRuinBox.setId(R.id.citiesInRuinBox);
-        citiesInRuinBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                populateSpinner();
-            }
-        });
-        layout.addView(citiesInRuinBox);
-        
-        CheckBox masksOfNyarlathotepBox = new CheckBox(this);
-        masksOfNyarlathotepBox.setText("Masks of Nyarlathotep");
-        masksOfNyarlathotepBox.setTextSize(20);
-        masksOfNyarlathotepBox.setTextColor(android.graphics.Color.WHITE);
-        masksOfNyarlathotepBox.setId(R.id.masksOfNyarlathotepBox);
-        masksOfNyarlathotepBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                populateSpinner();
-            }
-        });
-        layout.addView(masksOfNyarlathotepBox);
-        
-        // Ancient One selection title
-        TextView ancientHeader = new TextView(this);
-        ancientHeader.setText("Select Ancient One");
-        ancientHeader.setTextSize(25);
-        ancientHeader.setGravity(android.view.Gravity.CENTER);
-        ancientHeader.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
-        layout.addView(ancientHeader);
-        
-        // Spinner for Ancient One selection
-        Spinner spinner = new Spinner(this);
-        spinner.setId(R.id.spinner);
-        spinner.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
-        layout.addView(spinner);
-        
-        // Buttons
-        Button startButton = new Button(this);
-        startButton.setText("Start");
-        startButton.setTextSize(25);
-        startButton.setId(R.id.startButton);
-        startButton.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    startGame(null);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        layout.addView(startButton);
-        
-        Button continueButton = new Button(this);
-        continueButton.setText("Continue");
-        continueButton.setTextSize(25);
-        continueButton.setId(R.id.continueButton);
-        continueButton.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
-        continueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    continueGame(null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        layout.addView(continueButton);
-        
-        scrollView.addView(layout);
-        setContentView(scrollView);
-        
-        // Initialize the data structures
-        populateAncientOnes();
+        // Initialize data and populate spinner
+        initializeData();
         populateSpinner();
     }
 
-    private void populateAncientOnes() {
+    private void initializeData() {
         this.base = new ArrayList();
         this.base.add("Azathoth");
         this.base.add("Yog-Sothoth");
@@ -480,7 +262,32 @@ public class Setup extends Activity {
             Config.DREAMLANDS_BOARD = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "DREAMLANDS_BOARD")));
             Config.CITIES_IN_RUIN = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "CITIES_IN_RUIN")));
             Config.MASKS_OF_NYARLATHOTEP = Boolean.parseBoolean(getNodeText(getSubNode(doc.getDocumentElement(), "MASKS_OF_NYARLATHOTEP")));
-            new Decks();
+            
+            // Check if we need to migrate from XML to SQLite
+            try {
+                CardDatabaseHelper dbHelper = CardDatabaseHelper.getInstance(this);
+                Log.d("Setup", "Database helper created, checking if cards exist...");
+                
+                if (!dbHelper.hasCards()) {
+                    Log.d("Setup", "No cards found in database, starting migration...");
+                    // Perform migration from XML to SQLite
+                    XMLToSQLiteMigration migration = new XMLToSQLiteMigration(this);
+                    if (migration.performMigration()) {
+                        Log.d("Setup", "Successfully migrated cards from XML to SQLite");
+                        Log.d("Setup", migration.getMigrationStats());
+                    } else {
+                        Log.e("Setup", "Failed to migrate cards from XML to SQLite, falling back to XML");
+                    }
+                } else {
+                    Log.d("Setup", "Database already contains cards, skipping migration");
+                }
+            } catch (Exception e) {
+                Log.e("Setup", "Error during database initialization/migration: " + e.getMessage(), e);
+                e.printStackTrace();
+                // Continue with XML fallback
+            }
+            
+            new Decks(this);
             for (Node node = doc.getElementsByTagName("DISCARD_PILE").item(0).getLastChild(); node != null; node = node.getPreviousSibling()) {
                 if (!node.getNodeName().equals("#text")) {
                     String deck = getNodeText(node.getAttributes().getNamedItem("region"));
@@ -574,15 +381,82 @@ public class Setup extends Activity {
     public void onResume() {
         super.onResume();
         File file = new File(getFilesDir(), "discard.xml");
-        if (!file.exists()) {
-            findViewById(R.id.continueButton).setVisibility(View.GONE);
-        } else {
-            findViewById(R.id.continueButton).setVisibility(View.VISIBLE);
+        Button continueButton = findViewById(R.id.continueButton);
+        
+        // Show/hide Continue button based on save file existence
+        if (continueButton != null) {
+            if (!file.exists()) {
+                continueButton.setVisibility(View.GONE);
+            } else {
+                continueButton.setVisibility(View.VISIBLE);
+            }
         }
     }
     
     private void setCheckboxWhite(CheckBox checkbox) {
         checkbox.setTextColor(android.graphics.Color.WHITE);
         CompoundButtonCompat.setButtonTintList(checkbox, android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
+    }
+    
+    public void setupDatabase(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Database Setup");
+        builder.setMessage("This will force re-initialize the card database from XML. This may take a few moments. Continue?");
+        
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            // Show progress message
+            Toast.makeText(this, "Initializing database...", Toast.LENGTH_SHORT).show();
+            
+            // Run database initialization in background thread
+            new Thread(() -> {
+                try {
+                    Log.d("Setup", "Manual database setup requested");
+                    boolean success = DatabaseInitializer.initializeDatabase(this, true);
+                    
+                    // Show result on UI thread
+                    runOnUiThread(() -> {
+                        if (success) {
+                            String stats = DatabaseInitializer.getDatabaseStatus(this);
+                            Log.d("Setup", "Manual database setup completed successfully");
+                            Log.d("Setup", stats);
+                            
+                            AlertDialog.Builder resultBuilder = new AlertDialog.Builder(this);
+                            resultBuilder.setTitle("Database Setup Complete");
+                            resultBuilder.setMessage("Database successfully initialized!\n\n" + stats);
+                            resultBuilder.setPositiveButton("OK", null);
+                            resultBuilder.show();
+                            
+                            Toast.makeText(this, "Database setup completed!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Log.e("Setup", "Manual database setup failed");
+                            AlertDialog.Builder errorBuilder = new AlertDialog.Builder(this);
+                            errorBuilder.setTitle("Database Setup Failed");
+                            errorBuilder.setMessage("Failed to initialize database. Please check logs for details.");
+                            errorBuilder.setPositiveButton("OK", null);
+                            errorBuilder.show();
+                            
+                            Toast.makeText(this, "Database setup failed!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e("Setup", "Error during manual database setup", e);
+                    runOnUiThread(() -> {
+                        AlertDialog.Builder errorBuilder = new AlertDialog.Builder(this);
+                        errorBuilder.setTitle("Database Setup Error");
+                        errorBuilder.setMessage("Error during database setup: " + e.getMessage());
+                        errorBuilder.setPositiveButton("OK", null);
+                        errorBuilder.show();
+                        
+                        Toast.makeText(this, "Database setup error!", Toast.LENGTH_LONG).show();
+                    });
+                }
+            }).start();
+        });
+        
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        
+        builder.show();
     }
 }

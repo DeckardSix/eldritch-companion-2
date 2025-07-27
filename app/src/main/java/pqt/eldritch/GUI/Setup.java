@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
@@ -43,16 +45,229 @@ public class Setup extends Activity {
     @Override // android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setup);
-        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/se-caslon-ant.ttf");
-        TextView header = (TextView) findViewById(R.id.expanHeader);
-        header.setTypeface(face);
-        TextView header2 = (TextView) findViewById(R.id.ancientHeader);
-        header2.setTypeface(face);
-        Button start = (Button) findViewById(R.id.startButton);
-        start.setTypeface(face);
-        Button contButton = (Button) findViewById(R.id.continueButton);
-        contButton.setTypeface(face);
+        
+        // Create a functional setup layout programmatically
+        ScrollView scrollView = new ScrollView(this);
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 50, 50, 50);
+        
+        // Title
+        TextView title = new TextView(this);
+        title.setText("Select Expansions");
+        title.setTextSize(25);
+        title.setGravity(android.view.Gravity.CENTER);
+        title.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        layout.addView(title);
+        
+        // Checkboxes for expansions
+        CheckBox baseBox = new CheckBox(this);
+        baseBox.setText("Base");
+        baseBox.setChecked(true);
+        baseBox.setTextSize(20);
+        baseBox.setId(R.id.baseBox);
+        baseBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                populateSpinner();
+            }
+        });
+        layout.addView(baseBox);
+        
+        CheckBox forsakenLoreBox = new CheckBox(this);
+        forsakenLoreBox.setText("Forsaken Lore");
+        forsakenLoreBox.setTextSize(20);
+        forsakenLoreBox.setId(R.id.forsakenLoreBox);
+        forsakenLoreBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                populateSpinner();
+            }
+        });
+        layout.addView(forsakenLoreBox);
+        
+        CheckBox mountainsOfMadnessBox = new CheckBox(this);
+        mountainsOfMadnessBox.setText("Mountains of Madness");
+        mountainsOfMadnessBox.setTextSize(20);
+        mountainsOfMadnessBox.setId(R.id.mountainsOfMadnessBox);
+        mountainsOfMadnessBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleAntarctica(null);
+            }
+        });
+        layout.addView(mountainsOfMadnessBox);
+        
+        CheckBox antarcticaBox = new CheckBox(this);
+        antarcticaBox.setText("Antarctica");
+        antarcticaBox.setTextSize(20);
+        antarcticaBox.setId(R.id.antarcticaBox);
+        antarcticaBox.setEnabled(false);
+        layout.addView(antarcticaBox);
+        
+        CheckBox strangeRemnantsBox = new CheckBox(this);
+        strangeRemnantsBox.setText("Strange Remnants");
+        strangeRemnantsBox.setTextSize(20);
+        strangeRemnantsBox.setId(R.id.strangeRemnantsBox);
+        strangeRemnantsBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleCosmicAlignment(null);
+            }
+        });
+        layout.addView(strangeRemnantsBox);
+        
+        CheckBox cosmicAlignmentBox = new CheckBox(this);
+        cosmicAlignmentBox.setText("Cosmic Alignment - Prelude Card");
+        cosmicAlignmentBox.setTextSize(20);
+        cosmicAlignmentBox.setId(R.id.cosmicAlignmentBox);
+        cosmicAlignmentBox.setEnabled(false);
+        layout.addView(cosmicAlignmentBox);
+        
+        CheckBox underThePyramidsBox = new CheckBox(this);
+        underThePyramidsBox.setText("Under the Pyramids");
+        underThePyramidsBox.setTextSize(20);
+        underThePyramidsBox.setId(R.id.underThePyramidsBox);
+        underThePyramidsBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleEgyptAndLitany(null);
+            }
+        });
+        layout.addView(underThePyramidsBox);
+        
+        CheckBox egyptBox = new CheckBox(this);
+        egyptBox.setText("Egypt");
+        egyptBox.setTextSize(20);
+        egyptBox.setId(R.id.egyptBox);
+        egyptBox.setEnabled(false);
+        layout.addView(egyptBox);
+        
+        CheckBox litanyOfSecretsBox = new CheckBox(this);
+        litanyOfSecretsBox.setText("Litany of Secrets - Prelude Card");
+        litanyOfSecretsBox.setTextSize(20);
+        litanyOfSecretsBox.setId(R.id.litanyOfSecretsBox);
+        litanyOfSecretsBox.setEnabled(false);
+        layout.addView(litanyOfSecretsBox);
+        
+        CheckBox signsOfCarcosaBox = new CheckBox(this);
+        signsOfCarcosaBox.setText("Signs of Carcosa");
+        signsOfCarcosaBox.setTextSize(20);
+        signsOfCarcosaBox.setId(R.id.signsOfCarcosaBox);
+        signsOfCarcosaBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                populateSpinner();
+            }
+        });
+        layout.addView(signsOfCarcosaBox);
+        
+        CheckBox theDreamlandsBox = new CheckBox(this);
+        theDreamlandsBox.setText("The Dreamlands");
+        theDreamlandsBox.setTextSize(20);
+        theDreamlandsBox.setId(R.id.theDreamlandsBox);
+        theDreamlandsBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDreamlandsBoard(null);
+            }
+        });
+        layout.addView(theDreamlandsBox);
+        
+        CheckBox dreamlandsBoardBox = new CheckBox(this);
+        dreamlandsBoardBox.setText("Dreamlands Board");
+        dreamlandsBoardBox.setTextSize(20);
+        dreamlandsBoardBox.setId(R.id.dreamlandsBoardBox);
+        dreamlandsBoardBox.setEnabled(false);
+        layout.addView(dreamlandsBoardBox);
+        
+        CheckBox citiesInRuinBox = new CheckBox(this);
+        citiesInRuinBox.setText("Cities in Ruin");
+        citiesInRuinBox.setTextSize(20);
+        citiesInRuinBox.setId(R.id.citiesInRuinBox);
+        citiesInRuinBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                populateSpinner();
+            }
+        });
+        layout.addView(citiesInRuinBox);
+        
+        CheckBox masksOfNyarlathotepBox = new CheckBox(this);
+        masksOfNyarlathotepBox.setText("Masks of Nyarlathotep");
+        masksOfNyarlathotepBox.setTextSize(20);
+        masksOfNyarlathotepBox.setId(R.id.masksOfNyarlathotepBox);
+        masksOfNyarlathotepBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                populateSpinner();
+            }
+        });
+        layout.addView(masksOfNyarlathotepBox);
+        
+        // Ancient One selection title
+        TextView ancientHeader = new TextView(this);
+        ancientHeader.setText("Select Ancient One");
+        ancientHeader.setTextSize(25);
+        ancientHeader.setGravity(android.view.Gravity.CENTER);
+        ancientHeader.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        layout.addView(ancientHeader);
+        
+        // Spinner for Ancient One selection
+        Spinner spinner = new Spinner(this);
+        spinner.setId(R.id.spinner);
+        spinner.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        layout.addView(spinner);
+        
+        // Buttons
+        Button startButton = new Button(this);
+        startButton.setText("Start");
+        startButton.setTextSize(25);
+        startButton.setId(R.id.startButton);
+        startButton.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startGame(null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        layout.addView(startButton);
+        
+        Button continueButton = new Button(this);
+        continueButton.setText("Continue");
+        continueButton.setTextSize(25);
+        continueButton.setId(R.id.continueButton);
+        continueButton.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    continueGame(null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        layout.addView(continueButton);
+        
+        scrollView.addView(layout);
+        setContentView(scrollView);
+        
+        // Initialize the data structures
         populateAncientOnes();
         populateSpinner();
     }

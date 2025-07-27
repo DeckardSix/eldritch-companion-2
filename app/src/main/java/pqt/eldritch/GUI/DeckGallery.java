@@ -24,22 +24,22 @@ public class DeckGallery extends FragmentActivity implements ViewPager.OnPageCha
     @Override // android.support.v4.app.FragmentActivity, android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         // Create layout programmatically
         LinearLayout mainLayout = new LinearLayout(this);
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         mainLayout.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
-            LinearLayout.LayoutParams.MATCH_PARENT));
-        
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
+
         // Create ViewPager programmatically
         ViewPager viewPager = new ViewPager(this);
         viewPager.setId(R.id.viewpager);
         viewPager.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
-            LinearLayout.LayoutParams.MATCH_PARENT));
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
         mainLayout.addView(viewPager);
-        
+
         setContentView(mainLayout);
         initialisePaging();
     }
@@ -130,14 +130,16 @@ public class DeckGallery extends FragmentActivity implements ViewPager.OnPageCha
 
     @Override // android.app.Activity
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Add shuffle item with text only (no icons to avoid resource conflicts)
+        // Add shuffle item with text and icon
         MenuItem shuffleItem = menu.add(Menu.NONE, R.id.action_shuffle_deck, Menu.NONE, "Shuffle");
         shuffleItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        
-        // Add discard item with text only (no icons to avoid resource conflicts)
+        shuffleItem.setIcon(R.drawable.cardsshuffle);
+
+        // Add discard item with text and icon
         MenuItem discardItem = menu.add(Menu.NONE, R.id.action_discard_card, Menu.NONE, "Discard");
         discardItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        
+        discardItem.setIcon(R.drawable.cardsdiscard2);
+
         return true;
     }
 

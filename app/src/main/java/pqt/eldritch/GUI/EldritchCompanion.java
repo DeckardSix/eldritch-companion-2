@@ -330,6 +330,88 @@ public class EldritchCompanion extends Activity {
             });
         }
         
+        // Set button visibility based on Config settings and Decks state
+        
+        // Antarctica buttons - only visible if ANTARCTICA is enabled or specific Ancient One
+        if (!(Config.ANTARCTICA || (Config.ANCIENT_ONE != null && Config.ANCIENT_ONE.equals("Rise_of_the_Elder_Things")))) {
+            View antWestButton = findViewById(R.id.antWestButton);
+            if (antWestButton != null && antWestButton.getParent() instanceof View) {
+                ((View) antWestButton.getParent()).setVisibility(View.GONE);
+            }
+            View antEastButton = findViewById(R.id.antEastButton);
+            if (antEastButton != null && antEastButton.getParent() instanceof View) {
+                ((View) antEastButton.getParent()).setVisibility(View.GONE);
+            }
+            View antResearchButton = findViewById(R.id.antResearchButton);
+            if (antResearchButton != null && antResearchButton.getParent() instanceof View) {
+                ((View) antResearchButton.getParent()).setVisibility(View.GONE);
+            }
+        }
+        
+        // Egypt buttons - only visible if EGYPT is enabled or specific Ancient One
+        if (!(Config.EGYPT || (Config.ANCIENT_ONE != null && Config.ANCIENT_ONE.equals("Nephren-Ka")))) {
+            View africaButton = findViewById(R.id.africaButton);
+            if (africaButton != null && africaButton.getParent() instanceof View) {
+                ((View) africaButton.getParent()).setVisibility(View.GONE);
+            }
+            View egyptButton = findViewById(R.id.egyptButton);
+            if (egyptButton != null && egyptButton.getParent() instanceof View) {
+                ((View) egyptButton.getParent()).setVisibility(View.GONE);
+            }
+        }
+        
+        // Dreamlands buttons - only visible if DREAMLANDS_BOARD is enabled or specific Ancient One
+        if (!(Config.DREAMLANDS_BOARD || (Config.ANCIENT_ONE != null && Config.ANCIENT_ONE.equals("Hypnos")))) {
+            View dreamlandsButton = findViewById(R.id.dreamlandsButton);
+            if (dreamlandsButton != null && dreamlandsButton.getParent() instanceof View) {
+                ((View) dreamlandsButton.getParent()).setVisibility(View.GONE);
+            }
+            View dreamQuestButton = findViewById(R.id.dreamQuestButton);
+            if (dreamQuestButton != null && dreamQuestButton.getParent() instanceof View) {
+                ((View) dreamQuestButton.getParent()).setVisibility(View.GONE);
+            }
+        }
+        
+        // Mystic Ruins button - only visible if COSMIC_ALIGNMENT or specific Ancient Ones
+        if (!(Config.COSMIC_ALIGNMENT || (Config.ANCIENT_ONE != null && (Config.ANCIENT_ONE.equals("Syzygy") || Config.ANCIENT_ONE.equals("Antediluvium"))))) {
+            View mysticRuinsButton = findViewById(R.id.mysticRuinsButton);
+            if (mysticRuinsButton != null && mysticRuinsButton.getParent() instanceof View) {
+                ((View) mysticRuinsButton.getParent()).setVisibility(View.GONE);
+            }
+        }
+        
+        // Special buttons - only visible if the corresponding decks exist
+        if (!(Decks.CARDS != null && Decks.CARDS.containsDeck("SPECIAL-1"))) {
+            View special1Button = findViewById(R.id.special1Button);
+            if (special1Button != null && special1Button.getParent() instanceof View) {
+                ((View) special1Button.getParent()).setVisibility(View.GONE);
+            }
+        }
+        if (!(Decks.CARDS != null && Decks.CARDS.containsDeck("SPECIAL-2"))) {
+            View special2Button = findViewById(R.id.special2Button);
+            if (special2Button != null && special2Button.getParent() instanceof View) {
+                ((View) special2Button.getParent()).setVisibility(View.GONE);
+            }
+        }
+        if (!(Decks.CARDS != null && Decks.CARDS.containsDeck("SPECIAL-3"))) {
+            View special3Button = findViewById(R.id.special3Button);
+            if (special3Button != null && special3Button.getParent() instanceof View) {
+                ((View) special3Button.getParent()).setVisibility(View.GONE);
+            }
+        }
+        
+        // Disaster buttons - only visible if CITIES_IN_RUIN is enabled
+        if (!Config.CITIES_IN_RUIN) {
+            View disasterButton = findViewById(R.id.disasterButton);
+            if (disasterButton != null && disasterButton.getParent() instanceof View) {
+                ((View) disasterButton.getParent()).setVisibility(View.GONE);
+            }
+            View devastationButton = findViewById(R.id.devastationButton);
+            if (devastationButton != null && devastationButton.getParent() instanceof View) {
+                ((View) devastationButton.getParent()).setVisibility(View.GONE);
+            }
+        }
+        
         if (Config.ANCIENT_ONE != null) {
             setTitle(Config.ANCIENT_ONE.replace("_", " ").replace(".", "'"));
         } else {

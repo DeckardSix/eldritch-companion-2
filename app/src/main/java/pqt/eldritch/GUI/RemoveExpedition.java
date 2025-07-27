@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.support.v4.widget.CompoundButtonCompat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,7 @@ public class RemoveExpedition extends Activity {
             Decks.CARDS.getExpeditionLocation() : "EMPTY";
         currentLabel.setText("Current: " + currentLocation);
         currentLabel.setTextSize(20);
+        currentLabel.setTextColor(android.graphics.Color.WHITE);
         currentLabel.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -64,6 +66,8 @@ public class RemoveExpedition extends Activity {
         for (int i = 0; i < locations.size(); i++) {
             RadioButton button = new RadioButton(this);
             button.setText(locations.get(i));
+            button.setTextColor(android.graphics.Color.WHITE);
+            CompoundButtonCompat.setButtonTintList(button, android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
             if (screenInches > 4.5d) {
                 button.setTextSize(35.0f);
             }
@@ -79,6 +83,7 @@ public class RemoveExpedition extends Activity {
         Button removeButton = new Button(this);
         removeButton.setText("Remove Expeditions");
         removeButton.setTextSize(20);
+        removeButton.setTextColor(android.graphics.Color.WHITE);
         removeButton.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));

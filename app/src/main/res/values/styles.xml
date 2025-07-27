@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@drawable/cthulhu_background</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:textColorTertiary">@android:color/white</item>
+        <item name="android:colorForeground">@android:color/white</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:colorControlNormal">@android:color/white</item>
+        <item name="android:colorControlActivated">@android:color/white</item>
+        <item name="android:colorControlHighlight">@android:color/white</item>
+        <item name="android:colorAccent">@android:color/white</item>
+        <item name="android:buttonStyle">@style/WhiteButtonStyle</item>
+        <item name="android:checkboxStyle">@style/WhiteCheckBoxStyle</item>
+    </style>
+    
+    <style name="WhiteButtonStyle" parent="@android:style/Widget.Button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/round_button</item>
+    </style>
+    
+    <style name="WhiteCheckBoxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:buttonTint">@android:color/white</item>
     </style>
 </resources>

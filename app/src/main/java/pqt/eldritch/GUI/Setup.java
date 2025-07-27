@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.graphics.PorterDuff;
+import android.support.v4.widget.CompoundButtonCompat;
 import android.widget.SpinnerAdapter;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -70,6 +72,7 @@ public class Setup extends Activity {
         TextView title = new TextView(this);
         title.setText("Select Expansions");
         title.setTextSize(25);
+        title.setTextColor(android.graphics.Color.WHITE);
         title.setGravity(android.view.Gravity.CENTER);
         title.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
@@ -81,6 +84,8 @@ public class Setup extends Activity {
         baseBox.setText("Base");
         baseBox.setChecked(true);
         baseBox.setTextSize(20);
+        baseBox.setTextColor(android.graphics.Color.WHITE);
+        CompoundButtonCompat.setButtonTintList(baseBox, android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
         baseBox.setId(R.id.baseBox);
         baseBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +98,8 @@ public class Setup extends Activity {
         CheckBox forsakenLoreBox = new CheckBox(this);
         forsakenLoreBox.setText("Forsaken Lore");
         forsakenLoreBox.setTextSize(20);
+        forsakenLoreBox.setTextColor(android.graphics.Color.WHITE);
+        CompoundButtonCompat.setButtonTintList(forsakenLoreBox, android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
         forsakenLoreBox.setId(R.id.forsakenLoreBox);
         forsakenLoreBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +112,7 @@ public class Setup extends Activity {
         CheckBox mountainsOfMadnessBox = new CheckBox(this);
         mountainsOfMadnessBox.setText("Mountains of Madness");
         mountainsOfMadnessBox.setTextSize(20);
+        setCheckboxWhite(mountainsOfMadnessBox);
         mountainsOfMadnessBox.setId(R.id.mountainsOfMadnessBox);
         mountainsOfMadnessBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +125,7 @@ public class Setup extends Activity {
         CheckBox antarcticaBox = new CheckBox(this);
         antarcticaBox.setText("Antarctica");
         antarcticaBox.setTextSize(20);
+        antarcticaBox.setTextColor(android.graphics.Color.WHITE);
         antarcticaBox.setId(R.id.antarcticaBox);
         antarcticaBox.setEnabled(false);
         layout.addView(antarcticaBox);
@@ -124,6 +133,7 @@ public class Setup extends Activity {
         CheckBox strangeRemnantsBox = new CheckBox(this);
         strangeRemnantsBox.setText("Strange Remnants");
         strangeRemnantsBox.setTextSize(20);
+        strangeRemnantsBox.setTextColor(android.graphics.Color.WHITE);
         strangeRemnantsBox.setId(R.id.strangeRemnantsBox);
         strangeRemnantsBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +146,7 @@ public class Setup extends Activity {
         CheckBox cosmicAlignmentBox = new CheckBox(this);
         cosmicAlignmentBox.setText("Cosmic Alignment - Prelude Card");
         cosmicAlignmentBox.setTextSize(20);
+        cosmicAlignmentBox.setTextColor(android.graphics.Color.WHITE);
         cosmicAlignmentBox.setId(R.id.cosmicAlignmentBox);
         cosmicAlignmentBox.setEnabled(false);
         layout.addView(cosmicAlignmentBox);
@@ -143,6 +154,7 @@ public class Setup extends Activity {
         CheckBox underThePyramidsBox = new CheckBox(this);
         underThePyramidsBox.setText("Under the Pyramids");
         underThePyramidsBox.setTextSize(20);
+        underThePyramidsBox.setTextColor(android.graphics.Color.WHITE);
         underThePyramidsBox.setId(R.id.underThePyramidsBox);
         underThePyramidsBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +167,7 @@ public class Setup extends Activity {
         CheckBox egyptBox = new CheckBox(this);
         egyptBox.setText("Egypt");
         egyptBox.setTextSize(20);
+        egyptBox.setTextColor(android.graphics.Color.WHITE);
         egyptBox.setId(R.id.egyptBox);
         egyptBox.setEnabled(false);
         layout.addView(egyptBox);
@@ -162,6 +175,7 @@ public class Setup extends Activity {
         CheckBox litanyOfSecretsBox = new CheckBox(this);
         litanyOfSecretsBox.setText("Litany of Secrets - Prelude Card");
         litanyOfSecretsBox.setTextSize(20);
+        litanyOfSecretsBox.setTextColor(android.graphics.Color.WHITE);
         litanyOfSecretsBox.setId(R.id.litanyOfSecretsBox);
         litanyOfSecretsBox.setEnabled(false);
         layout.addView(litanyOfSecretsBox);
@@ -169,11 +183,12 @@ public class Setup extends Activity {
         CheckBox signsOfCarcosaBox = new CheckBox(this);
         signsOfCarcosaBox.setText("Signs of Carcosa");
         signsOfCarcosaBox.setTextSize(20);
+        signsOfCarcosaBox.setTextColor(android.graphics.Color.WHITE);
         signsOfCarcosaBox.setId(R.id.signsOfCarcosaBox);
         signsOfCarcosaBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                populateSpinner();
+                toggleDreamlandsBoard(null);
             }
         });
         layout.addView(signsOfCarcosaBox);
@@ -181,6 +196,7 @@ public class Setup extends Activity {
         CheckBox theDreamlandsBox = new CheckBox(this);
         theDreamlandsBox.setText("The Dreamlands");
         theDreamlandsBox.setTextSize(20);
+        theDreamlandsBox.setTextColor(android.graphics.Color.WHITE);
         theDreamlandsBox.setId(R.id.theDreamlandsBox);
         theDreamlandsBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +209,7 @@ public class Setup extends Activity {
         CheckBox dreamlandsBoardBox = new CheckBox(this);
         dreamlandsBoardBox.setText("Dreamlands Board");
         dreamlandsBoardBox.setTextSize(20);
+        dreamlandsBoardBox.setTextColor(android.graphics.Color.WHITE);
         dreamlandsBoardBox.setId(R.id.dreamlandsBoardBox);
         dreamlandsBoardBox.setEnabled(false);
         layout.addView(dreamlandsBoardBox);
@@ -200,6 +217,7 @@ public class Setup extends Activity {
         CheckBox citiesInRuinBox = new CheckBox(this);
         citiesInRuinBox.setText("Cities in Ruin");
         citiesInRuinBox.setTextSize(20);
+        citiesInRuinBox.setTextColor(android.graphics.Color.WHITE);
         citiesInRuinBox.setId(R.id.citiesInRuinBox);
         citiesInRuinBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,6 +230,7 @@ public class Setup extends Activity {
         CheckBox masksOfNyarlathotepBox = new CheckBox(this);
         masksOfNyarlathotepBox.setText("Masks of Nyarlathotep");
         masksOfNyarlathotepBox.setTextSize(20);
+        masksOfNyarlathotepBox.setTextColor(android.graphics.Color.WHITE);
         masksOfNyarlathotepBox.setId(R.id.masksOfNyarlathotepBox);
         masksOfNyarlathotepBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -560,5 +579,10 @@ public class Setup extends Activity {
         } else {
             findViewById(R.id.continueButton).setVisibility(View.VISIBLE);
         }
+    }
+    
+    private void setCheckboxWhite(CheckBox checkbox) {
+        checkbox.setTextColor(android.graphics.Color.WHITE);
+        CompoundButtonCompat.setButtonTintList(checkbox, android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
     }
 }

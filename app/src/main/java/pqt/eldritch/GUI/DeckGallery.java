@@ -130,7 +130,13 @@ public class DeckGallery extends FragmentActivity implements ViewPager.OnPageCha
 
     @Override // android.app.Activity
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_card_actions, menu);
+        // Add action bar items programmatically
+        MenuItem shuffleItem = menu.add(Menu.NONE, R.id.action_shuffle_deck, Menu.NONE, "Shuffle");
+        shuffleItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        
+        MenuItem discardItem = menu.add(Menu.NONE, R.id.action_discard_card, Menu.NONE, "Discard");
+        discardItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        
         return true;
     }
 
@@ -138,20 +144,22 @@ public class DeckGallery extends FragmentActivity implements ViewPager.OnPageCha
     public boolean onOptionsItemSelected(MenuItem item) {
         String deckName = getIntent().getStringExtra("DECK");
         switch (item.getItemId()) {
-            case R.id.action_discard_card /* 2130968576 */:
+            case R.id.action_shuffle_deck:
+                if (Decks.CARDS != null && deckName != null) {
+                    Decks.CARDS.shuffleFullDeck(deckName);
+                    super.finish();
+                }
+                return true;
+            case R.id.action_discard_card:
                 FragmentPagerAdapter myAdapter = (FragmentPagerAdapter) this.gallery.getAdapter();
                 CardView card = (CardView) myAdapter.getItem(this.gallery.getCurrentItem());
-                Decks.CARDS.discardCard(card.getRegion(), card.getID(), null);
+                if (Decks.CARDS != null) {
+                    Decks.CARDS.discardCard(card.getRegion(), card.getID(), null);
+                }
                 super.finish();
                 return true;
-            case R.id.action_end_game /* 2130968577 */:
-            case R.id.action_remove_card /* 2130968578 */:
             default:
                 return super.onOptionsItemSelected(item);
-            case R.id.action_shuffle_deck /* 2130968579 */:
-                Decks.CARDS.shuffleFullDeck(deckName);
-                super.finish();
-                return true;
         }
     }
 }

@@ -8,6 +8,7 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import pqt.eldritch.Card;
@@ -83,16 +84,72 @@ public class CardView extends Fragment implements View.OnClickListener {
             LinearLayout.LayoutParams.WRAP_CONTENT));
         mainLayout.addView(idBoxView);
         
-        // Top section
+        // Spacing after ID box
+        View spacing1 = new View(getActivity());
+        spacing1.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            20)); // 20dp spacing
+        mainLayout.addView(spacing1);
+        
+        // Vertical divider line after ID box
+        View divider1 = new View(getActivity());
+        divider1.setBackgroundColor(textColor);
+        divider1.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            2)); // 2dp thick line
+        mainLayout.addView(divider1);
+        
+        // Top section with horizontal layout for header and shuffle image
+        LinearLayout topHeaderLayout = new LinearLayout(getActivity());
+        topHeaderLayout.setOrientation(LinearLayout.HORIZONTAL);
+        topHeaderLayout.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        
         TextView topNameView = new TextView(getActivity());
         topNameView.setText(this.topHeader);
         topNameView.setTypeface(font);
-        topNameView.setTextSize(18);
+        topNameView.setTextSize(36); // Doubled from 18
         topNameView.setTextColor(textColor);
         topNameView.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT)); // Size based on text content
+        topHeaderLayout.addView(topNameView);
+        
+        // Shuffle image for top section
+        ImageView topShuffleImage = new ImageView(getActivity());
+        topShuffleImage.setImageResource(R.drawable.end_right);
+        topShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
-        mainLayout.addView(topNameView);
+        topShuffleImage.setClickable(true);
+        topShuffleImage.setFocusable(true);
+        topShuffleImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Debug logging
+                android.util.Log.d("CardView", "Top shuffle image clicked. DeckName: " + deckName);
+                if (Decks.CARDS != null && deckName != null) {
+                    Decks.CARDS.shuffleFullDeck(deckName);
+                    android.util.Log.d("CardView", "Shuffle completed for deck: " + deckName);
+                    if (getActivity() != null) {
+                        getActivity().recreate();
+                    }
+                } else {
+                    android.util.Log.e("CardView", "Cannot shuffle: Decks.CARDS=" + (Decks.CARDS != null) + ", deckName=" + deckName);
+                }
+            }
+        });
+        topHeaderLayout.addView(topShuffleImage);
+        
+        mainLayout.addView(topHeaderLayout);
+        
+        // Small spacing between header and encounter text
+        View topHeaderSpacing = new View(getActivity());
+        topHeaderSpacing.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            8)); // 8dp spacing
+        mainLayout.addView(topHeaderSpacing);
         
         TextView topEncounterView = new TextView(getActivity());
         topEncounterView.setText(formatText(this.topEncounter));
@@ -104,16 +161,72 @@ public class CardView extends Fragment implements View.OnClickListener {
         topEncounterView.setOnClickListener(this);
         mainLayout.addView(topEncounterView);
         
-        // Middle section
+        // Spacing after top section (3x more space)
+        View spacing2 = new View(getActivity());
+        spacing2.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            60)); // 60dp spacing (3x more)
+        mainLayout.addView(spacing2);
+        
+        // Vertical divider line after top section
+        View divider2 = new View(getActivity());
+        divider2.setBackgroundColor(textColor);
+        divider2.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            2)); // 2dp thick line
+        mainLayout.addView(divider2);
+        
+        // Middle section with horizontal layout for header and shuffle image
+        LinearLayout middleHeaderLayout = new LinearLayout(getActivity());
+        middleHeaderLayout.setOrientation(LinearLayout.HORIZONTAL);
+        middleHeaderLayout.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        
         TextView middleNameView = new TextView(getActivity());
         middleNameView.setText(this.middleHeader);
         middleNameView.setTypeface(font);
-        middleNameView.setTextSize(18);
+        middleNameView.setTextSize(36); // Doubled from 18
         middleNameView.setTextColor(textColor);
         middleNameView.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT)); // Size based on text content
+        middleHeaderLayout.addView(middleNameView);
+        
+        // Shuffle image for middle section
+        ImageView middleShuffleImage = new ImageView(getActivity());
+        middleShuffleImage.setImageResource(R.drawable.end_right);
+        middleShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
-        mainLayout.addView(middleNameView);
+        middleShuffleImage.setClickable(true);
+        middleShuffleImage.setFocusable(true);
+        middleShuffleImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Debug logging
+                android.util.Log.d("CardView", "Middle shuffle image clicked. DeckName: " + deckName);
+                if (Decks.CARDS != null && deckName != null) {
+                    Decks.CARDS.shuffleFullDeck(deckName);
+                    android.util.Log.d("CardView", "Shuffle completed for deck: " + deckName);
+                    if (getActivity() != null) {
+                        getActivity().recreate();
+                    }
+                } else {
+                    android.util.Log.e("CardView", "Cannot shuffle: Decks.CARDS=" + (Decks.CARDS != null) + ", deckName=" + deckName);
+                }
+            }
+        });
+        middleHeaderLayout.addView(middleShuffleImage);
+        
+        mainLayout.addView(middleHeaderLayout);
+        
+        // Small spacing between header and encounter text
+        View middleHeaderSpacing = new View(getActivity());
+        middleHeaderSpacing.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            8)); // 8dp spacing
+        mainLayout.addView(middleHeaderSpacing);
         
         TextView middleEncounterView = new TextView(getActivity());
         middleEncounterView.setText(formatText(this.middleEncounter));
@@ -125,16 +238,72 @@ public class CardView extends Fragment implements View.OnClickListener {
         middleEncounterView.setOnClickListener(this);
         mainLayout.addView(middleEncounterView);
         
-        // Bottom section
+        // Spacing after middle section (3x more space)
+        View spacing3 = new View(getActivity());
+        spacing3.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            60)); // 60dp spacing (3x more)
+        mainLayout.addView(spacing3);
+        
+        // Vertical divider line after middle section
+        View divider3 = new View(getActivity());
+        divider3.setBackgroundColor(textColor);
+        divider3.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            2)); // 2dp thick line
+        mainLayout.addView(divider3);
+        
+        // Bottom section with horizontal layout for header and shuffle image
+        LinearLayout bottomHeaderLayout = new LinearLayout(getActivity());
+        bottomHeaderLayout.setOrientation(LinearLayout.HORIZONTAL);
+        bottomHeaderLayout.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        
         TextView bottomNameView = new TextView(getActivity());
         bottomNameView.setText(this.bottomHeader);
         bottomNameView.setTypeface(font);
-        bottomNameView.setTextSize(18);
+        bottomNameView.setTextSize(36); // Doubled from 18
         bottomNameView.setTextColor(textColor);
         bottomNameView.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT)); // Size based on text content
+        bottomHeaderLayout.addView(bottomNameView);
+        
+        // Shuffle image for bottom section
+        ImageView bottomShuffleImage = new ImageView(getActivity());
+        bottomShuffleImage.setImageResource(R.drawable.end_right);
+        bottomShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT));
-        mainLayout.addView(bottomNameView);
+        bottomShuffleImage.setClickable(true);
+        bottomShuffleImage.setFocusable(true);
+        bottomShuffleImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Debug logging
+                android.util.Log.d("CardView", "Bottom shuffle image clicked. DeckName: " + deckName);
+                if (Decks.CARDS != null && deckName != null) {
+                    Decks.CARDS.shuffleFullDeck(deckName);
+                    android.util.Log.d("CardView", "Shuffle completed for deck: " + deckName);
+                    if (getActivity() != null) {
+                        getActivity().recreate();
+                    }
+                } else {
+                    android.util.Log.e("CardView", "Cannot shuffle: Decks.CARDS=" + (Decks.CARDS != null) + ", deckName=" + deckName);
+                }
+            }
+        });
+        bottomHeaderLayout.addView(bottomShuffleImage);
+        
+        mainLayout.addView(bottomHeaderLayout);
+        
+        // Small spacing between header and encounter text
+        View bottomHeaderSpacing = new View(getActivity());
+        bottomHeaderSpacing.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            8)); // 8dp spacing
+        mainLayout.addView(bottomHeaderSpacing);
         
         TextView bottomEncounterView = new TextView(getActivity());
         bottomEncounterView.setText(formatText(this.bottomEncounter));

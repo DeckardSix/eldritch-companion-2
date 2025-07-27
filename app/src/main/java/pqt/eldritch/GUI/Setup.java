@@ -51,6 +51,14 @@ public class Setup extends Activity {
         
         // Create a functional setup layout programmatically
         ScrollView scrollView = new ScrollView(this);
+        // Set the Cthulhu background on the scroll view
+        try {
+            scrollView.setBackgroundResource(R.drawable.cthulhu_background);
+        } catch (Exception e) {
+            // Fallback to a dark color if the image fails to load
+            scrollView.setBackgroundColor(android.graphics.Color.parseColor("#2c1810"));
+        }
+        
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 50, 50, 50);

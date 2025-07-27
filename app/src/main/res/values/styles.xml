@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
-        <item name="android:windowBackground">@drawable/cthulhu_background</item>
+        <item name="android:windowBackground">@drawable/test_splash</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>

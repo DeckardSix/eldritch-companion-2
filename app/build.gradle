@@ -41,6 +41,24 @@ android {
     tasks.withType(com.android.build.gradle.internal.feature.BundleAllClasses) {
         enabled = false
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def appName = "Eldritch Companion"
+            def sanitizedAppName = appName.replaceAll("[^a-zA-Z0-9.-]", "_")
+
+            def newApkName
+            if (variant.buildType.name == "release") {
+                newApkName = "${sanitizedAppName}-v${variant.versionName}.apk"
+            } else { // For debug and other build types
+                newApkName = "${sanitizedAppName}-${variant.buildType.name}-v${variant.versionName}.apk"
+            }
+            // Ensure you are assigning to the correct property of the 'output' object
+            if (output instanceof com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
+                output.outputFileName = new File(newApkName).name
+            }
+        }
+    }
 }
 
 

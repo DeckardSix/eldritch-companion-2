@@ -130,15 +130,13 @@ public class DeckGallery extends FragmentActivity implements ViewPager.OnPageCha
 
     @Override // android.app.Activity
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Add shuffle item with text and icon
+        // Add shuffle item with text only (no icons to avoid resource conflicts)
         MenuItem shuffleItem = menu.add(Menu.NONE, R.id.action_shuffle_deck, Menu.NONE, "Shuffle");
         shuffleItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        shuffleItem.setIcon(R.drawable.cardsshuffle);
         
-        // Add discard item with text and icon
+        // Add discard item with text only (no icons to avoid resource conflicts)
         MenuItem discardItem = menu.add(Menu.NONE, R.id.action_discard_card, Menu.NONE, "Discard");
         discardItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        discardItem.setIcon(R.drawable.cardsdiscard2);
         
         return true;
     }

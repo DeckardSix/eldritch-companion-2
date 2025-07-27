@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Original background color layer -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#ff00741e"/>
+        </shape>
+    </item>
+    <!-- Semi-transparent neighbourhood image layer -->
+    <item>
+        <bitmap 
+            android:src="@drawable/neighbourhood_200x800"
+            android:alpha="0.5"
+            android:scaleType="fitXY"/>
+    </item>
+</layer-list> 

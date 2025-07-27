@@ -156,7 +156,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         // Shuffle image for top section
         ImageView topShuffleImage = new ImageView(getActivity());
         try {
-            topShuffleImage.setImageResource(R.drawable.cardsshuffle_50x50);
+            topShuffleImage.setImageResource(R.drawable.ic_launcher);
             android.util.Log.d("CardView", "Top shuffle image loaded successfully");
         } catch (Exception e) {
             android.util.Log.e("CardView", "Failed to load top shuffle image: " + e.getMessage());
@@ -251,7 +251,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         // Shuffle image for middle section
         ImageView middleShuffleImage = new ImageView(getActivity());
         try {
-            middleShuffleImage.setImageResource(R.drawable.cardsshuffle_50x50);
+            middleShuffleImage.setImageResource(R.drawable.ic_launcher);
             android.util.Log.d("CardView", "Middle shuffle image loaded successfully");
         } catch (Exception e) {
             android.util.Log.e("CardView", "Failed to load middle shuffle image: " + e.getMessage());
@@ -346,7 +346,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         // Shuffle image for bottom section
         ImageView bottomShuffleImage = new ImageView(getActivity());
         try {
-            bottomShuffleImage.setImageResource(R.drawable.cardsshuffle_50x50);
+            bottomShuffleImage.setImageResource(R.drawable.ic_launcher);
             android.util.Log.d("CardView", "Bottom shuffle image loaded successfully");
         } catch (Exception e) {
             android.util.Log.e("CardView", "Failed to load bottom shuffle image: " + e.getMessage());

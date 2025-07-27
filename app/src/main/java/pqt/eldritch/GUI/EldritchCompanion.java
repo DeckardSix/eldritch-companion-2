@@ -454,7 +454,8 @@ public class EldritchCompanion extends Activity {
 
     @Override // android.app.Activity
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_eldritch_companion, menu);
+        // Temporarily disabled to fix menu parsing crash
+        // getMenuInflater().inflate(R.menu.menu_eldritch_companion, menu);
         return true;
     }
 

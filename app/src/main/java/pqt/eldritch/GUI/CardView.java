@@ -116,6 +116,16 @@ public class CardView extends Fragment implements View.OnClickListener {
             LinearLayout.LayoutParams.WRAP_CONTENT)); // Size based on text content
         topHeaderLayout.addView(topNameView);
         
+        // Add 3 spaces before the shuffle image
+        TextView topSpacing = new TextView(getActivity());
+        topSpacing.setText(" "); // 3 spaces
+        topSpacing.setTextSize(36); // Same size as header text
+        topSpacing.setTextColor(textColor);
+        topSpacing.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        topHeaderLayout.addView(topSpacing);
+        
         // Shuffle image for top section
         ImageView topShuffleImage = new ImageView(getActivity());
         topShuffleImage.setImageResource(R.drawable.end_right);
@@ -132,8 +142,9 @@ public class CardView extends Fragment implements View.OnClickListener {
                 if (Decks.CARDS != null && deckName != null) {
                     Decks.CARDS.shuffleFullDeck(deckName);
                     android.util.Log.d("CardView", "Shuffle completed for deck: " + deckName);
+                    // Close the activity like the top menu does
                     if (getActivity() != null) {
-                        getActivity().recreate();
+                        getActivity().finish();
                     }
                 } else {
                     android.util.Log.e("CardView", "Cannot shuffle: Decks.CARDS=" + (Decks.CARDS != null) + ", deckName=" + deckName);
@@ -193,6 +204,16 @@ public class CardView extends Fragment implements View.OnClickListener {
             LinearLayout.LayoutParams.WRAP_CONTENT)); // Size based on text content
         middleHeaderLayout.addView(middleNameView);
         
+        // Add 3 spaces before the shuffle image
+        TextView middleSpacing = new TextView(getActivity());
+        middleSpacing.setText(" "); // 3 spaces
+        middleSpacing.setTextSize(36); // Same size as header text
+        middleSpacing.setTextColor(textColor);
+        middleSpacing.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        middleHeaderLayout.addView(middleSpacing);
+        
         // Shuffle image for middle section
         ImageView middleShuffleImage = new ImageView(getActivity());
         middleShuffleImage.setImageResource(R.drawable.end_right);
@@ -209,8 +230,9 @@ public class CardView extends Fragment implements View.OnClickListener {
                 if (Decks.CARDS != null && deckName != null) {
                     Decks.CARDS.shuffleFullDeck(deckName);
                     android.util.Log.d("CardView", "Shuffle completed for deck: " + deckName);
+                    // Close the activity like the top menu does
                     if (getActivity() != null) {
-                        getActivity().recreate();
+                        getActivity().finish();
                     }
                 } else {
                     android.util.Log.e("CardView", "Cannot shuffle: Decks.CARDS=" + (Decks.CARDS != null) + ", deckName=" + deckName);
@@ -270,6 +292,16 @@ public class CardView extends Fragment implements View.OnClickListener {
             LinearLayout.LayoutParams.WRAP_CONTENT)); // Size based on text content
         bottomHeaderLayout.addView(bottomNameView);
         
+        // Add 3 spaces before the shuffle image
+        TextView bottomSpacing = new TextView(getActivity());
+        bottomSpacing.setText(" "); // 3 spaces
+        bottomSpacing.setTextSize(36); // Same size as header text
+        bottomSpacing.setTextColor(textColor);
+        bottomSpacing.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        bottomHeaderLayout.addView(bottomSpacing);
+        
         // Shuffle image for bottom section
         ImageView bottomShuffleImage = new ImageView(getActivity());
         bottomShuffleImage.setImageResource(R.drawable.end_right);
@@ -286,8 +318,9 @@ public class CardView extends Fragment implements View.OnClickListener {
                 if (Decks.CARDS != null && deckName != null) {
                     Decks.CARDS.shuffleFullDeck(deckName);
                     android.util.Log.d("CardView", "Shuffle completed for deck: " + deckName);
+                    // Close the activity like the top menu does
                     if (getActivity() != null) {
-                        getActivity().recreate();
+                        getActivity().finish();
                     }
                 } else {
                     android.util.Log.e("CardView", "Cannot shuffle: Decks.CARDS=" + (Decks.CARDS != null) + ", deckName=" + deckName);

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -20,7 +22,27 @@ public class RemoveExpedition extends Activity {
     @Override // android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_remove_expedition);
+        
+        // Create layout programmatically
+        LinearLayout mainLayout = new LinearLayout(this);
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setPadding(50, 50, 50, 50);
+        
+        // Current location label
+        TextView currentLabel = new TextView(this);
+        currentLabel.setText("Current: " + Decks.CARDS.getExpeditionLocation());
+        currentLabel.setTextSize(20);
+        currentLabel.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        mainLayout.addView(currentLabel);
+        
+        // Radio group for locations
+        RadioGroup group = new RadioGroup(this);
+        group.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
@@ -31,9 +53,8 @@ public class RemoveExpedition extends Activity {
         double x = Math.pow(wi, 2.0d);
         double y = Math.pow(hi, 2.0d);
         double screenInches = Math.sqrt(x + y);
+        
         List<String> locations = new ArrayList<>(getLocations(Decks.CARDS.getDeck("EXPEDITION")));
-        ((TextView) findViewById(R.id.currentLabel)).setText("Current: " + Decks.CARDS.getExpeditionLocation());
-        RadioGroup group = (RadioGroup) findViewById(R.id.expeditionGroup);
         for (int i = 0; i < locations.size(); i++) {
             RadioButton button = new RadioButton(this);
             button.setText(locations.get(i));
@@ -44,6 +65,24 @@ public class RemoveExpedition extends Activity {
             group.addView(button);
         }
         group.check(locations.indexOf(Decks.CARDS.getExpeditionLocation()));
+        mainLayout.addView(group);
+        
+        // Remove button
+        Button removeButton = new Button(this);
+        removeButton.setText("Remove Expeditions");
+        removeButton.setTextSize(20);
+        removeButton.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeExpeditions(v);
+            }
+        });
+        mainLayout.addView(removeButton);
+        
+        setContentView(mainLayout);
     }
 
     private Set<String> getLocations(List<Card> expeditionDeck) {

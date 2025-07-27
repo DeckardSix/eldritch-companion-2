@@ -8,6 +8,7 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import pqt.eldritch.Card;
 import pqt.eldritch.Decks;
@@ -57,28 +58,80 @@ public class CardView extends Fragment implements View.OnClickListener {
 
     @Override // android.support.v4.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_card, container, false);
+        // Create layout programmatically
+        LinearLayout mainLayout = new LinearLayout(getActivity());
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setPadding(20, 20, 20, 20);
+        
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/se-caslon-ant.ttf");
-        TextView idBoxView = (TextView) view.findViewById(R.id.idBox);
+        
+        // ID box
+        TextView idBoxView = new TextView(getActivity());
         idBoxView.setText(this.ID);
-        TextView topNameView = (TextView) view.findViewById(R.id.topName);
+        idBoxView.setTextSize(16);
+        idBoxView.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        mainLayout.addView(idBoxView);
+        
+        // Top section
+        TextView topNameView = new TextView(getActivity());
         topNameView.setText(this.topHeader);
         topNameView.setTypeface(font);
-        TextView topEncounterView = (TextView) view.findViewById(R.id.topEncounter);
+        topNameView.setTextSize(18);
+        topNameView.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        mainLayout.addView(topNameView);
+        
+        TextView topEncounterView = new TextView(getActivity());
         topEncounterView.setText(formatText(this.topEncounter));
+        topEncounterView.setTextSize(14);
+        topEncounterView.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
         topEncounterView.setOnClickListener(this);
-        TextView middleNameView = (TextView) view.findViewById(R.id.middleName);
+        mainLayout.addView(topEncounterView);
+        
+        // Middle section
+        TextView middleNameView = new TextView(getActivity());
         middleNameView.setText(this.middleHeader);
         middleNameView.setTypeface(font);
-        TextView middleEncounterView = (TextView) view.findViewById(R.id.middleEncounter);
+        middleNameView.setTextSize(18);
+        middleNameView.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        mainLayout.addView(middleNameView);
+        
+        TextView middleEncounterView = new TextView(getActivity());
         middleEncounterView.setText(formatText(this.middleEncounter));
+        middleEncounterView.setTextSize(14);
+        middleEncounterView.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
         middleEncounterView.setOnClickListener(this);
-        TextView bottomNameView = (TextView) view.findViewById(R.id.bottomName);
+        mainLayout.addView(middleEncounterView);
+        
+        // Bottom section
+        TextView bottomNameView = new TextView(getActivity());
         bottomNameView.setText(this.bottomHeader);
         bottomNameView.setTypeface(font);
-        TextView bottomEncounterView = (TextView) view.findViewById(R.id.bottomEncounter);
+        bottomNameView.setTextSize(18);
+        bottomNameView.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        mainLayout.addView(bottomNameView);
+        
+        TextView bottomEncounterView = new TextView(getActivity());
         bottomEncounterView.setText(formatText(this.bottomEncounter));
+        bottomEncounterView.setTextSize(14);
+        bottomEncounterView.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
         bottomEncounterView.setOnClickListener(this);
+        mainLayout.addView(bottomEncounterView);
+        
+        // Handle encounter states
         if (this.encountered == null || !this.encountered.equals("NONE")) {
             topEncounterView.setSoundEffectsEnabled(false);
             middleEncounterView.setSoundEffectsEnabled(false);
@@ -118,7 +171,7 @@ public class CardView extends Fragment implements View.OnClickListener {
                 bottomEncounterView.setBackgroundColor(0);
             }
         }
-        return view;
+        return mainLayout;
     }
 
     private Spanned formatText(String text) {

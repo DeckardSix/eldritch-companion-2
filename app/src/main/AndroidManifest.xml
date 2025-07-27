@@ -21,6 +21,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:label="@string/title_activity_eldritch_companion"
+            android:name="pqt.eldritch.GUI.EldritchCompanion">
+        </activity>
+        <activity
             android:label="@string/title_activity_remove_expedition"
             android:name="pqt.eldritch.GUI.RemoveExpedition"
             android:parentActivityName="pqt.eldritch.GUI.EldritchCompanion">

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.widget.LinearLayout;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -23,7 +24,23 @@ public class DeckGallery extends FragmentActivity implements ViewPager.OnPageCha
     @Override // android.support.v4.app.FragmentActivity, android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.activity_gallery);
+        
+        // Create layout programmatically
+        LinearLayout mainLayout = new LinearLayout(this);
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.MATCH_PARENT));
+        
+        // Create ViewPager programmatically
+        ViewPager viewPager = new ViewPager(this);
+        viewPager.setId(R.id.viewpager);
+        viewPager.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.MATCH_PARENT));
+        mainLayout.addView(viewPager);
+        
+        setContentView(mainLayout);
         initialisePaging();
     }
 

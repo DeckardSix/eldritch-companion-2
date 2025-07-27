@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +32,10 @@ import pqt.eldritch.R;
 
 /* loaded from: classes.dex */
 public class EldritchCompanion extends Activity {
+    private Button expeditionButton;
+    private Button mysticRuinsButton;
+    private Button dreamQuestButton;
+    
     public void removeExpedition(View view) {
         if (Decks.CARDS.getExpeditionLocation().equals("EMPTY")) {
             Toast.makeText(getApplicationContext(), "Expedition Deck is Empty.", Toast.LENGTH_SHORT).show();
@@ -122,43 +128,214 @@ public class EldritchCompanion extends Activity {
     @Override // android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_eldritch_companion);
-        if (!Config.ANTARCTICA && !Config.ANCIENT_ONE.equals("Rise_of_the_Elder_Things")) {
-            findViewById(R.id.antEastButton).setVisibility(View.GONE);
-            findViewById(R.id.antWestButton).setVisibility(View.GONE);
-            findViewById(R.id.antResearchButton).setVisibility(View.GONE);
+        
+        // Create the main layout programmatically
+        ScrollView scrollView = new ScrollView(this);
+        LinearLayout mainLayout = new LinearLayout(this);
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setPadding(50, 50, 50, 50);
+        
+        // Create buttons for different regions
+        createButton(mainLayout, "americasButton", "Arkham - San Francisco - Buenos Aires", "#ff00741e", "drawCard");
+        createButton(mainLayout, "europeButton", "London - Rome - Istanbul", "#ffc96900", "drawCard");
+        createButton(mainLayout, "asiaButton", "Shanghai - Tokyo - Sydney", "#ff5a0e8a", "drawCard");
+        
+        // Antarctica buttons (conditional)
+        if (Config.ANTARCTICA || Config.ANCIENT_ONE.equals("Rise_of_the_Elder_Things")) {
+            createButton(mainLayout, "antWestButton", "City of the Elder Things - Plateau of Leng - Snowy Mountains", "#ffb897bb", "drawCard");
+            createButton(mainLayout, "antEastButton", "Frozen Waste - Lake Camp - Miskatonic Outpost", "#a1746100", "drawCard");
         }
-        if (!Config.EGYPT && !Config.ANCIENT_ONE.equals("Nephren-Ka")) {
-            findViewById(R.id.egyptButton).setVisibility(View.GONE);
-            findViewById(R.id.africaButton).setVisibility(View.GONE);
+        
+        // Egypt buttons (conditional)
+        if (Config.EGYPT || Config.ANCIENT_ONE.equals("Nephren-Ka")) {
+            createButton(mainLayout, "africaButton", "The Sahara Desert - Tel el-Amarna - The Nile River", "#7b5000", "drawCard");
+            createButton(mainLayout, "egyptButton", "Alexandria - The Bent Pyramid - Cairo", "#b60101", "drawCard");
         }
-        if (!Config.DREAMLANDS_BOARD && !Config.ANCIENT_ONE.equals("Hypnos")) {
-            findViewById(R.id.dreamlandsButton).setVisibility(View.GONE);
-            findViewById(R.id.dreamQuestButton).setVisibility(View.GONE);
+        
+        // Dreamlands buttons (conditional)
+        if (Config.DREAMLANDS_BOARD || Config.ANCIENT_ONE.equals("Hypnos")) {
+            createButton(mainLayout, "dreamlandsButton", "Celephaïs - Ulthar - Dylath-Leen", "#8caa2f", "drawCard");
         }
-        if (!Config.COSMIC_ALIGNMENT && !Config.ANCIENT_ONE.equals("Syzygy") && !Config.ANCIENT_ONE.equals("Antediluvium")) {
-            findViewById(R.id.mysticRuinsButton).setVisibility(View.GONE);
+        
+        createButton(mainLayout, "generalButton", "City - Wilderness - Sea", "#5e000000", "drawCard");
+        createButton(mainLayout, "gateButton", "Gate", "#fe00cd5b", "drawCard");
+        
+        // Expedition section with horizontal layout
+        LinearLayout expLayout = new LinearLayout(this);
+        expLayout.setOrientation(LinearLayout.HORIZONTAL);
+        expLayout.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        
+        expeditionButton = new Button(this);
+        expeditionButton.setText("Expedition [LOCATION]");
+        expeditionButton.setTextSize(15);
+        expeditionButton.setTextColor(android.graphics.Color.WHITE);
+        expeditionButton.setBackgroundColor(android.graphics.Color.parseColor("#ff1a0077"));
+        expeditionButton.setId(R.id.expeditionButton);
+        expeditionButton.setLayoutParams(new LinearLayout.LayoutParams(
+            0, LinearLayout.LayoutParams.WRAP_CONTENT, 4));
+        expeditionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawCard(v);
+            }
+        });
+        expLayout.addView(expeditionButton);
+        
+        Button removeButton = new Button(this);
+        removeButton.setText("Remove");
+        removeButton.setTextSize(15);
+        removeButton.setLayoutParams(new LinearLayout.LayoutParams(
+            0, LinearLayout.LayoutParams.WRAP_CONTENT, 2));
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeExpedition(v);
+            }
+        });
+        expLayout.addView(removeButton);
+        
+        mainLayout.addView(expLayout);
+        
+        // Mystic Ruins button (conditional)
+        if (Config.COSMIC_ALIGNMENT || Config.ANCIENT_ONE.equals("Syzygy") || Config.ANCIENT_ONE.equals("Antediluvium")) {
+            mysticRuinsButton = new Button(this);
+            mysticRuinsButton.setText("Mystic Ruins [LOCATION]");
+            mysticRuinsButton.setTextSize(15);
+            mysticRuinsButton.setTextColor(android.graphics.Color.WHITE);
+            mysticRuinsButton.setBackgroundColor(android.graphics.Color.parseColor("#a21d00f2"));
+            mysticRuinsButton.setId(R.id.mysticRuinsButton);
+            mysticRuinsButton.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+            mysticRuinsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    drawCard(v);
+                }
+            });
+            mainLayout.addView(mysticRuinsButton);
         }
-        if (!Decks.CARDS.containsDeck("SPECIAL-1")) {
-            findViewById(R.id.special1Button).setVisibility(View.GONE);
-        } else {
-            ((Button) findViewById(R.id.special1Button)).setText(Config.SPECIAL1);
+        
+        // Dream Quest button (conditional)
+        if (Config.DREAMLANDS_BOARD || Config.ANCIENT_ONE.equals("Hypnos")) {
+            dreamQuestButton = new Button(this);
+            dreamQuestButton.setText("Dream-Quest [LOCATION]");
+            dreamQuestButton.setTextSize(15);
+            dreamQuestButton.setTextColor(android.graphics.Color.WHITE);
+            dreamQuestButton.setBackgroundColor(android.graphics.Color.parseColor("#5e30ad"));
+            dreamQuestButton.setId(R.id.dreamQuestButton);
+            dreamQuestButton.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+            dreamQuestButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    drawCard(v);
+                }
+            });
+            mainLayout.addView(dreamQuestButton);
         }
-        if (!Decks.CARDS.containsDeck("SPECIAL-2")) {
-            findViewById(R.id.special2Button).setVisibility(View.GONE);
-        } else {
-            ((Button) findViewById(R.id.special2Button)).setText(Config.SPECIAL2);
+        
+        createButton(mainLayout, "researchButton", "Research", "#ff000000", "drawCard");
+        
+        // Antarctica Research button (conditional)
+        if (Config.ANTARCTICA || Config.ANCIENT_ONE.equals("Rise_of_the_Elder_Things")) {
+            createButton(mainLayout, "antResearchButton", "Antarctica Research", "#d98b4512", "drawCard");
         }
-        if (!Decks.CARDS.containsDeck("SPECIAL-3")) {
-            findViewById(R.id.special3Button).setVisibility(View.GONE);
-        } else {
-            ((Button) findViewById(R.id.special3Button)).setText(Config.SPECIAL3);
+        
+        // Special buttons (conditional)
+        if (Decks.CARDS.containsDeck("SPECIAL-1")) {
+            createButton(mainLayout, "special1Button", Config.SPECIAL1, "#d9578b84", "drawCard");
         }
-        if (!Config.CITIES_IN_RUIN) {
-            findViewById(R.id.disasterButton).setVisibility(View.GONE);
-            findViewById(R.id.devastationButton).setVisibility(View.GONE);
+        if (Decks.CARDS.containsDeck("SPECIAL-2")) {
+            createButton(mainLayout, "special2Button", Config.SPECIAL2, "#d92c8b5e", "drawCard");
         }
+        if (Decks.CARDS.containsDeck("SPECIAL-3")) {
+            createButton(mainLayout, "special3Button", Config.SPECIAL3, "#d9075e35", "drawCard");
+        }
+        
+        // Disaster buttons (conditional)
+        if (Config.CITIES_IN_RUIN) {
+            createButton(mainLayout, "disasterButton", "Disaster", "#ff0000ff", "drawCard");
+            createButton(mainLayout, "devastationButton", "Devastation", "#ffff0000", "drawCard");
+        }
+        
+        createButton(mainLayout, "discardButton", "Discard", "#ff3d4876", "drawCard");
+        
+        scrollView.addView(mainLayout);
+        setContentView(scrollView);
+        
         setTitle(Config.ANCIENT_ONE.replace("_", " ").replace(".", "'"));
+    }
+    
+    private void createButton(LinearLayout parent, String id, String text, String color, String onClickMethod) {
+        Button button = new Button(this);
+        button.setText(text);
+        button.setTextSize(15);
+        button.setTextColor(android.graphics.Color.WHITE);
+        button.setBackgroundColor(android.graphics.Color.parseColor(color));
+        button.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        
+        // Set the button ID based on the id parameter
+        if (id.equals("americasButton")) {
+            button.setId(R.id.americasButton);
+        } else if (id.equals("europeButton")) {
+            button.setId(R.id.europeButton);
+        } else if (id.equals("asiaButton")) {
+            button.setId(R.id.asiaButton);
+        } else if (id.equals("antWestButton")) {
+            button.setId(R.id.antWestButton);
+        } else if (id.equals("antEastButton")) {
+            button.setId(R.id.antEastButton);
+        } else if (id.equals("africaButton")) {
+            button.setId(R.id.africaButton);
+        } else if (id.equals("egyptButton")) {
+            button.setId(R.id.egyptButton);
+        } else if (id.equals("dreamlandsButton")) {
+            button.setId(R.id.dreamlandsButton);
+        } else if (id.equals("generalButton")) {
+            button.setId(R.id.generalButton);
+        } else if (id.equals("gateButton")) {
+            button.setId(R.id.gateButton);
+        } else if (id.equals("researchButton")) {
+            button.setId(R.id.researchButton);
+        } else if (id.equals("antResearchButton")) {
+            button.setId(R.id.antResearchButton);
+        } else if (id.equals("special1Button")) {
+            button.setId(R.id.special1Button);
+        } else if (id.equals("special2Button")) {
+            button.setId(R.id.special2Button);
+        } else if (id.equals("special3Button")) {
+            button.setId(R.id.special3Button);
+        } else if (id.equals("disasterButton")) {
+            button.setId(R.id.disasterButton);
+        } else if (id.equals("devastationButton")) {
+            button.setId(R.id.devastationButton);
+        } else if (id.equals("discardButton")) {
+            button.setId(R.id.discardButton);
+        }
+        
+        if (onClickMethod.equals("drawCard")) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    drawCard(v);
+                }
+            });
+        } else if (onClickMethod.equals("removeExpedition")) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeExpedition(v);
+                }
+            });
+        }
+        
+        parent.addView(button);
     }
 
     private void saveGame() throws TransformerException, DOMException, TransformerFactoryConfigurationError, IOException, IllegalArgumentException {
@@ -249,12 +426,14 @@ public class EldritchCompanion extends Activity {
     public void onResume() throws DOMException, TransformerFactoryConfigurationError, IllegalArgumentException {
         super.onResume();
         Decks.CARDS.printDecks();
-        ((Button) findViewById(R.id.expeditionButton)).setText("EXPEDITION [" + Decks.CARDS.getExpeditionLocation() + "]");
-        if (Config.ANCIENT_ONE.equals("Syzygy") || Config.ANCIENT_ONE.equals("Antediluvium") || Config.COSMIC_ALIGNMENT) {
-            ((Button) findViewById(R.id.mysticRuinsButton)).setText("Mystic Ruins [" + Decks.CARDS.getMysticRuinsLocation() + "]");
+        if (expeditionButton != null) {
+            expeditionButton.setText("EXPEDITION [" + Decks.CARDS.getExpeditionLocation() + "]");
         }
-        if (Config.ANCIENT_ONE.equals("Hypnos") || Config.DREAMLANDS_BOARD) {
-            ((Button) findViewById(R.id.dreamQuestButton)).setText("Dream-Quest [" + Decks.CARDS.getDreamQuestLocation() + "]");
+        if (mysticRuinsButton != null && (Config.ANCIENT_ONE.equals("Syzygy") || Config.ANCIENT_ONE.equals("Antediluvium") || Config.COSMIC_ALIGNMENT)) {
+            mysticRuinsButton.setText("Mystic Ruins [" + Decks.CARDS.getMysticRuinsLocation() + "]");
+        }
+        if (dreamQuestButton != null && (Config.ANCIENT_ONE.equals("Hypnos") || Config.DREAMLANDS_BOARD)) {
+            dreamQuestButton.setText("Dream-Quest [" + Decks.CARDS.getDreamQuestLocation() + "]");
         }
         try {
             saveGame();

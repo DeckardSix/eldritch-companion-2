@@ -126,6 +126,14 @@ public class CardView extends Fragment implements View.OnClickListener {
             2)); // 2dp thick line
         mainLayout.addView(divider1);
         
+        // Add spacing after divider1
+        TextView divider1Spacing = new TextView(getActivity());
+        divider1Spacing.setText(" ");
+        divider1Spacing.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            10)); // 10dp spacing
+        mainLayout.addView(divider1Spacing);
+        
         // Top section with horizontal layout for header and shuffle image
         LinearLayout topHeaderLayout = new LinearLayout(getActivity());
         topHeaderLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -163,8 +171,8 @@ public class CardView extends Fragment implements View.OnClickListener {
             // Fallback to a simple text
             topShuffleImage.setBackgroundColor(android.graphics.Color.GRAY);
         }
-        // Set image height to match text size (36sp converted to pixels)
-        int textSizeInPixels = (int) (36 * getResources().getDisplayMetrics().scaledDensity);
+        // Set image height 33% bigger than text size (36sp * 1.33)
+        int textSizeInPixels = (int) (36 * 1.33 * getResources().getDisplayMetrics().scaledDensity);
         topShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
             textSizeInPixels, 
             textSizeInPixels));
@@ -224,6 +232,14 @@ public class CardView extends Fragment implements View.OnClickListener {
             2)); // 2dp thick line
         mainLayout.addView(divider2);
         
+        // Add spacing after divider2
+        TextView divider2Spacing = new TextView(getActivity());
+        divider2Spacing.setText(" ");
+        divider2Spacing.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            10)); // 10dp spacing
+        mainLayout.addView(divider2Spacing);
+        
         // Middle section with horizontal layout for header and shuffle image
         LinearLayout middleHeaderLayout = new LinearLayout(getActivity());
         middleHeaderLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -261,7 +277,7 @@ public class CardView extends Fragment implements View.OnClickListener {
             // Fallback to a simple text
             middleShuffleImage.setBackgroundColor(android.graphics.Color.GRAY);
         }
-        // Set image height to match text size (36sp converted to pixels)
+        // Use the same size as top shuffle image (already calculated as 33% bigger)
         middleShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
             textSizeInPixels, 
             textSizeInPixels));
@@ -321,6 +337,14 @@ public class CardView extends Fragment implements View.OnClickListener {
             2)); // 2dp thick line
         mainLayout.addView(divider3);
         
+        // Add spacing after divider3
+        TextView divider3Spacing = new TextView(getActivity());
+        divider3Spacing.setText(" ");
+        divider3Spacing.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            10)); // 10dp spacing
+        mainLayout.addView(divider3Spacing);
+        
         // Bottom section with horizontal layout for header and shuffle image
         LinearLayout bottomHeaderLayout = new LinearLayout(getActivity());
         bottomHeaderLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -358,7 +382,7 @@ public class CardView extends Fragment implements View.OnClickListener {
             // Fallback to a simple text
             bottomShuffleImage.setBackgroundColor(android.graphics.Color.GRAY);
         }
-        // Set image height to match text size (36sp converted to pixels)
+        // Use the same size as top shuffle image (already calculated as 33% bigger)
         bottomShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
             textSizeInPixels, 
             textSizeInPixels));

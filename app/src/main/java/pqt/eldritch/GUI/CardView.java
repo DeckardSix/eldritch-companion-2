@@ -94,7 +94,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         // Create main content layout
         LinearLayout mainLayout = new LinearLayout(getActivity());
         mainLayout.setOrientation(LinearLayout.VERTICAL);
-        mainLayout.setPadding(20, 20, 20, 20);
+        mainLayout.setPadding(100, 100, 100, 20); // 100px left/right/top margins
         mainLayout.setLayoutParams(new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT, 
             FrameLayout.LayoutParams.MATCH_PARENT));

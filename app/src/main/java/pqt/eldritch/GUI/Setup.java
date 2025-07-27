@@ -54,8 +54,24 @@ public class Setup extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+<<<<<<< HEAD
         // Use the XML layout instead of programmatic creation
         setContentView(R.layout.activity_setup);
+=======
+        // Create a functional setup layout programmatically
+        ScrollView scrollView = new ScrollView(this);
+        // Set the Cthulhu background on the scroll view
+        try {
+            scrollView.setBackgroundResource(R.drawable.cthulhu_background);
+        } catch (Exception e) {
+            // Fallback to a dark color if the image fails to load
+            scrollView.setBackgroundColor(android.graphics.Color.parseColor("#2c1810"));
+        }
+        
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 50, 50, 50);
+>>>>>>> 8098645dddeaf6fce112e0f29de772c1fabff919
         
         // Set the font and styles for UI elements
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/se-caslon-ant.ttf");

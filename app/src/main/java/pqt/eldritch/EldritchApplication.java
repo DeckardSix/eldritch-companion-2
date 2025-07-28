@@ -111,26 +111,25 @@ public class EldritchApplication extends Application {
                 Log.d(TAG, "UI hidden - releasing UI resources");
                 break;
             case TRIM_MEMORY_BACKGROUND:
-                // App is in background, release some cached data
+                // App backgrounded - moderate cleanup
                 Log.d(TAG, "App backgrounded - releasing cached data");
                 System.gc();
                 break;
-            case TRIM_MEMORY_MODERATE:
-            case TRIM_MEMORY_COMPLETE:
-                // System is running low on memory, aggressively release resources
-                Log.d(TAG, "Low memory condition - aggressive cleanup");
-                try {
-                    CardDatabaseHelper dbHelper = CardDatabaseHelper.getInstance(this);
-                    if (dbHelper != null) {
-                        // Don't close database, but ensure it's not holding excess memory
-                        System.gc();
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "Error during memory cleanup", e);
-                }
-                break;
             default:
-                Log.d(TAG, "Other memory trim level: " + level);
+                // Handle any other memory trim levels, including deprecated ones
+                if (level >= 60) { // Covers TRIM_MEMORY_MODERATE (60) and TRIM_MEMORY_COMPLETE (80)
+                    Log.d(TAG, "Low memory condition - aggressive cleanup");
+                    try {
+                        CardDatabaseHelper dbHelper = CardDatabaseHelper.getInstance(this);
+                        if (dbHelper != null) {
+                            System.gc();
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error during memory cleanup", e);
+                    }
+                } else {
+                    Log.d(TAG, "Other memory trim level: " + level);
+                }
                 break;
         }
     }

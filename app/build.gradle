@@ -53,6 +53,9 @@ android {
     lint {
         abortOnError = false
         checkReleaseBuilds = true
+        // Gradle 9 compatibility - avoid null attribute lookups
+        checkDependencies = true
+        ignoreWarnings = false
     }
 
     buildFeatures {
@@ -97,7 +100,8 @@ android {
             } else {
                 newApkName = "${sanitizedAppName}.apk"
             }
-            output.outputFileName = new File(newApkName).name
+            // Gradle 9 compatibility - use outputFileName property correctly
+            outputFileName = newApkName
         }
     }
 }

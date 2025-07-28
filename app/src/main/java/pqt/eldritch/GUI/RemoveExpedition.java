@@ -57,11 +57,13 @@ public class RemoveExpedition extends AppCompatActivity {
         RadioGroup group = (RadioGroup) findViewById(R.id.expeditionGroup);
         
         DisplayMetrics dm = new DisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowMetrics windowMetrics = getWindowManager().getCurrentWindowMetrics();
-            dm = getResources().getDisplayMetrics();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            // Use WindowMetrics for Android R+ (API 30+)
+            android.view.WindowMetrics windowMetrics = getWindowManager().getCurrentWindowMetrics();
+            dm = getResources().getDisplayMetrics(); // Get metrics from resources for consistency
         } else {
-            getWindowManager().getDefaultDisplay().getMetrics(dm);
+            // Use display metrics from resources instead of deprecated Display methods
+            dm = getResources().getDisplayMetrics();
         }
         int width = dm.widthPixels;
         int height = dm.heightPixels;

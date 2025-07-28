@@ -148,7 +148,7 @@ public class EldritchCompanion extends AppCompatActivity {
         // Ensure ActionBar is properly displayed
         if (getSupportActionBar() != null) {
             getSupportActionBar().show();
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
         // Get references to buttons from the XML layout
@@ -558,6 +558,10 @@ public class EldritchCompanion extends AppCompatActivity {
     @Override // android.app.Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                // Handle the ActionBar back button
+                finish();
+                return true;
             case R.id.action_end_game /* 2130968577 */:
                 File file = new File(getFilesDir(), "discard.xml");
                 file.delete();

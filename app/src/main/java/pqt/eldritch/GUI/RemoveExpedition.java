@@ -1,52 +1,57 @@
 package pqt.eldritch.GUI;
 
-import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.support.v4.widget.CompoundButtonCompat;
+import androidx.core.widget.CompoundButtonCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import pqt.eldritch.Card;
+import pqt.eldritch.Config;
 import pqt.eldritch.Decks;
 import pqt.eldritch.R;
 
 /* loaded from: classes.dex */
-public class RemoveExpedition extends Activity {
+public class RemoveExpedition extends AppCompatActivity {
     @Override // android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Create layout programmatically
-        LinearLayout mainLayout = new LinearLayout(this);
-        mainLayout.setOrientation(LinearLayout.VERTICAL);
-        mainLayout.setPadding(50, 50, 50, 50);
+        // Use the XML layout instead of programmatic creation
+        setContentView(R.layout.activity_remove_expedition);
+        
+        // Ensure ActionBar is properly displayed
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().show();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         
         // Current location label
-        TextView currentLabel = new TextView(this);
+        TextView currentLabel = (TextView) findViewById(R.id.currentLocationLabel);
         String currentLocation = (Decks.CARDS != null && Decks.CARDS.getExpeditionLocation() != null) ? 
             Decks.CARDS.getExpeditionLocation() : "EMPTY";
         currentLabel.setText("Current: " + currentLocation);
         currentLabel.setTextSize(20);
         currentLabel.setTextColor(android.graphics.Color.WHITE);
-        currentLabel.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
-        mainLayout.addView(currentLabel);
         
         // Radio group for locations
-        RadioGroup group = new RadioGroup(this);
-        group.setId(R.id.expeditionGroup);
-        group.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
+        RadioGroup group = (RadioGroup) findViewById(R.id.expeditionGroup);
         
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -77,25 +82,18 @@ public class RemoveExpedition extends Activity {
         if (Decks.CARDS != null && Decks.CARDS.getExpeditionLocation() != null) {
             group.check(locations.indexOf(Decks.CARDS.getExpeditionLocation()));
         }
-        mainLayout.addView(group);
         
         // Remove button
-        Button removeButton = new Button(this);
+        Button removeButton = (Button) findViewById(R.id.removeExpeditionsButton);
         removeButton.setText("Remove Expeditions");
         removeButton.setTextSize(20);
         removeButton.setTextColor(android.graphics.Color.WHITE);
-        removeButton.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 
-            LinearLayout.LayoutParams.WRAP_CONTENT));
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 removeExpeditions(v);
             }
         });
-        mainLayout.addView(removeButton);
-        
-        setContentView(mainLayout);
     }
 
     private Set<String> getLocations(List<Card> expeditionDeck) {

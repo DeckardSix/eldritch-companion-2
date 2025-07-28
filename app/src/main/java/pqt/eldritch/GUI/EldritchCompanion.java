@@ -1,20 +1,32 @@
 package pqt.eldritch.GUI;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.util.List;
+import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -26,12 +38,13 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import pqt.eldritch.Card;
+import pqt.eldritch.CardLoader;
 import pqt.eldritch.Config;
 import pqt.eldritch.Decks;
 import pqt.eldritch.R;
 
 /* loaded from: classes.dex */
-public class EldritchCompanion extends Activity {
+public class EldritchCompanion extends AppCompatActivity {
     private Button expeditionButton;
     private Button mysticRuinsButton;
     private Button dreamQuestButton;
@@ -131,6 +144,12 @@ public class EldritchCompanion extends Activity {
         
         // Use the XML layout instead of programmatic creation
         setContentView(R.layout.activity_eldritch_companion);
+        
+        // Ensure ActionBar is properly displayed
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().show();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
         
         // Get references to buttons from the XML layout
         expeditionButton = findViewById(R.id.expeditionButton);

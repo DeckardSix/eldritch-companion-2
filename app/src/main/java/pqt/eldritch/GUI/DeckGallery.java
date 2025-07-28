@@ -1,11 +1,12 @@
 package pqt.eldritch.GUI;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.widget.LinearLayout;
 import android.view.MenuItem;
@@ -18,29 +19,22 @@ import pqt.eldritch.Decks;
 import pqt.eldritch.R;
 
 /* loaded from: classes.dex */
-public class DeckGallery extends FragmentActivity implements ViewPager.OnPageChangeListener {
+public class DeckGallery extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     public ViewPager gallery;
 
-    @Override // android.support.v4.app.FragmentActivity, android.app.Activity
+    @Override // android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Create layout programmatically
-        LinearLayout mainLayout = new LinearLayout(this);
-        mainLayout.setOrientation(LinearLayout.VERTICAL);
-        mainLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));
-
-        // Create ViewPager programmatically
-        ViewPager viewPager = new ViewPager(this);
-        viewPager.setId(R.id.viewpager);
-        viewPager.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));
-        mainLayout.addView(viewPager);
-
-        setContentView(mainLayout);
+        
+        // Use the XML layout instead of programmatic creation
+        setContentView(R.layout.activity_gallery);
+        
+        // Ensure ActionBar is properly displayed
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().show();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        
         initialisePaging();
     }
 

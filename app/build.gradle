@@ -1,16 +1,16 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android' // This plugin helps manage Kotlin stdlib
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
-	namespace 'pqt.eldritch'
-    compileSdkVersion = 28
+    namespace 'pqt.eldritch'
+    compileSdk 35
 
     defaultConfig {
         applicationId 'pqt.eldritch'
-        minSdk = 21
-        targetSdk = 28
+        minSdk 24
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -25,21 +25,20 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
-    lintOptions {
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    lint {
         abortOnError false
     }
 
     buildFeatures {
         buildConfig = true
-    }
-    
-    // Disable the problematic bundle task
-    tasks.withType(com.android.build.gradle.internal.feature.BundleAllClasses) {
-        enabled = false
     }
 
     applicationVariants.all { variant ->
@@ -50,32 +49,23 @@ android {
             def newApkName
             if (variant.buildType.name == "release") {
                 newApkName = "${sanitizedAppName}-v${variant.versionName}.apk"
-            } else { // For debug and other build types
+            } else {
                 newApkName = "${sanitizedAppName}-${variant.buildType.name}-v${variant.versionName}.apk"
             }
-            // Ensure you are assigning to the correct property of the 'output' object
-            if (output instanceof com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
-                output.outputFileName = new File(newApkName).name
-            }
+            output.outputFileName = new File(newApkName).name
         }
     }
 }
 
-
 dependencies {
-    // TODO: dependencies
-    // Using old Support Library instead of AndroidX to avoid resource conflicts
-    implementation "com.android.support:support-v4:28.0.0"
-    implementation "com.android.support:appcompat-v7:28.0.0"
-    implementation "com.android.support:recyclerview-v7:28.0.0"
-
-    /*
-    dependencies {
-        implementation("some-library:that-depends-on-old-kotlin:1.0") {
-            exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
-        }
-    }
-    //exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
-    */
-
+    // Modern AndroidX libraries
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.core:core:1.15.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    
+    // Testing dependencies
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }

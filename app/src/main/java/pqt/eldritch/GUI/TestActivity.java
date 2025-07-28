@@ -1,15 +1,16 @@
 package pqt.eldritch.GUI;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
 import pqt.eldritch.DatabaseInitializer;
+import pqt.eldritch.R;
 
-public class TestActivity extends Activity {
+public class TestActivity extends AppCompatActivity {
     private TextView statusText;
     
     @Override
@@ -75,10 +76,10 @@ public class TestActivity extends Activity {
         try {
             String status = DatabaseInitializer.getDatabaseStatus(this);
             statusText.setText("Database Status:\n\n" + status);
-            Toast.makeText(this, "Status updated", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Status updated", Toast.LENGTH_SHORT).show(); // Removed as per new_code
         } catch (Exception e) {
             statusText.setText("Error checking status: " + e.getMessage());
-            Toast.makeText(this, "Error checking status", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Error checking status", Toast.LENGTH_SHORT).show(); // Removed as per new_code
         }
     }
     
@@ -90,14 +91,14 @@ public class TestActivity extends Activity {
             if (success) {
                 String status = DatabaseInitializer.getDatabaseStatus(this);
                 statusText.setText("Database initialized successfully!\n\n" + status);
-                Toast.makeText(this, "Database initialized!", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "Database initialized!", Toast.LENGTH_SHORT).show(); // Removed as per new_code
             } else {
                 statusText.setText("Database initialization failed!");
-                Toast.makeText(this, "Initialization failed", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "Initialization failed", Toast.LENGTH_SHORT).show(); // Removed as per new_code
             }
         } catch (Exception e) {
             statusText.setText("Error during initialization: " + e.getMessage());
-            Toast.makeText(this, "Error during initialization", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Error during initialization", Toast.LENGTH_SHORT).show(); // Removed as per new_code
         }
     }
     
@@ -109,14 +110,14 @@ public class TestActivity extends Activity {
             if (success) {
                 String status = DatabaseInitializer.getDatabaseStatus(this);
                 statusText.setText("Database re-initialized successfully!\n\n" + status);
-                Toast.makeText(this, "Database re-initialized!", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "Database re-initialized!", Toast.LENGTH_SHORT).show(); // Removed as per new_code
             } else {
                 statusText.setText("Database re-initialization failed!");
-                Toast.makeText(this, "Re-initialization failed", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "Re-initialization failed", Toast.LENGTH_SHORT).show(); // Removed as per new_code
             }
         } catch (Exception e) {
             statusText.setText("Error during re-initialization: " + e.getMessage());
-            Toast.makeText(this, "Error during re-initialization", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Error during re-initialization", Toast.LENGTH_SHORT).show(); // Removed as per new_code
         }
     }
     
@@ -125,10 +126,10 @@ public class TestActivity extends Activity {
             statusText.setText("Testing database...\n");
             String result = DatabaseInitializer.testDatabase(this);
             statusText.setText("Database Test Results:\n\n" + result);
-            Toast.makeText(this, "Database test completed", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Database test completed", Toast.LENGTH_SHORT).show(); // Removed as per new_code
         } catch (Exception e) {
             statusText.setText("Error during database test: " + e.getMessage());
-            Toast.makeText(this, "Error during test", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Error during test", Toast.LENGTH_SHORT).show(); // Removed as per new_code
         }
     }
 } 

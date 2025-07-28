@@ -1,25 +1,30 @@
 package pqt.eldritch.GUI;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.util.Log;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Spinner;
 import android.graphics.PorterDuff;
-import android.support.v4.widget.CompoundButtonCompat;
+import androidx.core.widget.CompoundButtonCompat;
 import android.widget.SpinnerAdapter;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import android.graphics.Typeface;
+import android.os.AsyncTask;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,15 +36,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import pqt.eldritch.CardDatabaseHelper;
 import pqt.eldritch.Config;
+import pqt.eldritch.CardDatabaseHelper;
 import pqt.eldritch.DatabaseInitializer;
 import pqt.eldritch.Decks;
 import pqt.eldritch.XMLToSQLiteMigration;
 import pqt.eldritch.R;
 
 /* loaded from: classes.dex */
-public class Setup extends Activity {
+public class Setup extends AppCompatActivity {
     public List<String> base;
     public List<String> citiesInRuin;
     public List<String> forsakenLore;
@@ -54,24 +59,14 @@ public class Setup extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-<<<<<<< HEAD
         // Use the XML layout instead of programmatic creation
         setContentView(R.layout.activity_setup);
-=======
-        // Create a functional setup layout programmatically
-        ScrollView scrollView = new ScrollView(this);
-        // Set the Cthulhu background on the scroll view
-        try {
-            scrollView.setBackgroundResource(R.drawable.cthulhu_background);
-        } catch (Exception e) {
-            // Fallback to a dark color if the image fails to load
-            scrollView.setBackgroundColor(android.graphics.Color.parseColor("#2c1810"));
-        }
         
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50, 50, 50, 50);
->>>>>>> 8098645dddeaf6fce112e0f29de772c1fabff919
+        // Ensure ActionBar is properly displayed
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().show();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
         
         // Set the font and styles for UI elements
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/se-caslon-ant.ttf");
@@ -177,9 +172,9 @@ public class Setup extends Activity {
         String selected = (String) spinner.getSelectedItem();
         List<String> ancientOnes = getAncientOnes();
         ancientOnes.add(0, "Random");
-        // ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this, R.layout.spinner_item, ancientOnes);
-        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, ancientOnes);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Use the custom spinner layout
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this, R.layout.spinner_item, ancientOnes);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter((SpinnerAdapter) spinnerArrayAdapter);
         if (ancientOnes.contains(selected)) {
             spinner.setSelection(ancientOnes.indexOf(selected));

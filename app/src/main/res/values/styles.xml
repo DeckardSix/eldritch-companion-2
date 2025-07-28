@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@drawable/test_splash</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
@@ -11,17 +11,26 @@
         <item name="android:colorControlNormal">@android:color/white</item>
         <item name="android:colorControlActivated">@android:color/white</item>
         <item name="android:colorControlHighlight">@android:color/white</item>
-        <item name="android:colorAccent">@android:color/white</item>
+        <item name="colorAccent">@android:color/white</item>
         <item name="android:buttonStyle">@style/WhiteButtonStyle</item>
         <item name="android:checkboxStyle">@style/WhiteCheckBoxStyle</item>
+        <!-- ActionBar/Toolbar styling -->
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+        <!-- ActionBar text color -->
+        <item name="android:textColorPrimaryInverse">@android:color/white</item>
+        <!-- Ensure ActionBar pushes content down, doesn't overlay -->
+        <item name="windowActionBarOverlay">false</item>
+        <item name="android:windowActionBarOverlay">false</item>
     </style>
     
-    <style name="WhiteButtonStyle" parent="@android:style/Widget.Button">
+    <style name="WhiteButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@drawable/round_button</item>
     </style>
     
-    <style name="WhiteCheckBoxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+    <style name="WhiteCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:buttonTint">@android:color/white</item>
     </style>

@@ -69,6 +69,10 @@ public class CardView extends Fragment implements View.OnClickListener {
             ViewGroup.LayoutParams.MATCH_PARENT, 
             ViewGroup.LayoutParams.MATCH_PARENT));
         
+        // Add ActionBar spacing to prevent overlap
+        int actionBarHeight = getActionBarHeight();
+        frameLayout.setPadding(0, actionBarHeight + 16, 0, 0); // 16dp extra spacing
+        
         // Set background color based on deck
         int backgroundColor = CardColorUtils.getDeckBackgroundColor(this.deckName);
         int textColor = CardColorUtils.getDeckTextColor(this.deckName);
@@ -478,6 +482,27 @@ public class CardView extends Fragment implements View.OnClickListener {
         // Use the same text color as the rest of the card for consistency
         String textColorHex = String.format("#%06X", (0xFFFFFF & CardColorUtils.getDeckTextColor(this.deckName)));
         return Html.fromHtml(text.replace("[", "<b><font color='" + textColorHex + "'>[").replace("]", "]</font></b>"));
+    }
+
+    /**
+     * Helper method to get ActionBar height for proper spacing
+     */
+    private int getActionBarHeight() {
+        int actionBarHeight = 0;
+        try {
+            android.util.TypedValue tv = new android.util.TypedValue();
+            if (getActivity() != null && getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = android.util.TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+            }
+            // Fallback to standard ActionBar height if unable to get from theme
+            if (actionBarHeight == 0) {
+                actionBarHeight = (int) (56 * getResources().getDisplayMetrics().density); // 56dp in pixels
+            }
+        } catch (Exception e) {
+            // Fallback height
+            actionBarHeight = (int) (56 * getResources().getDisplayMetrics().density);
+        }
+        return actionBarHeight;
     }
 
     @Override // android.view.View.OnClickListener

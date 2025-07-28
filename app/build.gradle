@@ -19,29 +19,31 @@ android {
         
         // Performance optimization
         vectorDrawables.useSupportLibrary = true
+        
+        // Proguard optimization
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
         release {
-            minifyEnabled true  // Enable code shrinking
-            shrinkResources true  // Remove unused resources
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            
-            // Performance optimizations for release builds
             debuggable false
-            crunchPngs true
+            zipAlignEnabled true
         }
         debug {
             minifyEnabled false
-            shrinkResources false
             debuggable true
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-DEBUG"
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21  // Upgraded to Java 21
+        sourceCompatibility JavaVersion.VERSION_21
         targetCompatibility JavaVersion.VERSION_21
-        coreLibraryDesugaringEnabled true  // Enable modern Java features on older devices
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -51,12 +53,11 @@ android {
     lint {
         abortOnError false
         checkReleaseBuilds true
-        ignoreWarnings false
     }
 
     buildFeatures {
         buildConfig = true
-        viewBinding = true  // Enable View Binding for safer UI code
+        viewBinding = true
     }
 
     // Resource optimization
@@ -81,7 +82,7 @@ android {
             if (variant.buildType.name == "release") {
                 newApkName = "${sanitizedAppName}-v${variant.versionName}.apk"
             } else {
-                newApkName = "${sanitizedAppName}-${variant.buildType.name}-v${variant.versionName}.apk"
+                newApkName = "${sanitizedAppName}.apk"
             }
             output.outputFileName = new File(newApkName).name
         }

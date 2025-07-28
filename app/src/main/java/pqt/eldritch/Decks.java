@@ -16,7 +16,7 @@ public class Decks {
     public Decks() {
         // Load cards using default XML method (for backward compatibility)
         this.decks = new CardLoader().load();
-        this.decks.put("DISCARD", new ArrayList());
+        this.decks.put("DISCARD", new ArrayList<>());
         shuffleAllDecks();
         CARDS = this;
     }
@@ -27,7 +27,7 @@ public class Decks {
         // Load cards using context-aware loader (SQLite preferred)
         this.decks = new CardLoader(context).load();
         Log.d("Decks", "Loaded " + this.decks.size() + " decks");
-        this.decks.put("DISCARD", new ArrayList());
+        this.decks.put("DISCARD", new ArrayList<>());
         shuffleAllDecks();
         CARDS = this;
     }

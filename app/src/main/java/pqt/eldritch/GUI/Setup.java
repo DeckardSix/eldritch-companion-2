@@ -111,29 +111,29 @@ public class Setup extends AppCompatActivity {
     }
 
     private void initializeData() {
-        this.base = new ArrayList();
+        this.base = new ArrayList<>();
         this.base.add("Azathoth");
         this.base.add("Yog-Sothoth");
         this.base.add("Shub-Niggurath");
         this.base.add("Cthulhu");
-        this.forsakenLore = new ArrayList();
+        this.forsakenLore = new ArrayList<>();
         this.forsakenLore.add("Yig");
-        this.mountainsOfMadness = new ArrayList();
+        this.mountainsOfMadness = new ArrayList<>();
         this.mountainsOfMadness.add("Rise of the Elder Things");
         this.mountainsOfMadness.add("Ithaqua");
-        this.strangeRemnants = new ArrayList();
+        this.strangeRemnants = new ArrayList<>();
         this.strangeRemnants.add("Syzygy");
-        this.underThePyramids = new ArrayList();
+        this.underThePyramids = new ArrayList<>();
         this.underThePyramids.add("Abhoth");
         this.underThePyramids.add("Nephren-Ka");
-        this.signsOfCarcosa = new ArrayList();
+        this.signsOfCarcosa = new ArrayList<>();
         this.signsOfCarcosa.add("Hastur");
-        this.theDreamlands = new ArrayList();
+        this.theDreamlands = new ArrayList<>();
         this.theDreamlands.add("Hypnos");
         this.theDreamlands.add("Atlach-Nacha");
-        this.citiesInRuin = new ArrayList();
+        this.citiesInRuin = new ArrayList<>();
         this.citiesInRuin.add("Shudde M'ell");
-        this.masksOfNyarlathotep = new ArrayList();
+        this.masksOfNyarlathotep = new ArrayList<>();
         this.masksOfNyarlathotep.add("Nyarlathotep");
         this.masksOfNyarlathotep.add("Antediluvium");
     }
@@ -185,7 +185,7 @@ public class Setup extends AppCompatActivity {
         List<String> ancientOnes = getAncientOnes();
         ancientOnes.add(0, "Random");
         // Use the custom spinner layout
-        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this, R.layout.spinner_item, ancientOnes);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, ancientOnes);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter((SpinnerAdapter) spinnerArrayAdapter);
         if (ancientOnes.contains(selected)) {

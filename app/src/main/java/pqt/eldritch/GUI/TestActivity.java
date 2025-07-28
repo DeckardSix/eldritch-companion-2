@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import pqt.eldritch.DatabaseInitializer;
 import pqt.eldritch.R;
 
@@ -58,7 +59,7 @@ public class TestActivity extends AppCompatActivity {
         statusText.setText("Ready to test database operations...");
         statusText.setTextSize(12);
         statusText.setPadding(0, 30, 0, 0);
-        statusText.setBackground(getResources().getDrawable(android.R.drawable.edit_text));
+        statusText.setBackground(ContextCompat.getDrawable(this, android.R.drawable.edit_text));
         statusText.setPadding(20, 20, 20, 20);
         
         // Make it scrollable

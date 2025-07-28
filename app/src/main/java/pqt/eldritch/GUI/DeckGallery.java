@@ -4,8 +4,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.widget.LinearLayout;
@@ -19,78 +19,81 @@ import pqt.eldritch.Decks;
 import pqt.eldritch.R;
 
 /* loaded from: classes.dex */
-public class DeckGallery extends AppCompatActivity implements ViewPager.OnPageChangeListener {
-    public ViewPager gallery;
+public class DeckGallery extends AppCompatActivity {
+    public ViewPager2 gallery;
+    private ViewPager2.OnPageChangeCallback pageChangeCallback;
 
     @Override // android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        // Use the XML layout instead of programmatic creation
         setContentView(R.layout.activity_gallery);
         
-        // Ensure ActionBar is properly displayed
         if (getSupportActionBar() != null) {
             getSupportActionBar().show();
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        
-        initialisePaging();
-    }
 
-    private void initialisePaging() {
-        List<Fragment> fragments = new ArrayList<>();
         String deckName = getIntent().getStringExtra("DECK");
-        List<Card> deck = Decks.CARDS.getDeck(deckName);
-        if (deck == null || deck.isEmpty()) {
-            Toast.makeText(getApplicationContext(), deckName + " Deck is Empty.", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-        for (Card card : deck) {
+        List<Card> cards = Decks.CARDS.getDeck(deckName);
+        List<Fragment> fragments = new ArrayList<>();
+        for (Card card : cards) {
             fragments.add(new CardView().newInstance(card, deckName));
         }
-        this.gallery = (ViewPager) findViewById(R.id.viewpager);
-        this.gallery.setAdapter(new CardPagerAdapter(super.getSupportFragmentManager(), fragments));
-        this.gallery.setPageTransformer(true, new DepthPageTransformer());
-        this.gallery.setOnPageChangeListener(this);
-        onPageSelected(0);
+        this.gallery = (ViewPager2) findViewById(R.id.viewpager);
+        this.gallery.setAdapter(new CardPagerAdapter(this, fragments));
+        // ViewPager2 doesn't support setPageTransformer with boolean parameter
+        this.gallery.setPageTransformer(new DepthPageTransformer());
+        
+        // Create the page change callback
+        pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Empty implementation
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                String deckName = getIntent().getStringExtra("DECK");
+                setTitle(Decks.CARDS.getRegion(deckName, position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Empty implementation
+            }
+        };
+        
+        this.gallery.registerOnPageChangeCallback(pageChangeCallback);
+        // Trigger initial page selection
+        if (pageChangeCallback != null) {
+            pageChangeCallback.onPageSelected(0);
+        }
     }
 
-    @Override // android.support.v4.view.ViewPager.OnPageChangeListener
-    public void onPageScrolled(int i, float v, int i2) {
-    }
-
-    @Override // android.support.v4.view.ViewPager.OnPageChangeListener
-    public void onPageSelected(int i) {
-        String deckName = getIntent().getStringExtra("DECK");
-        setTitle(Decks.CARDS.getRegion(deckName, i));
-    }
-
-    @Override // android.support.v4.view.ViewPager.OnPageChangeListener
-    public void onPageScrollStateChanged(int i) {
-    }
-
-    private class CardPagerAdapter extends FragmentPagerAdapter {
+    private class CardPagerAdapter extends FragmentStateAdapter {
         private List<Fragment> fragments;
 
-        public CardPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
-            super(fm);
+        CardPagerAdapter(FragmentActivity fragmentActivity, List<Fragment> fragments) {
+            super(fragmentActivity);
             this.fragments = fragments;
         }
 
-        @Override // android.support.v4.app.FragmentPagerAdapter
-        public Fragment getItem(int position) {
+        @Override
+        public int getItemCount() {
+            return this.fragments.size();
+        }
+
+        @Override
+        public Fragment createFragment(int position) {
             return this.fragments.get(position);
         }
 
-        @Override // android.support.v4.view.PagerAdapter
-        public int getCount() {
-            return this.fragments.size();
+        public Fragment getItem(int position) {
+            return this.fragments.get(position);
         }
     }
 
-    private class DepthPageTransformer implements ViewPager.PageTransformer {
+    private class DepthPageTransformer implements ViewPager2.PageTransformer {
         private static final float MIN_SCALE = 0.75f;
 
         private DepthPageTransformer() {
@@ -157,10 +160,12 @@ public class DeckGallery extends AppCompatActivity implements ViewPager.OnPageCh
                 }
                 return true;
             case R.id.action_discard_card:
-                FragmentPagerAdapter myAdapter = (FragmentPagerAdapter) this.gallery.getAdapter();
-                CardView card = (CardView) myAdapter.getItem(this.gallery.getCurrentItem());
-                if (Decks.CARDS != null) {
-                    Decks.CARDS.discardCard(card.getRegion(), card.getID(), null);
+                CardPagerAdapter myAdapter = (CardPagerAdapter) this.gallery.getAdapter();
+                if (myAdapter != null) {
+                    CardView card = (CardView) myAdapter.getItem(this.gallery.getCurrentItem());
+                    if (Decks.CARDS != null && card != null) {
+                        Decks.CARDS.discardCard(card.getRegion(), card.getID(), null);
+                    }
                 }
                 super.finish();
                 return true;

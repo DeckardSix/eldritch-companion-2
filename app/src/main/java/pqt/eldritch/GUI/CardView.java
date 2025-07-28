@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 import pqt.eldritch.Card;
 import pqt.eldritch.Decks;
 import pqt.eldritch.R;
@@ -176,7 +179,11 @@ public class CardView extends Fragment implements View.OnClickListener {
             topShuffleImage.setBackgroundColor(android.graphics.Color.GRAY);
         }
         // Set image height 33% bigger than text size (36sp * 1.33)
-        int textSizeInPixels = (int) (36 * 1.33 * getResources().getDisplayMetrics().scaledDensity);
+        int textSizeInPixels = (int) TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_SP, 
+            36 * 1.33f, 
+            getResources().getDisplayMetrics()
+        );
         topShuffleImage.setLayoutParams(new LinearLayout.LayoutParams(
             textSizeInPixels, 
             textSizeInPixels));
@@ -442,31 +449,31 @@ public class CardView extends Fragment implements View.OnClickListener {
         }
         if (this.encountered != null) {
             if (this.encountered.equals("removed")) {
-                topNameView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                topEncounterView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                middleNameView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                middleEncounterView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                bottomNameView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                bottomEncounterView.setBackgroundColor(getResources().getColor(R.color.shaded));
+                topNameView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                topEncounterView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                middleNameView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                middleEncounterView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                bottomNameView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                bottomEncounterView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
             } else if (this.encountered.equals("top")) {
                 topNameView.setBackgroundColor(0);
                 topEncounterView.setBackgroundColor(0);
-                middleNameView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                middleEncounterView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                bottomNameView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                bottomEncounterView.setBackgroundColor(getResources().getColor(R.color.shaded));
+                middleNameView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                middleEncounterView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                bottomNameView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                bottomEncounterView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
             } else if (this.encountered.equals("middle")) {
-                topNameView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                topEncounterView.setBackgroundColor(getResources().getColor(R.color.shaded));
+                topNameView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                topEncounterView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
                 middleNameView.setBackgroundColor(0);
                 middleEncounterView.setBackgroundColor(0);
-                bottomNameView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                bottomEncounterView.setBackgroundColor(getResources().getColor(R.color.shaded));
+                bottomNameView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                bottomEncounterView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
             } else if (this.encountered.equals("bottom")) {
-                topNameView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                topEncounterView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                middleNameView.setBackgroundColor(getResources().getColor(R.color.shaded));
-                middleEncounterView.setBackgroundColor(getResources().getColor(R.color.shaded));
+                topNameView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                topEncounterView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                middleNameView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
+                middleEncounterView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.shaded));
                 bottomNameView.setBackgroundColor(0);
                 bottomEncounterView.setBackgroundColor(0);
             }
@@ -481,7 +488,7 @@ public class CardView extends Fragment implements View.OnClickListener {
     private Spanned formatText(String text) {
         // Use the same text color as the rest of the card for consistency
         String textColorHex = String.format("#%06X", (0xFFFFFF & CardColorUtils.getDeckTextColor(this.deckName)));
-        return Html.fromHtml(text.replace("[", "<b><font color='" + textColorHex + "'>[").replace("]", "]</font></b>"));
+        return HtmlCompat.fromHtml(text.replace("[", "<b><font color='" + textColorHex + "'>[").replace("]", "]</font></b>"), HtmlCompat.FROM_HTML_MODE_LEGACY);
     }
 
     /**
@@ -490,9 +497,9 @@ public class CardView extends Fragment implements View.OnClickListener {
     private int getActionBarHeight() {
         int actionBarHeight = 0;
         try {
-            android.util.TypedValue tv = new android.util.TypedValue();
+            TypedValue tv = new TypedValue();
             if (getActivity() != null && getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-                actionBarHeight = android.util.TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
             }
             // Fallback to standard ActionBar height if unable to get from theme
             if (actionBarHeight == 0) {

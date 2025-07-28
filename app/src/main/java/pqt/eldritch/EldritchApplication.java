@@ -103,38 +103,34 @@ public class EldritchApplication extends Application {
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
+        Log.d(TAG, "Memory trim requested with level: " + level);
         
-        // Handle memory pressure intelligently
         switch (level) {
-            case TRIM_MEMORY_RUNNING_MODERATE:
-                Log.d(TAG, "Memory pressure: MODERATE - optimizing performance");
-                // Light cleanup
-                break;
-                
-            case TRIM_MEMORY_RUNNING_LOW:
-                Log.d(TAG, "Memory pressure: LOW - freeing non-essential resources");
-                // More aggressive cleanup
-                System.gc();
-                break;
-                
-            case TRIM_MEMORY_RUNNING_CRITICAL:
-                Log.d(TAG, "Memory pressure: CRITICAL - emergency cleanup");
-                // Aggressive cleanup
-                System.gc();
-                break;
-                
             case TRIM_MEMORY_UI_HIDDEN:
-                Log.d(TAG, "App is in background - freeing UI-related memory");
-                // App is in background, free UI-related memory
+                // App UI is hidden, release UI-related resources
+                Log.d(TAG, "UI hidden - releasing UI resources");
+                break;
+            case TRIM_MEMORY_BACKGROUND:
+                // App is in background, release some cached data
+                Log.d(TAG, "App backgrounded - releasing cached data");
                 System.gc();
                 break;
-                
-            case TRIM_MEMORY_BACKGROUND:
             case TRIM_MEMORY_MODERATE:
             case TRIM_MEMORY_COMPLETE:
-                Log.d(TAG, "App in background with memory pressure - aggressive cleanup");
-                // App is in background and system is under memory pressure
-                System.gc();
+                // System is running low on memory, aggressively release resources
+                Log.d(TAG, "Low memory condition - aggressive cleanup");
+                try {
+                    CardDatabaseHelper dbHelper = CardDatabaseHelper.getInstance(this);
+                    if (dbHelper != null) {
+                        // Don't close database, but ensure it's not holding excess memory
+                        System.gc();
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Error during memory cleanup", e);
+                }
+                break;
+            default:
+                Log.d(TAG, "Other memory trim level: " + level);
                 break;
         }
     }

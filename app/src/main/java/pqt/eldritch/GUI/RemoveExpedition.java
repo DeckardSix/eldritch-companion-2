@@ -1,11 +1,14 @@
 package pqt.eldritch.GUI;
 
-import android.graphics.Typeface;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.WindowMetrics;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -54,7 +57,12 @@ public class RemoveExpedition extends AppCompatActivity {
         RadioGroup group = (RadioGroup) findViewById(R.id.expeditionGroup);
         
         DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowMetrics windowMetrics = getWindowManager().getCurrentWindowMetrics();
+            dm = getResources().getDisplayMetrics();
+        } else {
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
+        }
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         int dens = dm.densityDpi;

@@ -60,6 +60,19 @@ android {
         viewBinding = true
     }
 
+    // Custom source sets for organized drawable subfolders
+    sourceSets {
+        main {
+            res.srcDirs = [
+                'src/main/res',
+                'src/main/resources/backgrounds',
+                'src/main/resources/icons', 
+                'src/main/resources/images',
+                'src/main/resources/buttons'
+            ]
+        }
+    }
+
     // Resource optimization
     bundle {
         language {

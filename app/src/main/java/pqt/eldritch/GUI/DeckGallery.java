@@ -129,13 +129,13 @@ public class DeckGallery extends AppCompatActivity implements ViewPager.OnPageCh
         // Add shuffle item with density-specific icon
         MenuItem shuffleItem = menu.add(Menu.NONE, R.id.action_shuffle_deck, Menu.NONE, "Shuffle");
         shuffleItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        shuffleItem.setIcon(R.drawable.cardsshuffle_actionbar);
+        shuffleItem.setIcon(R.drawable.ic_shuffle_actionbar);
         android.util.Log.d("DeckGallery", "Added shuffle item");
 
         // Add discard item with density-specific icon
         MenuItem discardItem = menu.add(Menu.NONE, R.id.action_discard_card, Menu.NONE, "Discard");
         discardItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        discardItem.setIcon(R.drawable.cardsdiscard_actionbar);
+        discardItem.setIcon(R.drawable.ic_discard_actionbar);
         android.util.Log.d("DeckGallery", "Added discard item");
 
         android.util.Log.d("DeckGallery", "Menu created successfully");

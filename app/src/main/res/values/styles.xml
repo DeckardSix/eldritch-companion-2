@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowBackground">@drawable/test_splash</item>
+        <item name="android:windowBackground">@drawable/bg_test_splash</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
@@ -27,7 +27,7 @@
     
     <style name="WhiteButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/round_button</item>
+        <item name="android:background">@drawable/btn_round</item>
     </style>
     
     <style name="WhiteCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">

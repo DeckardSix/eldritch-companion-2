@@ -81,7 +81,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         // Create background image view with 20% alpha for more transparency
         ImageView backgroundImage = new ImageView(getActivity());
         try {
-            backgroundImage.setImageResource(R.drawable.encounter_front);
+            backgroundImage.setImageResource(R.drawable.img_encounter_front);
             backgroundImage.setScaleType(ImageView.ScaleType.FIT_XY); // Scale to fill
             backgroundImage.setAlpha(0.20f); // 20% alpha transparency (more transparent)
             android.util.Log.d("CardView", "Background image loaded successfully");

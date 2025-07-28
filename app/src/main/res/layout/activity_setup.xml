@@ -29,7 +29,7 @@
             android:layout_height="150dp"
             android:layout_marginBottom="20dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/eldritch_horror"
+            android:src="@drawable/img_eldritch_horror"
             android:contentDescription="Eldritch Horror Logo" />
         
         <TextView
@@ -230,7 +230,7 @@
                 android:textSize="16dp"
                 android:textColor="#ffffffff"
                 android:id="@+id/startButton"
-                android:background="@drawable/round_button"
+                android:background="@drawable/btn_round"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
                 android:layout_weight="1"
@@ -242,7 +242,7 @@
                 android:textSize="16dp"
                 android:textColor="#ffffffff"
                 android:id="@+id/continueButton"
-                android:background="@drawable/round_button"
+                android:background="@drawable/btn_round"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
                 android:layout_weight="1"
@@ -255,7 +255,7 @@
                 android:textSize="16dp"
                 android:textColor="#ffffffff"
                 android:id="@+id/dbSetupButton"
-                android:background="@drawable/round_button"
+                android:background="@drawable/btn_round"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
                 android:layout_weight="1"

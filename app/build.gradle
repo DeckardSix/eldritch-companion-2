@@ -4,41 +4,71 @@ plugins {
 }
 
 android {
-    namespace 'pqt.eldritch'
-    compileSdk 35
+    namespace = 'pqt.eldritch'
+    compileSdk = 36
 
     defaultConfig {
-        applicationId 'pqt.eldritch'
-        minSdk 24
-        targetSdk 35
-        versionCode 1
-        versionName "1.0"
+        applicationId = 'pqt.eldritch'
+        minSdk = 24
+        targetSdk = 35  // Updated to latest
+        versionCode = 1
+        versionName = "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Performance optimization
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true  // Enable code shrinking
+            shrinkResources true  // Remove unused resources
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            
+            // Performance optimizations for release builds
+            debuggable false
+            crunchPngs true
+        }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            debuggable true
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_21  // Upgraded to Java 21
+        targetCompatibility JavaVersion.VERSION_21
+        coreLibraryDesugaringEnabled true  // Enable modern Java features on older devices
     }
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '21'
     }
 
     lint {
         abortOnError false
+        checkReleaseBuilds true
+        ignoreWarnings false
     }
 
     buildFeatures {
         buildConfig = true
+        viewBinding = true  // Enable View Binding for safer UI code
+    }
+
+    // Resource optimization
+    bundle {
+        language {
+            enableSplit = true
+        }
+        density {
+            enableSplit = true
+        }
+        abi {
+            enableSplit = true
+        }
     }
 
     applicationVariants.all { variant ->
@@ -58,11 +88,23 @@ android {
 }
 
 dependencies {
-    // Modern AndroidX libraries
+    // Core library desugaring for Java 21 features on older devices
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.3'
+    
+    // Latest AndroidX libraries
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.core:core:1.15.0'
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.fragment:fragment:1.8.5'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
+    
+    // Material Design Components
+    implementation 'com.google.android.material:material:1.12.0'
+    
+    // Lifecycle components for better memory management
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.8.7'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.8.7'
     
     // Testing dependencies
     testImplementation 'junit:junit:4.13.2'

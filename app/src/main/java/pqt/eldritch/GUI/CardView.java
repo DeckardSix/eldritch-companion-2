@@ -71,7 +71,7 @@ public class CardView extends Fragment implements View.OnClickListener {
         
         // Add ActionBar spacing to prevent overlap
         int actionBarHeight = getActionBarHeight();
-        frameLayout.setPadding(0, actionBarHeight + 16, 0, 0); // 16dp extra spacing
+        frameLayout.setPadding(0, actionBarHeight, 0, 0); // Exact ActionBar height, no extra spacing
         
         // Set background color based on deck
         int backgroundColor = CardColorUtils.getDeckBackgroundColor(this.deckName);

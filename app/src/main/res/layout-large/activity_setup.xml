@@ -21,15 +21,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:weightSum="1">
+        
+        <!-- Eldritch Horror logo image at the top -->
+        <ImageView
+            android:id="@+id/eldritchHorrorLogo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="30dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/eldritch_horror"
+            android:contentDescription="Eldritch Horror Logo" />
+        
         <TextView
             android:textSize="40sp"
             android:gravity="center"
             android:id="@+id/expanHeader"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"
-            android:text="@string/select_expansions" />
+            android:text="Select Expansions"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"/>
         <CheckBox
             android:textSize="25sp"
             android:id="@+id/baseBox"

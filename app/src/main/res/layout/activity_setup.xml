@@ -21,6 +21,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:weightSum="1">
+        
+        <!-- Eldritch Horror logo image at the top -->
+        <ImageView
+            android:id="@+id/eldritchHorrorLogo"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="20dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/eldritch_horror"
+            android:contentDescription="Eldritch Horror Logo" />
+        
         <TextView
             android:textSize="25dp"
             android:gravity="center"

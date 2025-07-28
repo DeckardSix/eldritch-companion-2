@@ -3,12 +3,14 @@
     <item
         xmlns:android="http://schemas.android.com/apk/res/android" 
         android:id="@+id/action_shuffle_deck"
+        android:icon="@drawable/cardsshuffle_50x50"
         android:orderInCategory="100"
         android:title="@string/deck_menu_shuffle_deck"
-        android:showAsAction="ifRoom"/>
+        android:showAsAction="always"/>
     <item xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/action_discard_card"
+        android:icon="@drawable/cardsdiscard2_50x50"
         android:orderInCategory="100"
         android:title="@string/deck_menu_discard_card"
-        android:showAsAction="ifRoom"/>
+        android:showAsAction="always"/>
 </menu>

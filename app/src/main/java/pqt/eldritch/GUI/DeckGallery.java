@@ -122,18 +122,23 @@ public class DeckGallery extends AppCompatActivity implements ViewPager.OnPageCh
         }
     }
 
-    @Override // android.app.Activity
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Add shuffle item with text and icon
+        android.util.Log.d("DeckGallery", "Creating ActionBar menu...");
+        
+        // Add shuffle item with density-specific icon
         MenuItem shuffleItem = menu.add(Menu.NONE, R.id.action_shuffle_deck, Menu.NONE, "Shuffle");
         shuffleItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        shuffleItem.setIcon(R.drawable.cardsshuffle);
+        shuffleItem.setIcon(R.drawable.cardsshuffle_actionbar);
+        android.util.Log.d("DeckGallery", "Added shuffle item");
 
-        // Add discard item with text and icon
+        // Add discard item with density-specific icon
         MenuItem discardItem = menu.add(Menu.NONE, R.id.action_discard_card, Menu.NONE, "Discard");
         discardItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        discardItem.setIcon(R.drawable.cardsdiscard2);
+        discardItem.setIcon(R.drawable.cardsdiscard_actionbar);
+        android.util.Log.d("DeckGallery", "Added discard item");
 
+        android.util.Log.d("DeckGallery", "Menu created successfully");
         return true;
     }
 
@@ -141,6 +146,10 @@ public class DeckGallery extends AppCompatActivity implements ViewPager.OnPageCh
     public boolean onOptionsItemSelected(MenuItem item) {
         String deckName = getIntent().getStringExtra("DECK");
         switch (item.getItemId()) {
+            case android.R.id.home:
+                // Handle the ActionBar back button
+                finish();
+                return true;
             case R.id.action_shuffle_deck:
                 if (Decks.CARDS != null && deckName != null) {
                     Decks.CARDS.shuffleFullDeck(deckName);

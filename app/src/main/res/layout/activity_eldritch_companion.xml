@@ -17,19 +17,6 @@
         android:layout_height="match_parent"
         android:layout_marginTop="16dp">
 
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="82dp"
-            android:layout_marginLeft="22dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_test_americas"
-            android:gravity="bottom|center_horizontal"
-            android:onClick="drawCard"
-            android:paddingBottom="10dp"
-            android:text="@string/america"
-            android:textColor="#ff000000"
-            android:textSize="16sp"
-            android:id="@+id/americasButton" />
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
@@ -40,6 +27,29 @@
                 android:alpha="0.95"
                 android:textColor="#00000000"
                 android:contentDescription="@string/america"
+                android:scaleType="fitXY"
+                android:src="@drawable/nbg" />
+            <Button
+                android:textSize="16sp"
+                android:textColor="#ffffffff"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/americasButton"
+                android:background="@drawable/bg_test_americas"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Arkham - San Francisco - Buenos Aires"
+                android:onClick="drawCard"/>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.95"
+                android:textColor="#00000000"
+                android:contentDescription="Europe"
                 android:scaleType="fitXY"
                 android:src="@drawable/nbg" />
             <Button
@@ -60,8 +70,9 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:alpha="0.5"
-                android:contentDescription="@string/uk"
+                android:alpha="0.95"
+                android:textColor="#00000000"
+                android:contentDescription="Asia"
                 android:scaleType="fitXY"
                 android:src="@drawable/nbg" />
             <Button

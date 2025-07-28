@@ -68,6 +68,18 @@ public class Setup extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
         
+        // Add ActionBar spacing programmatically
+        android.widget.RelativeLayout rootLayout = findViewById(R.id.setupRootLayout);
+        if (rootLayout != null) {
+            int actionBarHeight = getActionBarHeight();
+            rootLayout.setPadding(
+                rootLayout.getPaddingLeft(),
+                rootLayout.getPaddingTop() + actionBarHeight,
+                rootLayout.getPaddingRight(),
+                rootLayout.getPaddingBottom()
+            );
+        }
+        
         // Set the font and styles for UI elements
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/se-caslon-ant.ttf");
         
@@ -469,5 +481,26 @@ public class Setup extends AppCompatActivity {
         });
         
         builder.show();
+    }
+
+    /**
+     * Helper method to get ActionBar height for proper spacing
+     */
+    private int getActionBarHeight() {
+        int actionBarHeight = 0;
+        try {
+            android.util.TypedValue tv = new android.util.TypedValue();
+            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = android.util.TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+            }
+            // Fallback to standard ActionBar height if unable to get from theme
+            if (actionBarHeight == 0) {
+                actionBarHeight = (int) (56 * getResources().getDisplayMetrics().density); // 56dp in pixels
+            }
+        } catch (Exception e) {
+            // Fallback height
+            actionBarHeight = (int) (56 * getResources().getDisplayMetrics().density);
+        }
+        return actionBarHeight;
     }
 }

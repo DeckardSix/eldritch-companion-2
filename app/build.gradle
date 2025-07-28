@@ -10,7 +10,8 @@ android {
     defaultConfig {
         applicationId = 'pqt.eldritch'
         minSdk = 24
-        targetSdk = 35  // Updated to latest
+        //noinspection EditedTargetSdkVersion
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 

@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/setupRootLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:fitsSystemWindows="true"
-    android:paddingTop="16dp">
-
-<ScrollView 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/setupScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:scrollbars="none">
 
     <LinearLayout
@@ -20,17 +15,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="16dp"
         android:weightSum="1">
         
-        <!-- Eldritch Horror logo image at the top -->
-        <ImageView
-            android:id="@+id/eldritchHorrorLogo"
+        <!-- First element: FrameLayout like in EldritchCompanion -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginBottom="20dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/img_eldritch_horror"
-            android:contentDescription="Eldritch Horror Logo" />
+            android:layout_height="150dp">
+            
+            <!-- Eldritch Horror logo image inside the FrameLayout -->
+            <ImageView
+                android:id="@+id/eldritchHorrorLogo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_eldritch_horror"
+                android:contentDescription="Eldritch Horror Logo" />
+        </FrameLayout>
         
         <TextView
             android:textSize="25dp"
@@ -265,4 +267,3 @@
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
-</RelativeLayout>

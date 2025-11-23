@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -136,6 +138,16 @@ public class EldritchCompanion extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().show();
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        
+        // Ensure ScrollView is visible and scrollable
+        ScrollView mainScrollView = findViewById(R.id.mainScrollView);
+        if (mainScrollView != null) {
+            mainScrollView.setVisibility(View.VISIBLE);
+            mainScrollView.setVerticalScrollBarEnabled(false);
+            Log.d("EldritchCompanion", "ScrollView initialized and visible");
+        } else {
+            Log.e("EldritchCompanion", "ScrollView not found!");
         }
         
         // Get references to buttons from the XML layout
@@ -334,6 +346,71 @@ public class EldritchCompanion extends AppCompatActivity {
                     drawCard(v);
                 }
             });
+        }
+        
+        // Ensure base location buttons are always visible
+        View americasButton = findViewById(R.id.americasButton);
+        if (americasButton != null) {
+            if (americasButton.getParent() instanceof View) {
+                ((View) americasButton.getParent()).setVisibility(View.VISIBLE);
+            }
+            americasButton.setVisibility(View.VISIBLE);
+        }
+        
+        View europeButton = findViewById(R.id.europeButton);
+        if (europeButton != null) {
+            if (europeButton.getParent() instanceof View) {
+                ((View) europeButton.getParent()).setVisibility(View.VISIBLE);
+            }
+            europeButton.setVisibility(View.VISIBLE);
+        }
+        
+        View asiaButton = findViewById(R.id.asiaButton);
+        if (asiaButton != null) {
+            if (asiaButton.getParent() instanceof View) {
+                ((View) asiaButton.getParent()).setVisibility(View.VISIBLE);
+            }
+            asiaButton.setVisibility(View.VISIBLE);
+        }
+        
+        View generalButton = findViewById(R.id.generalButton);
+        if (generalButton != null) {
+            if (generalButton.getParent() instanceof View) {
+                ((View) generalButton.getParent()).setVisibility(View.VISIBLE);
+            }
+            generalButton.setVisibility(View.VISIBLE);
+        }
+        
+        View gateButton = findViewById(R.id.gateButton);
+        if (gateButton != null) {
+            if (gateButton.getParent() instanceof View) {
+                ((View) gateButton.getParent()).setVisibility(View.VISIBLE);
+            }
+            gateButton.setVisibility(View.VISIBLE);
+        }
+        
+        View researchButton = findViewById(R.id.researchButton);
+        if (researchButton != null) {
+            if (researchButton.getParent() instanceof View) {
+                ((View) researchButton.getParent()).setVisibility(View.VISIBLE);
+            }
+            researchButton.setVisibility(View.VISIBLE);
+        }
+        
+        View discardButton = findViewById(R.id.discardButton);
+        if (discardButton != null) {
+            if (discardButton.getParent() instanceof View) {
+                ((View) discardButton.getParent()).setVisibility(View.VISIBLE);
+            }
+            discardButton.setVisibility(View.VISIBLE);
+        }
+        
+        // Expedition button - always visible if base expansion is selected
+        if (expeditionButton != null && Config.BASE) {
+            if (expeditionButton.getParent() != null && expeditionButton.getParent() instanceof View) {
+                ((View) expeditionButton.getParent()).setVisibility(View.VISIBLE);
+            }
+            expeditionButton.setVisibility(View.VISIBLE);
         }
         
         // Set button visibility based on Config settings and Decks state

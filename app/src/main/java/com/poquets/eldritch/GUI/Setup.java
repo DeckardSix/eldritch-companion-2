@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,9 +104,17 @@ public class Setup extends AppCompatActivity {
         boolean disclaimerShown = prefs.getBoolean("disclaimer_shown", false);
         
         if (!disclaimerShown) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("⚠️ CRITICAL INFORMATION - READ FIRST");
-            builder.setMessage(
+            // Create a scrollable TextView for the message to handle tablets better
+            ScrollView scrollView = new ScrollView(this);
+            // Semi-transparent dark background to match app theme while keeping readability
+            scrollView.setBackgroundColor(0xE0000000); // 87.5% opacity black overlay
+            
+            // Create a LinearLayout to hold both message and checkbox
+            LinearLayout contentLayout = new LinearLayout(this);
+            contentLayout.setOrientation(LinearLayout.VERTICAL);
+            
+            TextView messageView = new TextView(this);
+            messageView.setText(
                 "⚠️ NOT AFFILIATED WITH FANTASY FLIGHT GAMES\n" +
                 "This app is NOT affiliated with Fantasy Flight Games in any way.\n" +
                 "Always refer to official Fantasy Flight Games materials.\n\n" +
@@ -130,14 +141,64 @@ public class Setup extends AppCompatActivity {
                 "⚠️ You use this app at your own risk.\n\n" +
                 "By continuing, you acknowledge that you have read and agree to the full Privacy Policy & Terms of Service."
             );
+            messageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            messageView.setTextColor(0xFFFFFFFF); // White text to match app theme
+            int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
+            messageView.setPadding(padding, padding, padding, padding);
+            
+            // Create checkbox to save preference
+            CheckBox dontShowAgainCheckbox = new CheckBox(this);
+            dontShowAgainCheckbox.setText("Don't show this again");
+            dontShowAgainCheckbox.setTextColor(0xFFFFFFFF); // White text
+            dontShowAgainCheckbox.setPadding(padding, padding / 2, padding, padding);
+            setCheckboxWhite(dontShowAgainCheckbox);
+            
+            contentLayout.addView(messageView);
+            contentLayout.addView(dontShowAgainCheckbox);
+            scrollView.addView(contentLayout);
+            
+            // Set maximum height for tablets (60% of screen height)
+            int maxHeight = (int) (getResources().getDisplayMetrics().heightPixels * 0.6);
+            scrollView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                maxHeight
+            ));
+            
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("⚠️ CRITICAL INFORMATION - READ FIRST");
+            builder.setView(scrollView);
             builder.setPositiveButton("I Understand", (dialog, which) -> {
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean("disclaimer_shown", true);
-                editor.apply();
+                // Only save preference if checkbox is checked
+                if (dontShowAgainCheckbox.isChecked()) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("disclaimer_shown", true);
+                    editor.apply();
+                }
                 dialog.dismiss();
             });
             builder.setCancelable(false);
-            builder.create().show();
+            
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            
+            // Set dialog background to match app theme (dark/transparent)
+            if (dialog.getWindow() != null) {
+                // Make dialog background transparent to show app background
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                
+                // Ensure dialog doesn't take up entire screen on tablets
+                int maxWidth = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+                dialog.getWindow().setLayout(maxWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
+                
+                // Set dialog title text color to white to match app theme
+                int titleId = getResources().getIdentifier("alertTitle", "id", "android");
+                if (titleId != 0) {
+                    TextView titleView = dialog.getWindow().getDecorView().findViewById(titleId);
+                    if (titleView != null) {
+                        titleView.setTextColor(0xFFFFFFFF); // White text
+                    }
+                }
+            }
         }
     }
 
@@ -380,55 +441,113 @@ public class Setup extends AppCompatActivity {
         return null;
     }
 
-    public void startGame(View view) throws IOException {
-        boolean base = ((CheckBox) findViewById(R.id.baseBox)).isChecked();
-        boolean forsakenLore = ((CheckBox) findViewById(R.id.forsakenLoreBox)).isChecked();
-        boolean mountainsOfMadness = ((CheckBox) findViewById(R.id.mountainsOfMadnessBox)).isChecked();
-        boolean antarctica = ((CheckBox) findViewById(R.id.antarcticaBox)).isChecked();
-        boolean strangeRemnants = ((CheckBox) findViewById(R.id.strangeRemnantsBox)).isChecked();
-        boolean cosmicAlignment = ((CheckBox) findViewById(R.id.cosmicAlignmentBox)).isChecked();
-        boolean underThePyramids = ((CheckBox) findViewById(R.id.underThePyramidsBox)).isChecked();
-        boolean egypt = ((CheckBox) findViewById(R.id.egyptBox)).isChecked();
-        boolean litanyOfSecrets = ((CheckBox) findViewById(R.id.litanyOfSecretsBox)).isChecked();
-        boolean signsOfCarcosa = ((CheckBox) findViewById(R.id.signsOfCarcosaBox)).isChecked();
-        boolean theDreamlands = ((CheckBox) findViewById(R.id.theDreamlandsBox)).isChecked();
-        boolean dreamlandsBoard = ((CheckBox) findViewById(R.id.dreamlandsBoardBox)).isChecked();
-        boolean citiesInRuin = ((CheckBox) findViewById(R.id.citiesInRuinBox)).isChecked();
-        boolean masksOfNyarlathotep = ((CheckBox) findViewById(R.id.masksOfNyarlathotepBox)).isChecked();
-        if (!base && !forsakenLore && !mountainsOfMadness && !strangeRemnants && !underThePyramids && !signsOfCarcosa && !theDreamlands && !citiesInRuin && !masksOfNyarlathotep) {
-            Toast.makeText(getApplicationContext(), "Choose At Least One Expansion", Toast.LENGTH_LONG).show();
-            return;
-        }
-        String ANCIENT_ONE = (String) ((Spinner) findViewById(R.id.spinner)).getSelectedItem();
-        if (ANCIENT_ONE.equals("Random")) {
-            List<String> ancientOnes = getAncientOnes();
-            Collections.shuffle(ancientOnes);
-            ANCIENT_ONE = ancientOnes.get(0);
-        }
-        Config.ANCIENT_ONE = ANCIENT_ONE.replace(" ", "_").replace("'", ".");
-        Config.BASE = base;
-        Config.FORSAKEN_LORE = forsakenLore;
-        Config.MOUNTAINS_OF_MADNESS = mountainsOfMadness;
-        Config.ANTARCTICA = antarctica;
-        Config.STRANGE_REMNANTS = strangeRemnants;
-        Config.COSMIC_ALIGNMENT = cosmicAlignment;
-        Config.UNDER_THE_PYRAMIDS = underThePyramids;
-        Config.EGYPT = egypt;
-        Config.LITANY_OF_SECRETS = litanyOfSecrets;
-        Config.SIGNS_OF_CARCOSA = signsOfCarcosa;
-        Config.THE_DREAMLANDS = theDreamlands;
-        Config.DREAMLANDS_BOARD = dreamlandsBoard;
-        Config.CITIES_IN_RUIN = citiesInRuin;
-        Config.MASKS_OF_NYARLATHOTEP = masksOfNyarlathotep;
-        new Decks();
+    public void startGame(View view) {
         try {
-            File file = new File(getFilesDir(), "discard.xml");
-            file.createNewFile();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage() + " - Unable to create save file");
+            boolean base = ((CheckBox) findViewById(R.id.baseBox)).isChecked();
+            boolean forsakenLore = ((CheckBox) findViewById(R.id.forsakenLoreBox)).isChecked();
+            boolean mountainsOfMadness = ((CheckBox) findViewById(R.id.mountainsOfMadnessBox)).isChecked();
+            boolean antarctica = ((CheckBox) findViewById(R.id.antarcticaBox)).isChecked();
+            boolean strangeRemnants = ((CheckBox) findViewById(R.id.strangeRemnantsBox)).isChecked();
+            boolean cosmicAlignment = ((CheckBox) findViewById(R.id.cosmicAlignmentBox)).isChecked();
+            boolean underThePyramids = ((CheckBox) findViewById(R.id.underThePyramidsBox)).isChecked();
+            boolean egypt = ((CheckBox) findViewById(R.id.egyptBox)).isChecked();
+            boolean litanyOfSecrets = ((CheckBox) findViewById(R.id.litanyOfSecretsBox)).isChecked();
+            boolean signsOfCarcosa = ((CheckBox) findViewById(R.id.signsOfCarcosaBox)).isChecked();
+            boolean theDreamlands = ((CheckBox) findViewById(R.id.theDreamlandsBox)).isChecked();
+            boolean dreamlandsBoard = ((CheckBox) findViewById(R.id.dreamlandsBoardBox)).isChecked();
+            boolean citiesInRuin = ((CheckBox) findViewById(R.id.citiesInRuinBox)).isChecked();
+            boolean masksOfNyarlathotep = ((CheckBox) findViewById(R.id.masksOfNyarlathotepBox)).isChecked();
+            
+            if (!base && !forsakenLore && !mountainsOfMadness && !strangeRemnants && !underThePyramids && !signsOfCarcosa && !theDreamlands && !citiesInRuin && !masksOfNyarlathotep) {
+                Toast.makeText(this, "Choose At Least One Expansion", Toast.LENGTH_LONG).show();
+                return;
+            }
+            
+            String ANCIENT_ONE = (String) ((Spinner) findViewById(R.id.spinner)).getSelectedItem();
+            if (ANCIENT_ONE == null || ANCIENT_ONE.isEmpty()) {
+                Toast.makeText(this, "Please select an Ancient One", Toast.LENGTH_LONG).show();
+                return;
+            }
+            
+            if (ANCIENT_ONE.equals("Random")) {
+                List<String> ancientOnes = getAncientOnes();
+                if (ancientOnes.isEmpty()) {
+                    Toast.makeText(this, "No Ancient Ones available for selected expansions", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Collections.shuffle(ancientOnes);
+                ANCIENT_ONE = ancientOnes.get(0);
+            }
+            
+            Config.ANCIENT_ONE = ANCIENT_ONE.replace(" ", "_").replace("'", ".");
+            Config.BASE = base;
+            Config.FORSAKEN_LORE = forsakenLore;
+            Config.MOUNTAINS_OF_MADNESS = mountainsOfMadness;
+            Config.ANTARCTICA = antarctica;
+            Config.STRANGE_REMNANTS = strangeRemnants;
+            Config.COSMIC_ALIGNMENT = cosmicAlignment;
+            Config.UNDER_THE_PYRAMIDS = underThePyramids;
+            Config.EGYPT = egypt;
+            Config.LITANY_OF_SECRETS = litanyOfSecrets;
+            Config.SIGNS_OF_CARCOSA = signsOfCarcosa;
+            Config.THE_DREAMLANDS = theDreamlands;
+            Config.DREAMLANDS_BOARD = dreamlandsBoard;
+            Config.CITIES_IN_RUIN = citiesInRuin;
+            Config.MASKS_OF_NYARLATHOTEP = masksOfNyarlathotep;
+            
+            // Check if we need to migrate from XML to SQLite
+            try {
+                CardDatabaseHelper dbHelper = CardDatabaseHelper.getInstance(this);
+                Log.d("Setup", "Database helper created, checking if cards exist...");
+                
+                if (!dbHelper.hasCards()) {
+                    Log.d("Setup", "No cards found in database, starting migration...");
+                    Toast.makeText(this, "Initializing card database...", Toast.LENGTH_SHORT).show();
+                    // Perform migration from XML to SQLite
+                    XMLToSQLiteMigration migration = new XMLToSQLiteMigration(this);
+                    if (migration.performMigration()) {
+                        Log.d("Setup", "Successfully migrated cards from XML to SQLite");
+                        Log.d("Setup", migration.getMigrationStats());
+                    } else {
+                        Log.e("Setup", "Failed to migrate cards from XML to SQLite, falling back to XML");
+                        Toast.makeText(this, "Warning: Database migration failed, using XML fallback", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Log.d("Setup", "Database already contains cards, skipping migration");
+                }
+            } catch (Exception e) {
+                Log.e("Setup", "Error during database initialization/migration: " + e.getMessage(), e);
+                e.printStackTrace();
+                Toast.makeText(this, "Warning: Database error, using XML fallback", Toast.LENGTH_LONG).show();
+                // Continue with XML fallback
+            }
+            
+            // Use context-aware Decks constructor to load from database
+            Log.d("Setup", "Loading decks...");
+            new Decks(this);
+            
+            if (Decks.CARDS == null) {
+                Toast.makeText(this, "Error: Failed to load card decks. Please try again.", Toast.LENGTH_LONG).show();
+                Log.e("Setup", "Decks.CARDS is null after initialization");
+                return;
+            }
+            
+            try {
+                File file = new File(getFilesDir(), "discard.xml");
+                file.createNewFile();
+            } catch (Exception ex) {
+                Log.e("Setup", "Unable to create save file: " + ex.getMessage(), ex);
+                System.out.println(ex.getMessage() + " - Unable to create save file");
+            }
+            
+            Log.d("Setup", "Starting EldritchCompanion activity...");
+            Intent intent = new Intent(this, (Class<?>) EldritchCompanion.class);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e("Setup", "Error in startGame: " + e.getMessage(), e);
+            e.printStackTrace();
+            Toast.makeText(this, "Error starting game: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        Intent intent = new Intent(this, (Class<?>) EldritchCompanion.class);
-        startActivity(intent);
     }
 
     @Override // android.app.Activity

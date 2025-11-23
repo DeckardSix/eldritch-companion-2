@@ -34,7 +34,39 @@ public class DeckGallery extends AppCompatActivity {
         }
 
         String deckName = getIntent().getStringExtra("DECK");
+        
+        // Check if Decks.CARDS is initialized and deckName is valid
+        if (Decks.CARDS == null) {
+            android.util.Log.e("DeckGallery", "Decks.CARDS is null, cannot load deck");
+            Toast.makeText(this, "Error: Cards not initialized", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        
+        if (deckName == null || deckName.isEmpty()) {
+            android.util.Log.e("DeckGallery", "Deck name is null or empty");
+            Toast.makeText(this, "Error: Invalid deck name", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        
         List<Card> cards = Decks.CARDS.getDeck(deckName);
+        
+        // Check if cards list is null or empty
+        if (cards == null) {
+            android.util.Log.e("DeckGallery", "Deck '" + deckName + "' not found");
+            Toast.makeText(this, "Error: Deck '" + deckName + "' not found", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        
+        if (cards.isEmpty()) {
+            android.util.Log.w("DeckGallery", "Deck '" + deckName + "' is empty");
+            Toast.makeText(this, "Deck '" + deckName + "' is empty", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        
         List<Fragment> fragments = new ArrayList<>();
         for (Card card : cards) {
             fragments.add(new CardView().newInstance(card, deckName));

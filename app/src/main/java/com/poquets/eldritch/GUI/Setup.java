@@ -2,6 +2,7 @@ package com.poquets.eldritch.GUI;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -90,6 +91,54 @@ public class Setup extends AppCompatActivity {
         // Initialize data and populate spinner
         initializeData();
         populateSpinner();
+        
+        // Show disclaimer dialog on first launch
+        showDisclaimerIfNeeded();
+    }
+    
+    private void showDisclaimerIfNeeded() {
+        SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        boolean disclaimerShown = prefs.getBoolean("disclaimer_shown", false);
+        
+        if (!disclaimerShown) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("⚠️ CRITICAL INFORMATION - READ FIRST");
+            builder.setMessage(
+                "⚠️ NOT AFFILIATED WITH FANTASY FLIGHT GAMES\n" +
+                "This app is NOT affiliated with Fantasy Flight Games in any way.\n" +
+                "Always refer to official Fantasy Flight Games materials.\n\n" +
+                "⚠️ AGE LIMITATION - 14+\n" +
+                "This app is recommended for ages 14+ as per the game publisher.\n" +
+                "Content is based on H.P. Lovecraft Mythos (user discretion advised).\n\n" +
+                "APP PURPOSE:\n" +
+                "This app is designed to REPLACE physical cards to randomize cards and save table space.\n\n" +
+                "⚠️ CRITICAL: In case of ANY doubt, the PHYSICAL CARDS are ALWAYS the truth.\n" +
+                "The app may contain bugs, errors, or inaccuracies.\n\n" +
+                "KEY INFORMATION:\n" +
+                "• This app is FREE and in PERPETUAL BETA STATUS\n" +
+                "• Cards are stored in a LOCAL DATABASE on your device only\n" +
+                "• The database cannot be changed and requires NO user information\n" +
+                "• The app does NOT save any user information\n" +
+                "• The app does NOT offer any type of communication\n" +
+                "• Works completely OFFLINE - no WiFi or network signal needed\n" +
+                "• Language: English ONLY (regardless of your country/location)\n" +
+                "• The app does NOT use your location\n\n" +
+                "IMPORTANT:\n" +
+                "⚠️ You must ALWAYS refer to original physical game materials if there is any doubt.\n" +
+                "⚠️ Any issues with the app do NOT prevent you from using the real physical cards.\n" +
+                "⚠️ The developer assumes NO LIABILITY for any issues, errors, or consequences.\n" +
+                "⚠️ You use this app at your own risk.\n\n" +
+                "By continuing, you acknowledge that you have read and agree to the full Privacy Policy & Terms of Service."
+            );
+            builder.setPositiveButton("I Understand", (dialog, which) -> {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("disclaimer_shown", true);
+                editor.apply();
+                dialog.dismiss();
+            });
+            builder.setCancelable(false);
+            builder.create().show();
+        }
     }
 
     private void initializeData() {

@@ -25,7 +25,7 @@
         <activity
             android:exported="true"
             android:label="@string/title_activity_eldritch_companion"
-            android:name="pqt.eldritch.GUI.Setup"
+            android:name="com.poquets.eldritch.GUI.Setup"
             android:launchMode="singleTop"
             android:screenOrientation="unspecified">
             <intent-filter>
@@ -36,39 +36,39 @@
         
         <activity
             android:label="@string/title_activity_eldritch_companion"
-            android:name="pqt.eldritch.GUI.EldritchCompanion"
+            android:name="com.poquets.eldritch.GUI.EldritchCompanion"
             android:exported="false"
             android:launchMode="singleTop">
         </activity>
         
         <activity
             android:label="@string/title_activity_remove_expedition"
-            android:name="pqt.eldritch.GUI.RemoveExpedition"
+            android:name="com.poquets.eldritch.GUI.RemoveExpedition"
             android:exported="false"
-            android:parentActivityName="pqt.eldritch.GUI.EldritchCompanion">
+            android:parentActivityName="com.poquets.eldritch.GUI.EldritchCompanion">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pqt.eldritch.GUI.EldritchCompanion"/>
+                android:value="com.poquets.eldritch.GUI.EldritchCompanion"/>
         </activity>
         
         <activity
             android:label="@string/title_activity_pager"
-            android:name="pqt.eldritch.GUI.DeckGallery"
+            android:name="com.poquets.eldritch.GUI.DeckGallery"
             android:exported="false"
-            android:parentActivityName="pqt.eldritch.GUI.EldritchCompanion">
+            android:parentActivityName="com.poquets.eldritch.GUI.EldritchCompanion">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pqt.eldritch.GUI.EldritchCompanion"/>
+                android:value="com.poquets.eldritch.GUI.EldritchCompanion"/>
         </activity>
         
         <activity
             android:label="@string/title_activity_pager"
-            android:name="pqt.eldritch.GUI.DiscardGallery"
+            android:name="com.poquets.eldritch.GUI.DiscardGallery"
             android:exported="false"
-            android:parentActivityName="pqt.eldritch.GUI.EldritchCompanion">
+            android:parentActivityName="com.poquets.eldritch.GUI.EldritchCompanion">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pqt.eldritch.GUI.EldritchCompanion"/>
+                android:value="com.poquets.eldritch.GUI.EldritchCompanion"/>
         </activity>
     </application>
 </manifest>

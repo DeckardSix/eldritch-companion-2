@@ -3,11 +3,11 @@
 # in ${sdk.dir}/tools/proguard/proguard-android.txt
 
 # Keep your application class
--keep public class pqt.eldritch.** { *; }
+-keep public class com.poquets.eldritch.** { *; }
 
 # Keep your database classes
--keep class pqt.eldritch.Card { *; }
--keep class pqt.eldritch.CardDatabaseHelper { *; }
+-keep class com.poquets.eldritch.Card { *; }
+-keep class com.poquets.eldritch.CardDatabaseHelper { *; }
 
 # Keep AndroidX and Support Library classes
 -keep class androidx.** { *; }

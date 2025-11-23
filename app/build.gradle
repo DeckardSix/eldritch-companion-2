@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = 'pqt.eldritch'
+    namespace = 'com.poquets.eldritch'
     compileSdk = 36
 
     defaultConfig {
@@ -13,7 +13,7 @@ android {
         //noinspection EditedTargetSdkVersion
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         
@@ -62,6 +62,9 @@ android {
         buildConfig = true
         viewBinding = true
     }
+
+    // Resources are organized in the standard res/ directory structure
+    // Custom sourceSets removed to avoid duplicate resource conflicts
 
     // Resource optimization
     bundle {

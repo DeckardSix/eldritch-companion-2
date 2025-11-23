@@ -1,5 +1,6 @@
 /.gradle/
 /app/build/
+/.idea/
 /.idea/caches/
 
 # Java heap dump files (memory profiling)

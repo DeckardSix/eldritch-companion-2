@@ -21,7 +21,6 @@ android {
         vectorDrawables.useSupportLibrary = true
         
         // Proguard optimization
-        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {

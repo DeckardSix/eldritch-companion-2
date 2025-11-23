@@ -8,3 +8,6 @@ java_pid*.hprof
 
 # Build reports
 /build/reports/
+
+# BFG Repo-Cleaner
+bfg.jar

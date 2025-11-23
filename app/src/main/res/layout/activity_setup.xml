@@ -20,6 +20,7 @@
         
         <!-- First element: FrameLayout like in EldritchCompanion -->
         <FrameLayout
+            android:id="@+id/logoFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="150dp">
             

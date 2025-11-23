@@ -10,11 +10,19 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
+import android.graphics.Color;
 
 import androidx.core.widget.CompoundButtonCompat;
 import android.widget.SpinnerAdapter;
@@ -95,7 +103,10 @@ public class Setup extends AppCompatActivity {
         initializeData();
         populateSpinner();
         
-        // Show disclaimer dialog on first launch
+        // Add question mark icon to logo
+        addQuestionMarkIcon();
+        
+        // Show disclaimer dialog on first launch or if "Don't show again" was not selected
         showDisclaimerIfNeeded();
     }
     
@@ -103,15 +114,56 @@ public class Setup extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
         boolean disclaimerShown = prefs.getBoolean("disclaimer_shown", false);
         
+        // Show disclaimer if it hasn't been shown, OR if "Don't show again" was NOT selected
         if (!disclaimerShown) {
+            showDisclaimer(true);
+        }
+    }
+    
+    /**
+     * Shows the disclaimer dialog
+     * @param showCheckbox Whether to show the "Don't show again" checkbox
+     */
+    private void showDisclaimer(boolean showCheckbox) {
             // Create a scrollable TextView for the message to handle tablets better
             ScrollView scrollView = new ScrollView(this);
-            // Semi-transparent dark background to match app theme while keeping readability
-            scrollView.setBackgroundColor(0xE0000000); // 87.5% opacity black overlay
+            // Use main screen background
+            scrollView.setBackgroundResource(R.drawable.bg_test_splash);
+            
+            // Create a FrameLayout wrapper to add the border
+            int borderWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+            FrameLayout borderWrapper = new FrameLayout(this);
+            borderWrapper.setBackgroundColor(0xFFFFFFFF); // White border color
+            
+            // Add scrollView to borderWrapper with margin to create border effect
+            FrameLayout.LayoutParams scrollParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            );
+            scrollParams.setMargins(borderWidth, borderWidth, borderWidth, borderWidth);
+            scrollView.setLayoutParams(scrollParams);
+            borderWrapper.addView(scrollView);
             
             // Create a LinearLayout to hold both message and checkbox
             LinearLayout contentLayout = new LinearLayout(this);
             contentLayout.setOrientation(LinearLayout.VERTICAL);
+            
+            int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
+            
+            // Create title TextView - centered and large
+            TextView titleView = new TextView(this);
+            titleView.setText("⚠️ CRITICAL INFORMATION - READ FIRST");
+            titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            titleView.setTextColor(0xFFFFFFFF); // White text to match app theme
+            titleView.setGravity(android.view.Gravity.CENTER);
+            titleView.setPadding(padding, padding, padding, padding / 2);
+            titleView.setTypeface(null, android.graphics.Typeface.BOLD);
+            LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            titleView.setLayoutParams(titleParams);
+            contentLayout.addView(titleView);
             
             TextView messageView = new TextView(this);
             messageView.setText(
@@ -143,35 +195,59 @@ public class Setup extends AppCompatActivity {
             );
             messageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             messageView.setTextColor(0xFFFFFFFF); // White text to match app theme
-            int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
-            messageView.setPadding(padding, padding, padding, padding);
-            
-            // Create checkbox to save preference
-            CheckBox dontShowAgainCheckbox = new CheckBox(this);
-            dontShowAgainCheckbox.setText("Don't show this again");
-            dontShowAgainCheckbox.setTextColor(0xFFFFFFFF); // White text
-            dontShowAgainCheckbox.setPadding(padding, padding / 2, padding, padding);
-            setCheckboxWhite(dontShowAgainCheckbox);
-            
+            messageView.setPadding(padding, padding / 2, padding, padding);
+            LinearLayout.LayoutParams messageParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            messageView.setLayoutParams(messageParams);
             contentLayout.addView(messageView);
-            contentLayout.addView(dontShowAgainCheckbox);
+            
+            // Create checkbox to save preference (only if showCheckbox is true)
+            CheckBox dontShowAgainCheckbox = null;
+            if (showCheckbox) {
+                dontShowAgainCheckbox = new CheckBox(this);
+                dontShowAgainCheckbox.setText("Don't show this again");
+                dontShowAgainCheckbox.setTextColor(0xFFFFFFFF); // White text
+                dontShowAgainCheckbox.setPadding(padding, padding / 2, padding, padding);
+                setCheckboxWhite(dontShowAgainCheckbox);
+                
+                // Check if the preference was previously saved
+                SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+                boolean disclaimerShown = prefs.getBoolean("disclaimer_shown", false);
+                dontShowAgainCheckbox.setChecked(disclaimerShown);
+            }
+            
+            if (dontShowAgainCheckbox != null) {
+                LinearLayout.LayoutParams checkboxParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                dontShowAgainCheckbox.setLayoutParams(checkboxParams);
+                contentLayout.addView(dontShowAgainCheckbox);
+            }
             scrollView.addView(contentLayout);
             
             // Set maximum height for tablets (60% of screen height)
+            // Note: scrollView is a child of borderWrapper (FrameLayout), so we need to update its existing FrameLayout.LayoutParams
             int maxHeight = (int) (getResources().getDisplayMetrics().heightPixels * 0.6);
-            scrollView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                maxHeight
-            ));
+            scrollParams.height = maxHeight;
+            scrollView.setLayoutParams(scrollParams);
             
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("⚠️ CRITICAL INFORMATION - READ FIRST");
-            builder.setView(scrollView);
+            builder.setView(borderWrapper);
+            final CheckBox finalCheckbox = dontShowAgainCheckbox;
             builder.setPositiveButton("I Understand", (dialog, which) -> {
-                // Only save preference if checkbox is checked
-                if (dontShowAgainCheckbox.isChecked()) {
+                SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+                // Only save preference if checkbox exists and is checked
+                if (finalCheckbox != null && finalCheckbox.isChecked()) {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putBoolean("disclaimer_shown", true);
+                    editor.apply();
+                } else if (finalCheckbox != null && !finalCheckbox.isChecked()) {
+                    // If checkbox is unchecked, clear the preference so disclaimer shows again next time
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("disclaimer_shown", false);
                     editor.apply();
                 }
                 dialog.dismiss();
@@ -189,16 +265,43 @@ public class Setup extends AppCompatActivity {
                 // Ensure dialog doesn't take up entire screen on tablets
                 int maxWidth = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
                 dialog.getWindow().setLayout(maxWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
-                
-                // Set dialog title text color to white to match app theme
-                int titleId = getResources().getIdentifier("alertTitle", "id", "android");
-                if (titleId != 0) {
-                    TextView titleView = dialog.getWindow().getDecorView().findViewById(titleId);
-                    if (titleView != null) {
-                        titleView.setTextColor(0xFFFFFFFF); // White text
-                    }
-                }
             }
+    }
+    
+    /**
+     * Adds a question mark icon to the top right of the logo image
+     */
+    private void addQuestionMarkIcon() {
+        FrameLayout logoFrameLayout = findViewById(R.id.logoFrameLayout);
+        
+        if (logoFrameLayout != null) {
+            // Create ImageView for question mark icon
+            ImageView questionMarkIcon = new ImageView(this);
+            questionMarkIcon.setImageResource(android.R.drawable.ic_menu_help);
+            questionMarkIcon.setContentDescription("Show Disclaimer");
+            
+            // Set layout parameters to position in top right
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
+            int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+            params.setMargins(0, margin, margin, 0);
+            questionMarkIcon.setLayoutParams(params);
+            
+            // Set white tint for the icon
+            questionMarkIcon.setColorFilter(0xFFFFFFFF);
+            
+            // Make it clickable
+            questionMarkIcon.setClickable(true);
+            questionMarkIcon.setFocusable(true);
+            questionMarkIcon.setOnClickListener(v -> {
+                // Show disclaimer with checkbox when question mark is clicked
+                showDisclaimer(true);
+            });
+            
+            logoFrameLayout.addView(questionMarkIcon);
         }
     }
 

@@ -210,7 +210,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/ancientHeader"
             android:layout_centerHorizontal="true"
-            android:spinnerMode="dropdown"/>
+            android:spinnerMode="dropdown"
+            android:popupBackground="#CC000000"/>
         <Button
             android:textSize="40dp"
             android:textColor="#ffffffff"

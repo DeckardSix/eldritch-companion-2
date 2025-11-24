@@ -31,14 +31,20 @@ public class CardLoader {
     }
 
     public Map<String, List<Card>> load() {
-        // If context is available and SQLite is enabled, try loading from database first
-        if (context != null && useSQLite && dbHelper != null && dbHelper.hasCards()) {
-            Log.d("CardLoader", "Loading cards from SQLite database");
-            return loadFromDatabase();
+        // Always try loading from database first if context is available
+        if (context != null && useSQLite && dbHelper != null) {
+            if (dbHelper.hasCards()) {
+                Log.d("CardLoader", "Loading cards from SQLite database (filtered by enabled expansions)");
+                return loadFromDatabase();
+            } else {
+                Log.w("CardLoader", "Database has no cards. Cards should be migrated first.");
+                // Don't fall back to XML - return empty map to force migration
+                return new TreeMap<>();
+            }
         }
         
-        // Fallback to XML loading
-        Log.d("CardLoader", "Loading cards from XML file");
+        // Fallback to XML loading only if no context (backward compatibility)
+        Log.d("CardLoader", "No context available, loading cards from XML file");
         try {
             if (!loadFile()) {
                 System.exit(0);

@@ -11,4 +11,5 @@ public class Card {
     public String region;
     public String topEncounter;
     public String topHeader;
+    public String expansion = "BASE"; // Expansion this card belongs to
 }

@@ -45,6 +45,7 @@ import org.xml.sax.SAXException;
 import com.poquets.eldritch.Config;
 import com.poquets.eldritch.CardDatabaseHelper;
 import com.poquets.eldritch.DatabaseInitializer;
+import com.poquets.eldritch.DatabaseExporter;
 import com.poquets.eldritch.Decks;
 import com.poquets.eldritch.XMLToSQLiteMigration;
 import com.poquets.eldritch.R;
@@ -269,26 +270,29 @@ public class Setup extends AppCompatActivity {
     }
     
     /**
-     * Adds a question mark icon to the top right of the logo image
+     * Adds a question mark icon and settings gear icon to the top right of the logo image
      */
     private void addQuestionMarkIcon() {
         FrameLayout logoFrameLayout = findViewById(R.id.logoFrameLayout);
         
         if (logoFrameLayout != null) {
+            int iconSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, getResources().getDisplayMetrics());
+            int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+            int spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+            
             // Create ImageView for question mark icon
             ImageView questionMarkIcon = new ImageView(this);
             questionMarkIcon.setImageResource(android.R.drawable.ic_menu_help);
             questionMarkIcon.setContentDescription("Show Disclaimer");
             
             // Set layout parameters to position in top right
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
+            FrameLayout.LayoutParams questionParams = new FrameLayout.LayoutParams(
+                iconSize,
+                iconSize
             );
-            params.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
-            int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
-            params.setMargins(0, margin, margin, 0);
-            questionMarkIcon.setLayoutParams(params);
+            questionParams.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
+            questionParams.setMargins(0, margin, margin, 0);
+            questionMarkIcon.setLayoutParams(questionParams);
             
             // Set white tint for the icon
             questionMarkIcon.setColorFilter(0xFFFFFFFF);
@@ -301,7 +305,31 @@ public class Setup extends AppCompatActivity {
                 showDisclaimer(true);
             });
             
+            // Create settings gear icon below question mark
+            ImageView settingsIcon = new ImageView(this);
+            settingsIcon.setImageResource(android.R.drawable.ic_menu_preferences);
+            settingsIcon.setContentDescription("Database Setup");
+            
+            FrameLayout.LayoutParams settingsParams = new FrameLayout.LayoutParams(
+                iconSize,
+                iconSize
+            );
+            settingsParams.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
+            int settingsTopMargin = margin + iconSize + spacing;
+            settingsParams.setMargins(0, settingsTopMargin, margin, 0);
+            settingsIcon.setLayoutParams(settingsParams);
+            settingsIcon.setColorFilter(0xFFFFFFFF); // White
+            settingsIcon.setClickable(true);
+            settingsIcon.setFocusable(true);
+            settingsIcon.setOnClickListener(v -> {
+                // Show DB Setup dialog
+                setupDatabase(v);
+            });
+            
             logoFrameLayout.addView(questionMarkIcon);
+            logoFrameLayout.addView(settingsIcon);
+            
+            Log.d("Setup", "Question mark and settings icons added to logo");
         }
     }
 
@@ -674,6 +702,45 @@ public class Setup extends AppCompatActivity {
         CompoundButtonCompat.setButtonTintList(checkbox, android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
     }
     
+    /**
+     * Styles an AlertDialog with dark background and white text
+     */
+    private void styleDialog(AlertDialog dialog) {
+        if (dialog.getWindow() != null) {
+            // Set dark background
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.black);
+            
+            // Set text colors to white
+            TextView titleView = dialog.findViewById(android.R.id.title);
+            if (titleView != null) {
+                titleView.setTextColor(getResources().getColor(android.R.color.white));
+            }
+            
+            TextView messageView = dialog.findViewById(android.R.id.message);
+            if (messageView != null) {
+                messageView.setTextColor(getResources().getColor(android.R.color.white));
+            }
+        }
+        
+        // Style buttons after dialog is shown (buttons are created on show())
+        dialog.setOnShowListener(d -> {
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            if (positiveButton != null) {
+                positiveButton.setTextColor(getResources().getColor(android.R.color.white));
+            }
+            
+            Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            if (negativeButton != null) {
+                negativeButton.setTextColor(getResources().getColor(android.R.color.white));
+            }
+            
+            Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+            if (neutralButton != null) {
+                neutralButton.setTextColor(getResources().getColor(android.R.color.white));
+            }
+        });
+    }
+    
     public void setupDatabase(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Database Setup");
@@ -700,7 +767,9 @@ public class Setup extends AppCompatActivity {
                             resultBuilder.setTitle("Database Setup Complete");
                             resultBuilder.setMessage("Database successfully initialized!\n\n" + stats);
                             resultBuilder.setPositiveButton("OK", null);
-                            resultBuilder.show();
+                            AlertDialog resultDialog = resultBuilder.create();
+                            styleDialog(resultDialog);
+                            resultDialog.show();
                             
                             Toast.makeText(this, "Database setup completed!", Toast.LENGTH_LONG).show();
                         } else {
@@ -709,7 +778,9 @@ public class Setup extends AppCompatActivity {
                             errorBuilder.setTitle("Database Setup Failed");
                             errorBuilder.setMessage("Failed to initialize database. Please check logs for details.");
                             errorBuilder.setPositiveButton("OK", null);
-                            errorBuilder.show();
+                            AlertDialog errorDialog = errorBuilder.create();
+                            styleDialog(errorDialog);
+                            errorDialog.show();
                             
                             Toast.makeText(this, "Database setup failed!", Toast.LENGTH_LONG).show();
                         }
@@ -721,7 +792,9 @@ public class Setup extends AppCompatActivity {
                         errorBuilder.setTitle("Database Setup Error");
                         errorBuilder.setMessage("Error during database setup: " + e.getMessage());
                         errorBuilder.setPositiveButton("OK", null);
-                        errorBuilder.show();
+                        AlertDialog errorDialog = errorBuilder.create();
+                        styleDialog(errorDialog);
+                        errorDialog.show();
                         
                         Toast.makeText(this, "Database setup error!", Toast.LENGTH_LONG).show();
                     });
@@ -733,6 +806,74 @@ public class Setup extends AppCompatActivity {
             dialog.dismiss();
         });
         
-        builder.show();
+        AlertDialog dialog = builder.create();
+        styleDialog(dialog);
+        dialog.show();
+    }
+    
+    public void exportDatabase(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Export Database");
+        builder.setMessage("This will export the current database to external storage so you can include it in the project. Continue?");
+        
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            // Show progress message
+            Toast.makeText(this, "Exporting database...", Toast.LENGTH_SHORT).show();
+            
+            // Run database export in background thread
+            new Thread(() -> {
+                try {
+                    Log.d("Setup", "Database export requested");
+                    String exportPath = DatabaseExporter.exportToExternalStorage(this);
+                    
+                    // Show result on UI thread
+                    runOnUiThread(() -> {
+                        if (exportPath != null) {
+                            AlertDialog.Builder resultBuilder = new AlertDialog.Builder(this);
+                            resultBuilder.setTitle("Database Export Complete");
+                            resultBuilder.setMessage("Database exported successfully!\n\nLocation:\n" + exportPath + "\n\nCopy this file to:\napp/src/main/assets/databases/eldritch_cards.db");
+                            resultBuilder.setPositiveButton("OK", null);
+                            AlertDialog resultDialog = resultBuilder.create();
+                            styleDialog(resultDialog);
+                            resultDialog.show();
+                            
+                            Toast.makeText(this, "Database exported!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Log.e("Setup", "Database export failed");
+                            AlertDialog.Builder errorBuilder = new AlertDialog.Builder(this);
+                            errorBuilder.setTitle("Database Export Failed");
+                            errorBuilder.setMessage("Failed to export database. Please check logs for details.");
+                            errorBuilder.setPositiveButton("OK", null);
+                            AlertDialog errorDialog = errorBuilder.create();
+                            styleDialog(errorDialog);
+                            errorDialog.show();
+                            
+                            Toast.makeText(this, "Database export failed!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e("Setup", "Error during database export", e);
+                    runOnUiThread(() -> {
+                        AlertDialog.Builder errorBuilder = new AlertDialog.Builder(this);
+                        errorBuilder.setTitle("Database Export Error");
+                        errorBuilder.setMessage("Error during database export: " + e.getMessage());
+                        errorBuilder.setPositiveButton("OK", null);
+                        AlertDialog errorDialog = errorBuilder.create();
+                        styleDialog(errorDialog);
+                        errorDialog.show();
+                        
+                        Toast.makeText(this, "Database export error!", Toast.LENGTH_LONG).show();
+                    });
+                }
+            }).start();
+        });
+        
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        
+        AlertDialog dialog = builder.create();
+        styleDialog(dialog);
+        dialog.show();
     }
 }

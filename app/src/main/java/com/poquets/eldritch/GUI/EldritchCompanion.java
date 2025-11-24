@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.poquets.eldritch.DatabaseInitializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -149,6 +153,9 @@ public class EldritchCompanion extends AppCompatActivity {
         } else {
             Log.e("EldritchCompanion", "ScrollView not found!");
         }
+        
+        // Add question mark and settings icons to header
+        addHeaderIcons();
         
         // Get references to buttons from the XML layout
         expeditionButton = findViewById(R.id.expeditionButton);
@@ -610,6 +617,164 @@ public class EldritchCompanion extends AppCompatActivity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Adds question mark and settings icons to the header
+     */
+    private void addHeaderIcons() {
+        FrameLayout headerFrameLayout = findViewById(R.id.headerIconsFrameLayout);
+        
+        if (headerFrameLayout != null) {
+            int iconSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, getResources().getDisplayMetrics());
+            int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+            int spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+            
+            // Create question mark icon (help/disclaimer)
+            ImageView questionMarkIcon = new ImageView(this);
+            questionMarkIcon.setImageResource(android.R.drawable.ic_menu_help);
+            questionMarkIcon.setContentDescription("Show Disclaimer");
+            
+            FrameLayout.LayoutParams questionParams = new FrameLayout.LayoutParams(
+                iconSize,
+                iconSize
+            );
+            questionParams.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
+            questionParams.setMargins(0, margin, margin, 0);
+            questionMarkIcon.setLayoutParams(questionParams);
+            questionMarkIcon.setColorFilter(0xFFFFFFFF); // White
+            questionMarkIcon.setClickable(true);
+            questionMarkIcon.setFocusable(true);
+            questionMarkIcon.setOnClickListener(v -> {
+                // Show disclaimer - you may need to implement this or navigate to Setup
+                Toast.makeText(this, "Disclaimer - Navigate to Setup screen for full disclaimer", Toast.LENGTH_SHORT).show();
+            });
+            
+            // Create settings icon (gear) below question mark
+            ImageView settingsIcon = new ImageView(this);
+            settingsIcon.setImageResource(android.R.drawable.ic_menu_preferences);
+            settingsIcon.setContentDescription("Database Setup");
+            
+            FrameLayout.LayoutParams settingsParams = new FrameLayout.LayoutParams(
+                iconSize,
+                iconSize
+            );
+            settingsParams.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
+            int settingsTopMargin = margin + iconSize + spacing;
+            settingsParams.setMargins(0, settingsTopMargin, margin, 0);
+            settingsIcon.setLayoutParams(settingsParams);
+            settingsIcon.setColorFilter(0xFFFFFFFF); // White
+            settingsIcon.setClickable(true);
+            settingsIcon.setFocusable(true);
+            settingsIcon.setOnClickListener(v -> {
+                // Show DB Setup dialog
+                showDatabaseSetupDialog();
+            });
+            
+            headerFrameLayout.addView(questionMarkIcon);
+            headerFrameLayout.addView(settingsIcon);
+            
+            Log.d("EldritchCompanion", "Header icons added - question mark and settings gear");
+        } else {
+            Log.e("EldritchCompanion", "headerIconsFrameLayout not found!");
+        }
+    }
+    
+    /**
+     * Shows the database setup dialog
+     */
+    private void showDatabaseSetupDialog() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Database Setup");
+        builder.setMessage("This will force re-initialize the card database from XML. This may take a few moments. Continue?");
+        
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            Toast.makeText(this, "Initializing database...", Toast.LENGTH_SHORT).show();
+            
+            new Thread(() -> {
+                try {
+                    Log.d("EldritchCompanion", "Database setup requested from main screen");
+                    boolean success = DatabaseInitializer.initializeDatabase(this, true);
+                    
+                    runOnUiThread(() -> {
+                        if (success) {
+                            String stats = DatabaseInitializer.getDatabaseStatus(this);
+                            android.app.AlertDialog.Builder resultBuilder = new android.app.AlertDialog.Builder(this);
+                            resultBuilder.setTitle("Database Setup Complete");
+                            resultBuilder.setMessage("Database successfully initialized!\n\n" + stats);
+                            resultBuilder.setPositiveButton("OK", null);
+                            android.app.AlertDialog resultDialog = resultBuilder.create();
+                            styleDialog(resultDialog);
+                            resultDialog.show();
+                            
+                            Toast.makeText(this, "Database setup completed!", Toast.LENGTH_LONG).show();
+                        } else {
+                            android.app.AlertDialog.Builder errorBuilder = new android.app.AlertDialog.Builder(this);
+                            errorBuilder.setTitle("Database Setup Failed");
+                            errorBuilder.setMessage("Failed to initialize database. Please check logs for details.");
+                            errorBuilder.setPositiveButton("OK", null);
+                            android.app.AlertDialog errorDialog = errorBuilder.create();
+                            styleDialog(errorDialog);
+                            errorDialog.show();
+                            
+                            Toast.makeText(this, "Database setup failed!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e("EldritchCompanion", "Error during database setup", e);
+                    runOnUiThread(() -> {
+                        android.app.AlertDialog.Builder errorBuilder = new android.app.AlertDialog.Builder(this);
+                        errorBuilder.setTitle("Database Setup Error");
+                        errorBuilder.setMessage("Error during database setup: " + e.getMessage());
+                        errorBuilder.setPositiveButton("OK", null);
+                        android.app.AlertDialog errorDialog = errorBuilder.create();
+                        styleDialog(errorDialog);
+                        errorDialog.show();
+                        
+                        Toast.makeText(this, "Database setup error!", Toast.LENGTH_LONG).show();
+                    });
+                }
+            }).start();
+        });
+        
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        
+        android.app.AlertDialog dialog = builder.create();
+        styleDialog(dialog);
+        dialog.show();
+    }
+    
+    /**
+     * Styles an AlertDialog with dark background and white text
+     */
+    private void styleDialog(android.app.AlertDialog dialog) {
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.black);
+            
+            android.widget.TextView titleView = dialog.findViewById(android.R.id.title);
+            if (titleView != null) {
+                titleView.setTextColor(getResources().getColor(android.R.color.white));
+            }
+            
+            android.widget.TextView messageView = dialog.findViewById(android.R.id.message);
+            if (messageView != null) {
+                messageView.setTextColor(getResources().getColor(android.R.color.white));
+            }
+        }
+        
+        dialog.setOnShowListener(d -> {
+            android.widget.Button positiveButton = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+            if (positiveButton != null) {
+                positiveButton.setTextColor(getResources().getColor(android.R.color.white));
+            }
+            
+            android.widget.Button negativeButton = dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+            if (negativeButton != null) {
+                negativeButton.setTextColor(getResources().getColor(android.R.color.white));
+            }
+        });
     }
 
     @Override // android.app.Activity

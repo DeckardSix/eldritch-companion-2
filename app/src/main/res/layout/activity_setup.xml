@@ -8,7 +8,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    android:background="@android:color/transparent">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -16,7 +17,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="16dp"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:background="@android:color/transparent">
         
         <!-- First element: FrameLayout like in EldritchCompanion -->
         <FrameLayout
@@ -44,6 +46,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"
             android:text="Select Expansions"
+            android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"/>
         <CheckBox
@@ -53,6 +56,7 @@
             android:layout_height="25dp"
             android:checked="true"
             android:text="Base"
+            android:textColor="@android:color/white"
             android:layout_below="@+id/expanHeader"
             android:layout_alignParentLeft="true"
             android:onClick="populateSpinner"/>
@@ -64,6 +68,7 @@
             android:layout_marginTop="5dp"
             android:checked="false"
             android:text="Forsaken Lore"
+            android:textColor="@android:color/white"
             android:layout_below="@+id/baseBox"
             android:layout_alignParentLeft="true"
             android:onClick="populateSpinner"/>
@@ -75,6 +80,7 @@
             android:layout_marginTop="5dp"
             android:checked="false"
             android:text="Mountains of Madness"
+            android:textColor="@android:color/white"
             android:layout_below="@+id/forsakenLoreBox"
             android:layout_alignParentLeft="true"
             android:onClick="toggleAntarctica"/>
@@ -87,6 +93,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="5dp"
             android:text="Antarctica"
+            android:textColor="@android:color/white"
             android:layout_below="@+id/mountainsOfMadnessBox"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"/>
@@ -98,6 +105,7 @@
             android:layout_marginTop="5dp"
             android:checked="false"
             android:text="Strange Remnants"
+            android:textColor="@android:color/white"
             android:layout_below="@+id/antarcticaBox"
             android:layout_alignParentLeft="true"
             android:onClick="toggleCosmicAlignment"/>
@@ -112,6 +120,7 @@
             android:layout_marginTop="5dp"
             android:checked="false"
             android:text="Cosmic Alignment - Prelude Card"
+            android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"/>
         <CheckBox
@@ -121,6 +130,7 @@
             android:layout_height="25dp"
             android:checked="false"
             android:text="Under the Pyramids"
+            android:textColor="@android:color/white"
             android:layout_below="@+id/strangeRemnantsBox"
             android:layout_alignParentLeft="true"
             android:onClick="toggleEgyptAndLitany"/>
@@ -133,6 +143,7 @@
             android:layout_marginLeft="30dp"
             android:checked="false"
             android:text="Egypt"
+            android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"/>
         <CheckBox
@@ -145,6 +156,7 @@
             android:layout_marginLeft="30dp"
             android:checked="false"
             android:text="Litany of Secrets - Prelude Card"
+            android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:onClick="togglePreludeCards"/>
@@ -156,6 +168,7 @@
             android:layout_marginTop="5dp"
             android:checked="false"
             android:text="Signs of Carcosa"
+            android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:onClick="populateSpinner"/>
         <CheckBox
@@ -166,6 +179,7 @@
             android:layout_marginTop="5dp"
             android:checked="false"
             android:text="The Dreamlands"
+            android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:onClick="toggleDreamlandsBoard"/>
         <CheckBox
@@ -177,6 +191,7 @@
             android:layout_marginLeft="30dp"
             android:checked="false"
             android:text="Dreamlands Board"
+            android:textColor="@android:color/white"
             android:layout_weight="0.16"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"/>
@@ -188,6 +203,7 @@
             android:layout_marginTop="5dp"
             android:checked="false"
             android:text="Cities in Ruin"
+            android:textColor="@android:color/white"
             android:layout_below="@+id/dreamlandsBoardBox"
             android:layout_alignParentLeft="true"
             android:onClick="populateSpinner"/>
@@ -199,6 +215,7 @@
             android:layout_marginTop="5dp"
             android:checked="false"
             android:text="Masks of Nyarlathotep"
+            android:textColor="@android:color/white"
             android:layout_below="@+id/citiesInRuinBox"
             android:layout_alignParentLeft="true"
             android:onClick="populateSpinner"/>
@@ -210,6 +227,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:text="Select Ancient One"
+            android:textColor="@android:color/white"
             android:layout_below="@+id/masksOfNyarlathotepBox"
             android:layout_alignParentLeft="true"/>
         <Spinner
@@ -254,17 +272,6 @@
                 android:text="Continue"
                 android:onClick="continueGame"/>
             
-            <Button
-                android:textSize="16dp"
-                android:textColor="#ffffffff"
-                android:id="@+id/dbSetupButton"
-                android:background="@drawable/btn_round"
-                android:layout_width="0dp"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:text="DB Setup"
-                android:onClick="setupDatabase"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

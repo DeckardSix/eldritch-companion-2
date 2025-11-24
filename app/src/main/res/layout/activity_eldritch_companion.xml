@@ -19,6 +19,15 @@
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent">
 
+        <!-- Header FrameLayout for question mark and settings icons -->
+        <FrameLayout
+            android:id="@+id/headerIconsFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/transparent">
+        </FrameLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">

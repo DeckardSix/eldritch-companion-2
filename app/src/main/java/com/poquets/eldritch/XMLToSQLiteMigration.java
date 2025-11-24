@@ -1,6 +1,8 @@
 package com.poquets.eldritch;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +41,10 @@ public class XMLToSQLiteMigration {
 
             // Use CardLoader approach to ensure all expansions and card types are loaded correctly
             // This handles EXPEDITIONS, RESEARCH, GATES, and all other card types from all enabled expansions
-            Log.d(TAG, "Using CardLoader to migrate all cards from XML...");
+            Log.d(TAG, "Using CardLoader to migrate all cards from XML with expansion tracking...");
             
-            // Try to load cards from XML using the existing CardLoader
-            CardLoader xmlLoader = new CardLoader();
-            Map<String, List<Card>> xmlDecks = xmlLoader.loadFromXML();
+            // Load cards from XML with expansion information
+            Map<String, List<Card>> xmlDecks = loadAllCardsWithExpansions();
 
             if (xmlDecks == null || xmlDecks.isEmpty()) {
                 Log.e(TAG, "Failed to load cards from XML using CardLoader, trying alternative approach...");
@@ -83,6 +84,169 @@ public class XMLToSQLiteMigration {
         }
     }
 
+    /**
+     * Loads all cards from XML with expansion tracking
+     * This ensures every card knows which expansion it belongs to
+     * Loads ALL expansions regardless of Config settings for migration
+     */
+    private Map<String, List<Card>> loadAllCardsWithExpansions() {
+        Map<String, List<Card>> allDecks = new TreeMap<>();
+        
+        try {
+            // Save original Config values
+            boolean originalBase = Config.BASE;
+            boolean originalForsakenLore = Config.FORSAKEN_LORE;
+            boolean originalMountains = Config.MOUNTAINS_OF_MADNESS;
+            boolean originalStrange = Config.STRANGE_REMNANTS;
+            boolean originalPyramids = Config.UNDER_THE_PYRAMIDS;
+            boolean originalCarcosa = Config.SIGNS_OF_CARCOSA;
+            boolean originalDreamlands = Config.THE_DREAMLANDS;
+            boolean originalCities = Config.CITIES_IN_RUIN;
+            boolean originalMasks = Config.MASKS_OF_NYARLATHOTEP;
+            String originalAncientOne = Config.ANCIENT_ONE;
+            
+            // Set a default Ancient One for RESEARCH cards (required for loading)
+            if (Config.ANCIENT_ONE == null || Config.ANCIENT_ONE.trim().isEmpty()) {
+                Config.ANCIENT_ONE = "AZATHOTH"; // Default for migration
+            }
+            
+            // Load each expansion separately and tag cards with expansion name
+            CardLoader xmlLoader = new CardLoader();
+            
+            // Load BASE expansion
+            setExpansionFlags("BASE");
+            Map<String, List<Card>> baseDecks = xmlLoader.loadFromXML();
+            if (baseDecks != null && !baseDecks.isEmpty()) {
+                tagCardsWithExpansion(baseDecks, "BASE");
+                mergeDecks(allDecks, baseDecks);
+                Log.d(TAG, "Loaded BASE expansion: " + countCards(baseDecks) + " cards");
+            }
+            
+            // Load other expansions
+            String[] expansions = {
+                "FORSAKEN_LORE", "MOUNTAINS_OF_MADNESS", "STRANGE_REMNANTS",
+                "UNDER_THE_PYRAMIDS", "SIGNS_OF_CARCOSA", "THE_DREAMLANDS",
+                "CITIES_IN_RUIN", "MASKS_OF_NYARLATHOTEP"
+            };
+            
+            for (String expansion : expansions) {
+                setExpansionFlags(expansion);
+                Map<String, List<Card>> expansionDecks = xmlLoader.loadFromXML();
+                if (expansionDecks != null && !expansionDecks.isEmpty()) {
+                    tagCardsWithExpansion(expansionDecks, expansion);
+                    mergeDecks(allDecks, expansionDecks);
+                    Log.d(TAG, "Loaded " + expansion + " expansion: " + countCards(expansionDecks) + " cards");
+                }
+            }
+            
+            // Restore original Config values
+            Config.BASE = originalBase;
+            Config.FORSAKEN_LORE = originalForsakenLore;
+            Config.MOUNTAINS_OF_MADNESS = originalMountains;
+            Config.STRANGE_REMNANTS = originalStrange;
+            Config.UNDER_THE_PYRAMIDS = originalPyramids;
+            Config.SIGNS_OF_CARCOSA = originalCarcosa;
+            Config.THE_DREAMLANDS = originalDreamlands;
+            Config.CITIES_IN_RUIN = originalCities;
+            Config.MASKS_OF_NYARLATHOTEP = originalMasks;
+            Config.ANCIENT_ONE = originalAncientOne;
+            
+            int totalCards = countCards(allDecks);
+            Log.d(TAG, "Loaded all cards with expansion tracking. Total: " + totalCards + " cards in " + allDecks.size() + " decks");
+            return allDecks;
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading cards with expansions: " + e.getMessage(), e);
+            return allDecks;
+        }
+    }
+    
+    /**
+     * Counts total cards in all decks
+     */
+    private int countCards(Map<String, List<Card>> decks) {
+        int count = 0;
+        if (decks != null) {
+            for (List<Card> cards : decks.values()) {
+                if (cards != null) {
+                    count += cards.size();
+                }
+            }
+        }
+        return count;
+    }
+    
+    /**
+     * Sets expansion flags to enable only the specified expansion
+     */
+    private void setExpansionFlags(String expansion) {
+        // Disable all expansions first
+        Config.BASE = false;
+        Config.FORSAKEN_LORE = false;
+        Config.MOUNTAINS_OF_MADNESS = false;
+        Config.STRANGE_REMNANTS = false;
+        Config.UNDER_THE_PYRAMIDS = false;
+        Config.SIGNS_OF_CARCOSA = false;
+        Config.THE_DREAMLANDS = false;
+        Config.CITIES_IN_RUIN = false;
+        Config.MASKS_OF_NYARLATHOTEP = false;
+        
+        // Enable only the target expansion
+        if ("BASE".equals(expansion)) {
+            Config.BASE = true;
+        } else if ("FORSAKEN_LORE".equals(expansion)) {
+            Config.FORSAKEN_LORE = true;
+        } else if ("MOUNTAINS_OF_MADNESS".equals(expansion)) {
+            Config.MOUNTAINS_OF_MADNESS = true;
+        } else if ("STRANGE_REMNANTS".equals(expansion)) {
+            Config.STRANGE_REMNANTS = true;
+        } else if ("UNDER_THE_PYRAMIDS".equals(expansion)) {
+            Config.UNDER_THE_PYRAMIDS = true;
+        } else if ("SIGNS_OF_CARCOSA".equals(expansion)) {
+            Config.SIGNS_OF_CARCOSA = true;
+        } else if ("THE_DREAMLANDS".equals(expansion)) {
+            Config.THE_DREAMLANDS = true;
+        } else if ("CITIES_IN_RUIN".equals(expansion)) {
+            Config.CITIES_IN_RUIN = true;
+        } else if ("MASKS_OF_NYARLATHOTEP".equals(expansion)) {
+            Config.MASKS_OF_NYARLATHOTEP = true;
+        }
+    }
+    
+    /**
+     * Tags all cards in the decks with the expansion name
+     */
+    private void tagCardsWithExpansion(Map<String, List<Card>> decks, String expansion) {
+        if (decks == null) return;
+        for (List<Card> cards : decks.values()) {
+            if (cards != null) {
+                for (Card card : cards) {
+                    if (card != null) {
+                        card.expansion = expansion;
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Merges decks from source into target
+     */
+    private void mergeDecks(Map<String, List<Card>> target, Map<String, List<Card>> source) {
+        if (source == null) return;
+        
+        for (String key : source.keySet()) {
+            List<Card> sourceCards = source.get(key);
+            if (sourceCards != null && !sourceCards.isEmpty()) {
+                if (target.containsKey(key)) {
+                    target.get(key).addAll(sourceCards);
+                } else {
+                    target.put(key, new ArrayList<>(sourceCards));
+                }
+            }
+        }
+    }
+    
     /**
      * Parse XML directly without relying on Config values
      */
@@ -387,36 +551,55 @@ public class XMLToSQLiteMigration {
     
     /**
      * Validates that the migration was successful by checking database content
+     * Queries database directly without filtering by Config flags
      * @return true if validation passes, false otherwise
      */
     public boolean validateMigration() {
         try {
             Log.d(TAG, "Validating migration...");
             
-            // Load cards from database
-            Map<String, List<Card>> dbDecks = dbHelper.getAllCards();
-            
-            if (dbDecks == null || dbDecks.isEmpty()) {
-                Log.e(TAG, "Database validation failed: no decks found");
-                return false;
-            }
-            
-            int totalCards = 0;
-            for (String deckName : dbDecks.keySet()) {
-                List<Card> cards = dbDecks.get(deckName);
-                if (cards != null) {
-                    totalCards += cards.size();
-                    Log.d(TAG, "Deck " + deckName + " has " + cards.size() + " cards");
+            // Query database directly without filtering by Config flags
+            // This ensures validation works even if no expansions are enabled
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            Cursor cursor = null;
+            try {
+                // Count total cards
+                cursor = db.rawQuery("SELECT COUNT(*) FROM cards", null);
+                int totalCards = 0;
+                if (cursor.moveToFirst()) {
+                    totalCards = cursor.getInt(0);
+                }
+                cursor.close();
+                
+                if (totalCards == 0) {
+                    Log.e(TAG, "Database validation failed: no cards found");
+                    return false;
+                }
+                
+                // Count distinct regions/decks
+                cursor = db.rawQuery("SELECT COUNT(DISTINCT region) FROM cards", null);
+                int deckCount = 0;
+                if (cursor.moveToFirst()) {
+                    deckCount = cursor.getInt(0);
+                }
+                cursor.close();
+                
+                // Count distinct expansions
+                cursor = db.rawQuery("SELECT COUNT(DISTINCT expansion) FROM cards", null);
+                int expansionCount = 0;
+                if (cursor.moveToFirst()) {
+                    expansionCount = cursor.getInt(0);
+                }
+                cursor.close();
+                
+                Log.d(TAG, "Migration validation passed! Found " + totalCards + " cards in " + deckCount + " decks across " + expansionCount + " expansions");
+                return true;
+                
+            } finally {
+                if (cursor != null && !cursor.isClosed()) {
+                    cursor.close();
                 }
             }
-            
-            if (totalCards == 0) {
-                Log.e(TAG, "Database validation failed: no cards found");
-                return false;
-            }
-            
-            Log.d(TAG, "Migration validation passed! Found " + totalCards + " cards across " + dbDecks.size() + " decks");
-            return true;
             
         } catch (Exception e) {
             Log.e(TAG, "Error during validation: " + e.getMessage(), e);
@@ -437,23 +620,61 @@ public class XMLToSQLiteMigration {
     
     /**
      * Gets migration statistics
+     * Queries database directly to avoid Config filtering
      * @return String containing migration information
      */
     public String getMigrationStats() {
         try {
-            Map<String, List<Card>> dbDecks = dbHelper.getAllCards();
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            Cursor cursor = null;
             StringBuilder stats = new StringBuilder();
             stats.append("Migration Statistics:\n");
-            stats.append("Total Decks: ").append(dbDecks.size()).append("\n");
             
-            int totalCards = 0;
-            for (String deckName : dbDecks.keySet()) {
-                int count = dbDecks.get(deckName).size();
-                totalCards += count;
-                stats.append(deckName).append(": ").append(count).append(" cards\n");
+            try {
+                // Count total cards
+                cursor = db.rawQuery("SELECT COUNT(*) FROM cards", null);
+                int totalCards = 0;
+                if (cursor.moveToFirst()) {
+                    totalCards = cursor.getInt(0);
+                }
+                cursor.close();
+                
+                // Count distinct regions/decks
+                cursor = db.rawQuery("SELECT COUNT(DISTINCT region) FROM cards", null);
+                int deckCount = 0;
+                if (cursor.moveToFirst()) {
+                    deckCount = cursor.getInt(0);
+                }
+                cursor.close();
+                
+                // Count distinct expansions
+                cursor = db.rawQuery("SELECT COUNT(DISTINCT expansion) FROM cards", null);
+                int expansionCount = 0;
+                if (cursor.moveToFirst()) {
+                    expansionCount = cursor.getInt(0);
+                }
+                cursor.close();
+                
+                // Get card count per expansion
+                cursor = db.rawQuery("SELECT expansion, COUNT(*) as count FROM cards GROUP BY expansion ORDER BY expansion", null);
+                stats.append("Total Cards: ").append(totalCards).append("\n");
+                stats.append("Total Decks: ").append(deckCount).append("\n");
+                stats.append("Total Expansions: ").append(expansionCount).append("\n\n");
+                stats.append("Cards by Expansion:\n");
+                
+                while (cursor.moveToNext()) {
+                    String expansion = cursor.getString(0);
+                    int count = cursor.getInt(1);
+                    stats.append("  ").append(expansion).append(": ").append(count).append(" cards\n");
+                }
+                cursor.close();
+                
+            } finally {
+                if (cursor != null && !cursor.isClosed()) {
+                    cursor.close();
+                }
             }
             
-            stats.append("Total Cards: ").append(totalCards);
             return stats.toString();
             
         } catch (Exception e) {

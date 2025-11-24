@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:scrollbars="none"
     android:background="@android:color/transparent">
 
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:weightSum="1"
         android:background="@android:color/transparent">
         
@@ -24,7 +24,7 @@
         <FrameLayout
             android:id="@+id/logoFrameLayout"
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="100dp">
             
             <!-- Eldritch Horror logo image inside the FrameLayout -->
             <ImageView
@@ -38,46 +38,48 @@
         </FrameLayout>
         
         <TextView
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:gravity="center"
             android:id="@+id/expanHeader"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="35dp"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"
             android:text="Select Expansions"
             android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"/>
+        <!-- Base checkbox - hidden but kept in code for future use -->
         <CheckBox
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/baseBox"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:checked="true"
             android:text="Base"
             android:textColor="@android:color/white"
             android:layout_below="@+id/expanHeader"
             android:layout_alignParentLeft="true"
-            android:onClick="populateSpinner"/>
+            android:onClick="populateSpinner"
+            android:visibility="gone"/>
         <CheckBox
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/forsakenLoreBox"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
             android:checked="false"
             android:text="Forsaken Lore"
             android:textColor="@android:color/white"
-            android:layout_below="@+id/baseBox"
+            android:layout_below="@+id/expanHeader"
             android:layout_alignParentLeft="true"
             android:onClick="populateSpinner"/>
         <CheckBox
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/mountainsOfMadnessBox"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
             android:checked="false"
             android:text="Mountains of Madness"
             android:textColor="@android:color/white"
@@ -86,23 +88,23 @@
             android:onClick="toggleAntarctica"/>
         <CheckBox
             android:enabled="false"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/antarcticaBox"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:text="Antarctica"
             android:textColor="@android:color/white"
             android:layout_below="@+id/mountainsOfMadnessBox"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"/>
         <CheckBox
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/strangeRemnantsBox"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
             android:checked="false"
             android:text="Strange Remnants"
             android:textColor="@android:color/white"
@@ -111,23 +113,23 @@
             android:onClick="toggleCosmicAlignment"/>
         <CheckBox
             android:enabled="false"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:gravity="top"
             android:id="@+id/cosmicAlignmentBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:checked="false"
             android:text="Cosmic Alignment - Prelude Card"
             android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"/>
         <CheckBox
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/underThePyramidsBox"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:checked="false"
             android:text="Under the Pyramids"
             android:textColor="@android:color/white"
@@ -136,7 +138,7 @@
             android:onClick="toggleEgyptAndLitany"/>
         <CheckBox
             android:enabled="false"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/egyptBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -148,7 +150,7 @@
             android:layout_centerVertical="true"/>
         <CheckBox
             android:enabled="false"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:gravity="top"
             android:id="@+id/litanyOfSecretsBox"
             android:layout_width="match_parent"
@@ -161,22 +163,22 @@
             android:layout_centerVertical="true"
             android:onClick="togglePreludeCards"/>
         <CheckBox
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/signsOfCarcosaBox"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
             android:checked="false"
             android:text="Signs of Carcosa"
             android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:onClick="populateSpinner"/>
         <CheckBox
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/theDreamlandsBox"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
             android:checked="false"
             android:text="The Dreamlands"
             android:textColor="@android:color/white"
@@ -184,7 +186,7 @@
             android:onClick="toggleDreamlandsBoard"/>
         <CheckBox
             android:enabled="false"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/dreamlandsBoardBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -196,11 +198,11 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"/>
         <CheckBox
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/citiesInRuinBox"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
             android:checked="false"
             android:text="Cities in Ruin"
             android:textColor="@android:color/white"
@@ -208,11 +210,11 @@
             android:layout_alignParentLeft="true"
             android:onClick="populateSpinner"/>
         <CheckBox
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:id="@+id/masksOfNyarlathotepBox"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
             android:checked="false"
             android:text="Masks of Nyarlathotep"
             android:textColor="@android:color/white"
@@ -220,12 +222,12 @@
             android:layout_alignParentLeft="true"
             android:onClick="populateSpinner"/>
         <TextView
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:gravity="center"
             android:id="@+id/ancientHeader"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
             android:text="Select Ancient One"
             android:textColor="@android:color/white"
             android:layout_below="@+id/masksOfNyarlathotepBox"
@@ -243,30 +245,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:gravity="center"
-            android:padding="10dp">
+            android:padding="8dp">
             
             <Button
-                android:textSize="16dp"
+                android:textSize="14dp"
                 android:textColor="#ffffffff"
                 android:id="@+id/startButton"
                 android:background="@drawable/btn_round"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="30dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="5dp"
                 android:text="Start"
                 android:onClick="startGame"/>
             
             <Button
-                android:textSize="16dp"
+                android:textSize="14dp"
                 android:textColor="#ffffffff"
                 android:id="@+id/continueButton"
                 android:background="@drawable/btn_round"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="30dp"
                 android:layout_weight="1"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
